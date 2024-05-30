@@ -1,0 +1,32 @@
+/* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
+@font-face {
+  font-family: 'ai_chat';
+  /* Project id 4488601 */
+  src: url('//at.alicdn.com/t/c/font_4488601_3zbjtozfolk.woff2?t=1711767785596') format('woff2'),
+    url('//at.alicdn.com/t/c/font_4488601_3zbjtozfolk.woff?t=1711767785596') format('woff'),
+    url('//at.alicdn.com/t/c/font_4488601_3zbjtozfolk.ttf?t=1711767785596') format('truetype');
+}
+
+.ai_chat {
+  font-family: "ai_chat" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.chat-shujumoxing:before {
+  content: "\e6ef";
+}
+
+.chat-huiyuan:before {
+  content: "\e638";
+}
+
+.chat-model:before {
+  content: "\e66e";
+}
+
+.chat-liaotian:before {
+  content: "\100d9";
+}
