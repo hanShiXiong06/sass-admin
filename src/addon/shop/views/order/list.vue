@@ -378,8 +378,9 @@ const deliveryActionDialog: Record<string, any> | null = ref(null)
  * 发货
  */
 const delivery = (data: any) => {
-	deliveryActionDialog.value.setFormData(data)
-	deliveryActionDialog.value.showDialog = true
+  router.push('/shop_order/list')
+	// deliveryActionDialog.value.setFormData(data)
+	// deliveryActionDialog.value.showDialog = true
 }
 
 const orderNotesDialog: Record<string, any> | null = ref(null)

@@ -44,7 +44,6 @@
                             <el-input v-model="goodsEdit.formData.sub_title" clearable :placeholder="t('subTitlePlaceholder')" class="input-width" maxlength="80" show-word-limit />
                         </el-form-item>
                         <el-form-item :label="t('goodsImage')" prop="goods_image">
-                          {{goodsEdit.formData.goods_image}}
                             <upload-image v-model="goodsEdit.formData.goods_image" :limit="10" />
                         </el-form-item>
 
