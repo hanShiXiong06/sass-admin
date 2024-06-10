@@ -478,6 +478,15 @@
                         <el-form-item :label="t('goodsDesc')" prop="goods_desc">
                             <editor v-model="goodsEdit.formData.goods_desc" :height="600" class="editor-width" />
                         </el-form-item>
+                      <el-form-item>
+                        <el-input
+                            v-model="goodsEdit.formData.goods_url"
+                            style="width: 500px"
+                            :rows="10"
+                            type="textarea"
+                            placeholder="Please input"
+                        />
+                      </el-form-item>
                     </el-form>
                 </el-tab-pane>
             </el-tabs>

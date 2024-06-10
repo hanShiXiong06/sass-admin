@@ -236,6 +236,7 @@ const verify = () => {
 }
 
 const save = () => {
+
     if (verify()) {
         let sku_list = <any>[]
         goodsTable.data.forEach((item: any) => {

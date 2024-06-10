@@ -44,6 +44,7 @@
                             <el-input v-model="goodsEdit.formData.sub_title" clearable :placeholder="t('subTitlePlaceholder')" class="input-width" maxlength="80" show-word-limit />
                         </el-form-item>
                         <el-form-item :label="t('goodsImage')" prop="goods_image">
+                          {{goodsEdit.formData.goods_image}}
                             <upload-image v-model="goodsEdit.formData.goods_image" :limit="10" />
                         </el-form-item>
 
@@ -175,7 +176,7 @@
                                 </el-input>
                             </el-form-item>
                             <el-form-item :label="t('goodsStock')" prop="stock">
-                                <el-input v-model="goodsEdit.formData.stock" clearable value="1" :placeholder="t('goodsStockPlaceholder')" class="input-width" maxlength="8" @keyup="filterNumber($event)">
+                                <el-input v-model="goodsEdit.formData.stock" clearable   :placeholder="t('goodsStockPlaceholder')" class="input-width" maxlength="8" @keyup="filterNumber($event)">
                                     <template #append>{{ goodsEdit.formData.unit ? goodsEdit.formData.unit : t('defaultUnit') }}</template>
                                 </el-input>
                             </el-form-item>
@@ -572,6 +573,8 @@ const goodsEdit = useGoodsEdit({
     editApi: editGoods,
     formData: {
         goods_type: 'real',
+        stock:1,
+        goods_desc:"-"
     },
     // 追加表单数据
     appendFormData: {
@@ -597,7 +600,8 @@ const goodsEdit = useGoodsEdit({
             value: '',
             regExp: 'special',
             message: t('volumeTips')
-        }
+        },
+
     },
     // 追加单规格数据
     appendSingleGoodsData(data: any) {

@@ -158,14 +158,14 @@
 										<template #default>
 											<el-button type="primary" link @click="close(item)" v-if="item.status == 1">{{
 												t('orderClose') }}</el-button>
-                      <el-button type="primary" link @click="orderFinish(item)" v-if="item.status == 1">{{
+                      <el-button type="primary" link @click="_orderFinish(item)" v-if="item.status == 1">{{
                           t('已付款') }}</el-button>
 											<!-- <el-button type="primary" link>{{ t('editPrice') }}</el-button> -->
 											<!-- <el-button type="primary" link>{{ t('editAddress') }}</el-button> -->
 											<el-button type="primary" link @click="delivery(item)"
 												v-if="item.status == 2">{{ t('sendOutGoods') }}</el-button>
 											<el-button type="primary" link @click="finish(item)" v-if="item.status == 3">{{
-												t('confirmTakeDelivery') }}</el-button>
+												t('confirmTakeDelivery') }} </el-button>
 										</template>
 									</el-table-column>
 								</el-table>
@@ -411,7 +411,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
 	loadOrderList()
 }
 // TODO: pay 已支付
-const orderFinish = (data:any) => {
+const _orderFinish = (data:any) => {
   ElMessageBox.confirm(t('确定用户已完成付款了吗?'), t('warning'),
       {
         confirmButtonText: t('confirm'),

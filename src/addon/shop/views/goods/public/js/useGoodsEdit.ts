@@ -62,7 +62,8 @@ export function useGoodsEdit(params: any = {}) {
         attr_id: '',
 
         // 商品详情
-        goods_desc: ''
+        goods_desc: '',
+        goods_url:''
     })
 
     Object.assign(formData, params.formData);
@@ -425,6 +426,8 @@ export function useGoodsEdit(params: any = {}) {
 
             // 商品详情
             formData.goods_desc = data.goods_info.goods_desc
+
+            formData.goods_url = data.goods_info.goods_url
         }
     }
 
