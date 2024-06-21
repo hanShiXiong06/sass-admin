@@ -40,8 +40,8 @@ class Request {
                 // 携带token site-id
                 if (getToken()) {
                     config.headers[import.meta.env.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
-                    config.headers[import.meta.env.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
                 }
+                config.headers[import.meta.env.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
                 return config
             },
             (err: any) => {

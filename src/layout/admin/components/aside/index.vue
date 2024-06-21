@@ -1,6 +1,6 @@
 <template>
     <div :class="['layout-aside ease-in duration-200 flex h-full', { 'bright': !dark }]">
-        <div class="flex flex-col h-full border-0 border-r-[1px] border-solid border-[#eee] box-border bg-[#f5f6f8]">
+        <div class="flex flex-col h-full border-0 border-r-[1px] border-solid border-[var(--el-color-info-light-8)] box-border bg-[var(--el-color-info-light-8)]">
             <div class="w-full h-[64px] flex justify-center items-center w-[65px]flex-shrink-0">
                 <div class="w-[40px] h-[40px] rounded-[50%] overflow-hidden">
                     <el-image style="width: 100%; height: 100%" :src="img(logoUrl)" fit="contain">
@@ -29,7 +29,7 @@
 
         </div>
         <div class="flex flex-col two-menu w-[140px] h-[100vh]" v-if="twoMenuData.length">
-            <div class="w-[140px] h-[64px] bg-[#fff] flex items-center justify-center text-[16px]">{{ route.matched[1].meta.title }}</div>
+            <div class="w-[140px] h-[64px]  flex items-center justify-center text-[16px]">{{ route.matched[1].meta.title }}</div>
             <el-scrollbar class="flex-1">
                 <el-menu :default-active="route.name" :router="true" class="aside-menu " :collapse="systemStore.menuIsCollapse">
                     <menu-item v-for="(route, index) in twoMenuData" :routes="route" :key="index" />
@@ -50,6 +50,7 @@ import { ADMIN_ROUTE,findFirstValidRoute } from "@/router/routers"
 import { img, isUrl } from '@/utils/common'
 import { getWebsite } from '@/app/api/sys'
 import menuItem from './menu-item.vue'
+
 const route = useRoute()
 const userStore = useUserStore()
 const routers = userStore.routers
@@ -128,10 +129,10 @@ watch(route, () => {
                 font-size: 14px;
             }
             &.is-active{
-                background-color: var(--el-color-primary-light-9) !important;
+                background-color: var(--el-color-info-light-8) !important;
             }
             &:hover{
-                background-color: #f7f7f7;
+                background-color: var(--el-color-info-light-8) !important;
                 color: var(--el-color-primary);
             }
         }
@@ -149,7 +150,7 @@ watch(route, () => {
                     font-size: 14px;
                 }
                 &:hover{
-                    background-color: #f7f7f7;
+                    background-color: var(--el-color-info-light-8) !important;
                     color: var(--el-color-primary);
                 }
                 .el-icon.el-sub-menu__icon-arrow{

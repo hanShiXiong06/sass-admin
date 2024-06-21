@@ -157,6 +157,7 @@
                             <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
                             <el-button type="primary" link @click="spreadEvent(row)">{{ t('spreadGoods') }}</el-button>
                             <el-button type="primary" link @click="memberPriceEvent(row)">{{ t('memberPrice') }}</el-button>
+                            <el-button type="primary" link @click="fenxiaoPriceEvent(row)">{{ t('分销价格') }}</el-button>
                             <el-button type="primary" v-if="row.status == 1" link @click="statusChange(row, 0)">{{ t('statusActionOff') }}</el-button>
                             <el-button type="primary" v-else link @click="statusChange(row, 1)">{{ t('statusActionOn') }}</el-button>
                             <el-button type="primary" link @click="copyEvent(row)">{{ t('copyGoods') }}</el-button>
@@ -619,7 +620,11 @@ const memberPriceEvent = (data: any) =>{
     memberPricePopupRef.value.show(data, memberLevel.value);
 }
 /******************* 会员价-end *************************/
-
+/******************* 分销价-start *************************/
+const fenxiaoPriceEvent = (item:any) : void => {
+  router.push('/shop_fenxiao/management/goods_config?goods_id='+item.goods_id)
+}
+/******************* 会员价-end *************************/
 // 复制商品
 const copyEvent = (data: any) => {
     ElMessageBox.confirm(t('goodsCopyTips'), t('warning'),

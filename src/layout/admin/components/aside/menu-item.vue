@@ -56,6 +56,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ref, computed } from 'vue'
 import menuItem from './menu-item.vue'
 import { CollectionTag } from '@element-plus/icons-vue'
+
 const router = useRouter()
 const props = defineProps({
     routes: {

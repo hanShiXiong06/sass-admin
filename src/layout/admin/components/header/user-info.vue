@@ -2,9 +2,9 @@
     <div>
         <el-dropdown @command="clickEvent" :tabindex="1">
             <div class="userinfo flex h-full items-center">
-                <el-avatar :size="25" :icon="UserFilled" />
+                <el-avatar :size="25" :icon="UserFilled" :src="userStore.userInfo.head_img ? img(userStore.userInfo.head_img) : ''"/>
                 <div class="user-name pl-[8px]">{{ userStore.userInfo.username }}</div>
-                <icon name="element-ArrowDown" class="ml-[5px]" />
+                <icon name="element ArrowDown" class="ml-[5px]" />
             </div>
             <template #dropdown>
                 <el-dropdown-menu>
@@ -67,13 +67,14 @@
 
 <script lang="ts" setup>
 import { UserFilled } from '@element-plus/icons-vue'
-import { computed, reactive, ref, onMounted, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules, ElNotification } from 'element-plus'
 import useUserStore from '@/stores/modules/user'
 import { setUserInfo } from '@/app/api/personal'
 import { t } from '@/lang'
+import { img } from '@/utils/common'
 import userInfoEdit from '@/app/components/user-info-edit/index.vue'
+
 const userStore = useUserStore()
 
 const clickEvent = (command: string) => {

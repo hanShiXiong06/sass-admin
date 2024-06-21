@@ -10,7 +10,7 @@
 				</el-form-item>
 				<ul class="selected-template-list">
 					<li v-for="(item,i) in templateList" :key="i" :class="[(item.className == diyStore.editComponent.mode) ?  'selected' : '' ]" @click="changeTemplateList(i)">
-						<icon :name="'iconfont-' + item.src" size="16px"/>
+						<icon :name="'iconfont ' + item.src" size="16px"/>
 					</li>
 				</ul>
 			</el-form>

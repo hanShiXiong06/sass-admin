@@ -203,7 +203,7 @@ export function deepClone(obj: object) {
  * 生成唯一字符
  * @param {Number} len
  * @param {Boolean} firstU
- * @param {Nubmer} radix
+ * @param {Number} radix
  */
 export function guid(len = 10, firstU = true, radix = null) {
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('')

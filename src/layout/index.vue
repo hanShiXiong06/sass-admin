@@ -17,9 +17,6 @@ switch (getAppType()) {
     case 'admin':
         siteLayout = 'admin'
         break
-    case 'home':
-        siteLayout = 'home'
-        break
     default:
         const siteInfo = useUserStore().siteInfo
         if (siteInfo && siteInfo.apps) {

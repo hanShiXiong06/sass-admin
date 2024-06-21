@@ -9,15 +9,13 @@
             <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
                 <el-form :inline="true" :model="exportTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('exportKey')" prop="export_key">
-                        <el-select v-model="exportTableData.searchParam.export_key" clearable
-                            :placeholder="t('exportKeyPlaceholder')" class="input-width">
+                        <el-select v-model="exportTableData.searchParam.export_key" clearable :placeholder="t('exportKeyPlaceholder')" class="input-width">
                             <el-option :label="t('selectPlaceholder')" value="" />
                             <el-option :label="item" :value="key" v-for="(item, key) in exportKeyList" :key="key" />
                         </el-select>
                     </el-form-item>
                     <el-form-item :label="t('exportStatus')" prop="export_status">
-                        <el-select v-model="exportTableData.searchParam.export_status" clearable
-                            :placeholder="t('exportStatusPlaceholder')" class="input-width">
+                        <el-select v-model="exportTableData.searchParam.export_status" clearable :placeholder="t('exportStatusPlaceholder')" class="input-width">
                             <el-option :label="t('selectPlaceholder')" value="" />
                             <el-option :label="item" :value="key" v-for="(item, key) in exportStatusList" :key="key" />
                         </el-select>
@@ -33,6 +31,7 @@
                     </el-form-item>
                 </el-form>
             </el-card>
+
             <div class="mt-[10px]">
                 <el-table :data="exportTableData.data" size="large" v-loading="exportTableData.loading">
                     <template #empty>
@@ -41,8 +40,7 @@
                     <el-table-column prop="id" :label="t('id')" min-width="120" />
                     <el-table-column prop="export_key_name" :label="t('exportKey')" min-width="120" />
                     <el-table-column prop="export_num" :label="t('exportNum')" min-width="120" />
-                    <el-table-column prop="file_path" :label="t('filePath')" min-width="180"
-                        :show-overflow-tooltip="true" />
+                    <el-table-column prop="file_path" :label="t('filePath')" min-width="180" :show-overflow-tooltip="true" />
                     <el-table-column prop="file_size" :label="t('fileSize')" min-width="110">
                         <template #default="{ row }">
                             {{ row.file_size / 1000 }}k
@@ -50,12 +48,8 @@
                     </el-table-column>
                     <el-table-column prop="export_status" :label="t('exportStatus')" min-width="120" align="center">
                         <template #default="{ row }">
-                            <el-tag type="warning" v-if="row.export_status == 1" class="cursor-pointer">{{
-                                row.export_status_name
-                            }}</el-tag>
-                            <el-tag type="success" v-else-if="row.export_status == 2" class="cursor-pointer">{{
-                                row.export_status_name
-                            }}</el-tag>
+                            <el-tag type="warning" v-if="row.export_status == 1" class="cursor-pointer">{{ row.export_status_name }}</el-tag>
+                            <el-tag type="success" v-else-if="row.export_status == 2" class="cursor-pointer">{{ row.export_status_name }}</el-tag>
                             <el-tag type="error" v-else class="cursor-pointer">{{ row.export_status_name }}</el-tag>
                         </template>
                     </el-table-column>
@@ -67,10 +61,8 @@
                     <el-table-column :label="t('operation')" align="right" fixed="right" width="100">
                         <template #default="{ row }">
                             <div class="flex justify-end">
-                                <el-button type="primary" link @click="downloadEvent(row)" v-if="row.export_status == 2">{{
-                                    t('download') }}</el-button>
-                                <el-button type="primary" link @click="deleteEvent(row.id)">{{ t('delete')
-                                }}</el-button>
+                                <el-button type="primary" link @click="downloadEvent(row)" v-if="row.export_status == 2">{{ t('download') }}</el-button>
+                                <el-button type="primary" link @click="deleteEvent(row.id)">{{ t('delete') }}</el-button>
                             </div>
                         </template>
                     </el-table-column>

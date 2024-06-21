@@ -56,12 +56,14 @@ const addons = computed(() => {
 </script>
 
 <style lang="scss">
-.el-sub-menu{
-    .el-icon{
-        width: auto;
+    .el-sub-menu {
+
+        .el-icon {
+            width: auto;
+        }
+
+        li {
+            font-size: 15px;
+        }
     }
-    li{
-        font-size: 15px;
-    }
-}
 </style>

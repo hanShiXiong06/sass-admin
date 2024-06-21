@@ -45,8 +45,7 @@
                                     <span>{{ t('status') }}</span>
                                 </el-col>
                             </el-row>
-                            <el-row class="pb-[10px] items pl-[15px]"
-                                    v-for="item in upgradeCheck.dir.is_readable">
+                            <el-row class="pb-[10px] items pl-[15px]" v-for="item in upgradeCheck.dir.is_readable">
                                 <el-col :span="12">
                                     <span>{{ item.dir }}</span>
                                 </el-col>
@@ -56,14 +55,13 @@
                                 <el-col :span="6">
                                     <span v-if="item.status"><el-icon color="green"><Select /></el-icon></span>
                                     <span v-else>
-                                            <el-icon color="red">
-                                                <CloseBold />
-                                            </el-icon>
-                                        </span>
+                                        <el-icon color="red">
+                                            <CloseBold />
+                                        </el-icon>
+                                    </span>
                                 </el-col>
                             </el-row>
-                            <el-row class="pb-[10px] items pl-[15px]"
-                                    v-for="item in upgradeCheck.dir.is_write">
+                            <el-row class="pb-[10px] items pl-[15px]" v-for="item in upgradeCheck.dir.is_write">
                                 <el-col :span="12">
                                     <span>{{ item.dir }}</span>
                                 </el-col>
@@ -73,10 +71,10 @@
                                 <el-col :span="6">
                                     <span v-if="item.status"><el-icon color="green"><Select /></el-icon></span>
                                     <span v-else>
-                                            <el-icon color="red">
-                                                <CloseBold />
-                                            </el-icon>
-                                        </span>
+                                        <el-icon color="red">
+                                            <CloseBold />
+                                        </el-icon>
+                                    </span>
                                 </el-col>
                             </el-row>
                         </div>
@@ -84,8 +82,7 @@
                 </el-scrollbar>
             </div>
             <div class="h-[60vh]" v-show="upgradeTask">
-                <terminal ref="terminalRef" :context="upgradeTask ? upgradeTask.upgrade.app_key : ''" :init-log="null" :show-header="false"
-                          :show-log-time="true" @exec-cmd="onExecCmd"/>
+                <terminal ref="terminalRef" :context="upgradeTask ? upgradeTask.upgrade.app_key : ''" :init-log="null" :show-header="false" :show-log-time="true" @exec-cmd="onExecCmd"/>
             </div>
         </div>
 

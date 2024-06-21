@@ -1,7 +1,6 @@
 <template>
     <el-dialog v-model="showDialog" :title="t('userInfo')" width="550px" :destroy-on-close="true">
-        <el-form :model="formData" label-width="110px" ref="formRef" :rules="formRules" class="page-form"
-            v-loading="loading">
+        <el-form :model="formData" label-width="110px" ref="formRef" :rules="formRules" class="page-form" v-loading="loading">
 
             <el-form-item :label="t('headimg')">
                 <div class="flex items-center">
@@ -26,8 +25,7 @@
             <el-form-item :label="t('siteName')">
                 <div class="flex">
                     <div class="max-w-[260px]"> {{ formData.roles[0].site_name }} </div>
-                    <el-link class="ml-10 text-blue-700" href="/site/login" target="_blank" :underline="false">{{
-                        t('enterSite') }}</el-link>
+                    <el-link class="ml-10 text-blue-700" href="/site/login" target="_blank" :underline="false">{{ t('enterSite') }}</el-link>
                 </div>
 
             </el-form-item>
@@ -101,8 +99,6 @@ const formRules = computed(() => {
 
     }
 })
-
-// const emit = defineEmits(['complete'])
 
 const setFormData = async (row: any = null) => {
     loading.value = true

@@ -1,24 +1,24 @@
 <template>
+    <!--核销员-->
     <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
+
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
                 <el-button type="primary" @click="addEvent">{{ t('addVerifier') }}</el-button>
             </div>
 
-            <div class="mt-[10px]">
+            <div class="mt-[20px]">
                 <el-table :data="verifierTable.data" size="large" v-loading="verifierTable.loading">
                     <template #empty>
                         <span>{{ !verifierTable.loading ? t('emptyData') : '' }}</span>
                     </template>
+
                     <el-table-column :label="t('memberInfo')" min-width="120">
                         <template #default="{ row }">
-                            <div class="flex items-center cursor-pointer " @click="toMember(row.member.member_id)"
-                                v-if="row.member">
-                                <img class="w-[50px] h-[50px] mr-[10px]" v-if="row.member.headimg"
-                                    :src="img(row.member.headimg)" alt="">
-                                <img class="w-[50px] h-[50px] mr-[10px]" v-else
-                                    src="@/app/assets/images/default_headimg.png" alt="">
+                            <div class="flex items-center cursor-pointer " @click="toMember(row.member.member_id)" v-if="row.member">
+                                <img class="w-[50px] h-[50px] mr-[10px]" v-if="row.member.headimg" :src="img(row.member.headimg)" alt="">
+                                <img class="w-[50px] h-[50px] mr-[10px]" v-else src="@/app/assets/images/default_headimg.png" alt="">
                                 <div class="flex flex flex-col">
                                     <span>{{ row.member.nickname || '' }}</span>
                                     <span>{{ row.member.mobile || '' }}</span>
@@ -26,6 +26,7 @@
                             </div>
                         </template>
                     </el-table-column>
+
                     <el-table-column :label="t('verifyType')" min-width="120">
                         <template #default="{ row }">
                             <div class="flex flex-col">
@@ -35,13 +36,16 @@
                             </div>
                         </template>
                     </el-table-column>
+
                     <el-table-column :label="t('createTime')" prop="create_time" min-width="120" />
+
                     <el-table-column :label="t('operation')" fixed="right" align="right" width="100">
                         <template #default="{ row }">
                             <el-button type="primary" link @click="deleteEvent(row.id)">{{ t('delete') }}</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
+
                 <div class="mt-[16px] flex justify-end">
                     <el-pagination v-model:current-page="verifierTable.page" v-model:page-size="verifierTable.limit"
                         layout="total, sizes, prev, pager, next, jumper" :total="verifierTable.total"
@@ -51,8 +55,7 @@
         </el-card>
 
         <el-dialog v-model="showDialog" :title="t('addVerifier')" width="500px" :destroy-on-close="true">
-            <el-form :model="formData" label-width="90px" ref="formRef" :rules="formRules" class="page-form"
-                v-loading="addLoading">
+            <el-form :model="formData" label-width="90px" ref="formRef" :rules="formRules" class="page-form" v-loading="addLoading">
                 <el-form-item :label="t('member')" prop="member_id">
                     <el-select v-model="formData.member_id" filterable remote reserve-keyword clearable
                         :placeholder="t('searchPlaceholder')" :remote-method="searchMember" :loading="searchLoading"
@@ -62,8 +65,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item :label="t('verifyType')" prop="verify_type">
-                    <el-select v-model="formData.verify_type" multiple collapse-tags clearable
-                        :placeholder="t('verifyTypePlaceholder')" class="input-width">
+                    <el-select v-model="formData.verify_type" multiple collapse-tags clearable :placeholder="t('verifyTypePlaceholder')" class="input-width">
                         <el-option v-for="(item, index) in verifyTypeList" :key="index" :label="item.name" :value="index" />
                     </el-select>
                 </el-form-item>
@@ -72,8 +74,7 @@
             <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="showDialog = false">{{ t('cancel') }}</el-button>
-                    <el-button type="primary" :loading="addLoading" @click="addVerifiers(formRef)">{{ t('confirm')
-                    }}</el-button>
+                    <el-button type="primary" :loading="addLoading" @click="addVerifiers(formRef)">{{ t('confirm') }}</el-button>
                 </span>
             </template>
         </el-dialog>
@@ -90,6 +91,7 @@ import { ElMessageBox, FormInstance } from 'element-plus'
 import { img } from '@/utils/common'
 
 const route = useRoute()
+const router = useRouter()
 const pageName = route.meta.title
 
 const showDialog = ref(false)
@@ -212,8 +214,6 @@ const setVerifyTypeList = () => {
     }).catch()
 }
 setVerifyTypeList();
-
-const router = useRouter()
 
 /**
  * 会员详情

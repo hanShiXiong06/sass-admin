@@ -1,6 +1,7 @@
 <template>
     <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
+
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
                 <el-button type="primary" class="w-[100px]" @click="dialogVisible = true">{{ t('添加海报') }}</el-button>
@@ -108,6 +109,7 @@ import { img } from '@/utils/common'
 const router = useRouter()
 const route = useRoute()
 const pageName = route.meta.title
+
 const posterType: any = reactive({}) // 自定义海报类型
 
 // 添加自定义海报
@@ -282,5 +284,4 @@ const resetForm = (formEl: FormInstance | undefined) => {
 
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

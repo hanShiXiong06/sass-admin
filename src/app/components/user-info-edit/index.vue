@@ -1,12 +1,8 @@
 <template>
-    <el-dialog
-        v-model="dialogVisible"
-        :title="t('accountSettings')"
-        width="500"
-    >
+    <el-dialog v-model="dialogVisible" :title="t('accountSettings')" width="500">
         <el-form :model="saveInfo" label-width="90px" ref="formRef" class="page-form">
             <el-form-item :label="t('headImg')">
-                <upload-image v-model="saveInfo.head_img" :limit="1" />
+                <upload-image v-model="saveInfo.head_img" :limit="1" :type="'avatar'" />
             </el-form-item>
             <el-form-item :label="t('userName')">
                 <span>{{saveInfo.username}}</span>
@@ -27,10 +23,12 @@
 import { reactive, ref } from 'vue'
 import { t } from '@/lang'
 import type { FormInstance } from 'element-plus'
-
+import { deepClone } from '@/utils/common'
 import { getUserInfo, setUserInfo } from '@/app/api/personal'
 import { useRouter } from 'vue-router'
+import useUserStore from '@/stores/modules/user'
 
+const userStore = useUserStore()
 const router = useRouter()
 // 提交信息
 const saveInfo = reactive({})
@@ -42,7 +40,6 @@ const dialogVisible = ref(false)
  * 获取用户信息
  */
 const getUserInfoFn = () => {
-    
     getUserInfo().then(res => {
         loading.value = false
         const data = res.data
@@ -64,6 +61,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
             setUserInfo(saveInfo).then((res: any) => {
                 loading.value = false
                 dialogVisible.value = false
+                let data = deepClone(userStore.userInfo) 
+                data.head_img = saveInfo.head_img
+                userStore.setUserInfo(data)
             }).catch(() => {
                 loading.value = false
             })

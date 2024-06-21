@@ -15,6 +15,7 @@
       "statusExpire":"已到期",
       "phone":"客服电话",
       "groupIdPlaceholder":"请选择套餐",
+      "uIdPlaceholder":"请选择站点管理员",
       "appIdPlaceholder":"请选择应用",
       "keywordsPlaceholder":"请输入关键字",
       "keywords":"关键字",

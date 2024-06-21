@@ -59,7 +59,7 @@ const useDiyStore = defineStore('diy', {
                     isTransparent: false, // 是否透明
                     style: 'style-1', // 导航栏风格样式（style-1：文字，style-2：图片+文字，style-3：图片+搜索，style-4：定位）
                     styleName: '风格1', 
-                    textColor: "#333333", // 文字颜色（）
+                    textColor: "#333333", // 文字颜色
                     textAlign: 'center', // 文字对齐方式
                     inputPlaceholder : '请输入搜索关键词',
                     imgUrl:'', // 图片
@@ -143,7 +143,7 @@ const useDiyStore = defineStore('diy', {
                     isTransparent: false, // 是否透明
                     style: 'style-1', // 导航栏风格样式（style-1：文字，style-2：图片+文字，style-3：图片+搜索，style-4：定位）
                     styleName: '风格1',
-                    textColor: "#333333", // 文字颜色（）
+                    textColor: "#333333", // 文字颜色
                     textAlign: 'center', // 文字对齐方式
                     inputPlaceholder : '请输入搜索关键词',
                     imgUrl:'', // 图片

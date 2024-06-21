@@ -164,6 +164,8 @@
 											<!-- <el-button type="primary" link>{{ t('editAddress') }}</el-button> -->
 											<el-button type="primary" link @click="delivery(item)"
 												v-if="item.status == 2">{{ t('sendOutGoods') }}</el-button>
+                      <el-button type="primary" link @click="todelivery(item)"
+                                 v-if="item.status == 2">{{ t('聚合快递发货') }}</el-button>
 											<el-button type="primary" link @click="finish(item)" v-if="item.status == 3">{{
 												t('confirmTakeDelivery') }} </el-button>
 										</template>
@@ -378,11 +380,10 @@ const deliveryActionDialog: Record<string, any> | null = ref(null)
  * 发货
  */
 const delivery = (data: any) => {
-  router.push('/shop_order/list')
-	// deliveryActionDialog.value.setFormData(data)
-	// deliveryActionDialog.value.showDialog = true
+	deliveryActionDialog.value.setFormData(data)
+	deliveryActionDialog.value.showDialog = true
 }
-
+const todelivery = (data: any) =>  router.push('/shop_order/list')
 const orderNotesDialog: Record<string, any> | null = ref(null)
 /**
  * 设置备注

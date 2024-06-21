@@ -11,7 +11,6 @@ export function getUpgradeContent(addon: string = '') {
 
 /**
  * 获取升级任务
- * @param addon
  */
 export function getUpgradeTask() {
     return request.get('upgrade/task')

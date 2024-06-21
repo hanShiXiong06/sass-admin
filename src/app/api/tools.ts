@@ -37,7 +37,7 @@ export function getAddonDevelopCheck(key: any) {
  * 获取插件key黑名单
  * @returns
  */
-export function getAddonKeyBlackList(key: any) {
+export function getAddonKeyBlackList() {
     return request.get('addon_develop/key/blacklist')
 }
 

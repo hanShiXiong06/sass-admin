@@ -1,18 +1,15 @@
 <template>
+    <!--编辑等级-->
     <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never" v-loading="loading">
-            <div class="detail-head !ml-[20px] !mb-[5px]">
-                <div class="left" @click="router.push({ path: '/member/level' })">
-                    <span class="iconfont iconxiangzuojiantou !text-xs"></span>
-                    <span class="ml-[1px]">{{t('returnToPreviousPage')}}</span>
-                </div>
-                <span class="adorn">|</span>
-                <span class="right">{{ pageName }}</span>
-            </div>
-            <el-form :model="formData" label-width="120px" ref="formRef" :rules="formRules" class="page-form" >
-                <el-card class="box-card !border-none" shadow="never">
-                    <h3 class="panel-title !text-sm">{{ t('basicInfo') }}</h3>
-                </el-card>
+
+        <el-card class="card !border-none" shadow="never">
+            <el-page-header :content="pageName" :icon="ArrowLeft" @back="$router.back()" />
+        </el-card>
+
+        <el-card class="box-card mt-[15px] !border-none" shadow="never" v-loading="loading">
+            <el-form class="page-form" :model="formData" label-width="120px" ref="formRef" :rules="formRules">
+                <h3 class="panel-title !text-sm">{{ t('basicInfo') }}</h3>
+
                 <el-form-item :label="t('levelName')" prop="level_name">
                     <el-input v-model.trim="formData.level_name" :placeholder="t('levelNamePlaceholder')" class="input-width" maxlength="20" show-word-limit clearable />
                 </el-form-item>
@@ -28,18 +25,17 @@
                     </div>
                 </el-form-item>
             </el-form>
-            <el-card class="box-card !border-none" shadow="never">
-                <h3 class="panel-title !text-sm">{{ t('levelBenefits') }}</h3>
-                <div class="pl-[100px]">
-                    <member-benefits ref="benefitsRef" v-model="formData.level_benefits"/>
-                </div>
-            </el-card>
-            <el-card class="box-card !border-none" shadow="never">
-                <h3 class="panel-title !text-sm">{{ t('levelGift') }}</h3>
-                <div class="pl-[100px]">
-                    <member-gift ref="giftRef" v-model="formData.level_gifts"/>
-                </div>
-            </el-card>
+
+            <h3 class="panel-title !text-sm">{{ t('levelBenefits') }}</h3>
+            <div class="pl-[100px]">
+                <member-benefits ref="benefitsRef" v-model="formData.level_benefits"/>
+            </div>
+
+            <h3 class="panel-title !text-sm">{{ t('levelGift') }}</h3>
+            <div class="pl-[100px]">
+                <member-gift ref="giftRef" v-model="formData.level_gifts"/>
+            </div>
+
         </el-card>
 
         <div class="fixed-footer-wrap">
@@ -54,6 +50,7 @@
 import { reactive, ref } from 'vue'
 import { t } from '@/lang'
 import { FormInstance, FormRules } from 'element-plus'
+import { ArrowLeft } from '@element-plus/icons-vue'
 import { useRoute, useRouter } from 'vue-router'
 import memberBenefits from '@/app/views/member/components/member-benefits.vue'
 import memberGift from '@/app/views/member/components/member-gift.vue'
@@ -63,6 +60,7 @@ import Test from '@/utils/test'
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
+
 const benefitsRef = ref(null)
 const giftRef = ref(null)
 const loading = ref(true)
@@ -109,19 +107,20 @@ const formRules = reactive<FormRules>({
 if (route.query.id) {
     getMemberLevelInfo(route.query.id).then(({ data }) => {
         Object.assign(formData, data)
+
         getMemberLevelAll().then(({ data }) => {
             let index = 0
             data.forEach((item, i) => {
                 item.level_id == formData.level_id && (index = i)
             })
-            data[ index - 1 ] && (growthInterval.value.min = data[ index - 1 ].growth)
-            data[ index + 1 ] && (growthInterval.value.max = data[ index + 1 ].growth)
+            data[index - 1] && (growthInterval.value.min = data[index - 1].growth)
+            data[index + 1] && (growthInterval.value.max = data[index + 1].growth)
         })
         loading.value = false
     })
 } else {
     getMemberLevelAll().then(({ data }) => {
-        data[ data.length - 1 ] && (growthInterval.value.min = data[ data.length - 1 ].growth)
+        data[data.length - 1] && (growthInterval.value.min = data[data.length - 1].growth)
     })
     loading.value = false
 }

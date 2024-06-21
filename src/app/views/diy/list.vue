@@ -1,6 +1,7 @@
 <template>
     <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
+
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
                 <el-button type="primary" class="w-[100px]" @click="dialogVisible = true">{{ t('addDiyPage') }}</el-button>
@@ -31,7 +32,6 @@
             </el-card>
 
             <el-table :data="diyPageTableData.data" size="large" v-loading="diyPageTableData.loading">
-
                 <template #empty>
                     <span>{{ !diyPageTableData.loading ? t('emptyData') : '' }}</span>
                 </template>
@@ -130,9 +130,10 @@ import { getApps,getDiyPageList, deleteDiyPage, getDiyTemplate, editDiyPageShare
 import { ElMessageBox, FormInstance } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 
-const router = useRouter()
 const route = useRoute()
+const router = useRouter()
 const pageName = route.meta.title
+
 const pageType: any = reactive({}) // 页面类型
 
 // 添加自定义页面
@@ -344,5 +345,4 @@ const resetForm = (formEl: FormInstance | undefined) => {
 
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

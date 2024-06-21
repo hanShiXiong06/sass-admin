@@ -1,8 +1,11 @@
 <template>
+    <!--站点菜单-->
     <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
+
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
+
                 <div class="flex items-center">
                     <el-button type="primary" class="w-[100px]" @click="addEvent">
                         {{ t('addMenu') }}

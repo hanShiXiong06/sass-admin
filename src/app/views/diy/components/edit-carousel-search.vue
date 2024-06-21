@@ -58,7 +58,7 @@
 						</el-form-item>
 
 						<div class="del absolute cursor-pointer z-[2] top-[-8px] right-[-8px]" @click="diyStore.editComponent.search.hotWord.list.splice(index,1)">
-							<icon name="element-CircleCloseFilled" color="#bbb" size="20px"/>
+							<icon name="element CircleCloseFilled" color="#bbb" size="20px"/>
 						</div>
 
 					</div>
@@ -101,7 +101,7 @@
 									</el-form-item>
 
 									<div class="del absolute cursor-pointer z-[2] top-[-8px] right-[-8px]" v-show="diyStore.editComponent.tab.list.length > 1" @click="diyStore.editComponent.tab.list.splice(index,1)">
-										<icon name="element-CircleCloseFilled" color="#bbb" size="20px"/>
+										<icon name="element CircleCloseFilled" color="#bbb" size="20px"/>
 									</div>
 
 								</div>
@@ -151,7 +151,7 @@
 								</el-form-item>
 
 								<div class="del absolute cursor-pointer z-[2] top-[-8px] right-[-8px]" v-show="diyStore.editComponent.swiper.list.length > 1" @click="diyStore.editComponent.swiper.list.splice(index,1)">
-									<icon name="element-CircleCloseFilled" color="#bbb" size="20px"/>
+									<icon name="element CircleCloseFilled" color="#bbb" size="20px"/>
 								</div>
 
 								<el-form-item :label="t('link')">

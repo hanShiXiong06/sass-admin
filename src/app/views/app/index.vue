@@ -1,12 +1,15 @@
 <template>
-    <div class="main-container w-full " v-loading="loading">
+    <!--应用管理-->
+    <div class="main-container" v-loading="loading">
         <el-card class="box-card !border-none" shadow="never">
+
             <div class="flex justify-between items-center">
                 <span class="text-page-title">应用管理</span>
             </div>
+
             <div class="flex flex-wrap plug-list pb-10 plug-large" v-if="appList.length">
                 <div v-for="(item, index) in appList" :key="index + 'b'">
-                    <div class="relative bg-page cursor-pointer px-4 mr-4 mt-[20px] border-br-light border-[1px] hover:border-primary">
+                    <div class="relative cursor-pointer mt-[20px] mr-4 px-4 border-br-light border-[1px] bg-[var(--el-color-info-light-9)] hover:border-primary">
                         <div @click="toLink(item.key)" class="flex py-5 items-center">
                             <div class="flex justify-center items-center">
                                 <el-image class="w-[40px] h-[40px]" :src="img(item.icon)" fit="contain">
@@ -24,7 +27,8 @@
                     </div>
                 </div>
             </div>
-            <div class="empty flex items-center  justify-center" v-if="!loading && !appList.length">
+
+            <div class="empty flex items-center justify-center" v-if="!loading && !appList.length">
                 <el-empty :description="t('emptyAppData')" />
             </div>
         </el-card>
@@ -57,25 +61,12 @@ const toLink = (addon: string) => {
 </script>
 
 <style lang="scss" scoped>
-.main-container,
-.empty {
-    min-height: calc(100vh - 84px);
-}
-
-.app-text {
-    overflow: hidden;
-    /* 超出部分隐藏 */
-    white-space: nowrap;
-    /* 禁止文本换行 */
-    text-overflow: ellipsis;
-    /* 显示省略号 */
-}
-
-.app-item:hover .with-ite {
-    display: block;
-}
-
-.el-form-item {
-    margin-bottom: 0px !important;
-}
+    .app-text {
+        overflow: hidden;
+        /* 超出部分隐藏 */
+        white-space: nowrap;
+        /* 禁止文本换行 */
+        text-overflow: ellipsis;
+        /* 显示省略号 */
+    }
 </style>

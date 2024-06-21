@@ -1,8 +1,5 @@
-
-
 <template>
-    <el-dialog v-model="status" :title="t('exportTip')" width="300px" :close-on-click-modal="false"
-        :close-on-press-escape="false" :show-close="false">
+    <el-dialog v-model="status" :title="t('exportTip')" width="300px" :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false">
         <span>{{ t('exportPlaceholder') }}</span>
         <template #footer>
             <span class="dialog-footer">
@@ -37,7 +34,6 @@ const prop = defineProps({
     }
 })
 
-console.log(prop)
 
 const status = computed({
     get() {

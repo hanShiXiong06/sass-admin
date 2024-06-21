@@ -50,5 +50,6 @@
     "memberInfoPlaceholder":"请输入会员编号/昵称/手机号",
 	"lock": "锁定",
 	"normal": "正常",
-    "memberLevel": "会员等级"
+    "memberLevel": "会员等级",
+    "memberLevelPlaceholder": "请选择会员等级"
 }

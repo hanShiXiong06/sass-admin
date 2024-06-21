@@ -1,7 +1,9 @@
 <template>
+    <!--平台菜单-->
     <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
-            <div class="flex justify-between items-center mb-[20px]">
+
+            <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
                 <div class="flex items-center">
                     <el-button type="primary" class="w-[100px]" @click="addEvent">
@@ -11,13 +13,13 @@
                         {{ t('initializeMenu') }}
                     </el-button>
                 </div>
-                
             </div>
 
-            <el-table :data="menusTableData.data" row-key="menu_key" size="large" v-loading="menusTableData.loading">
+            <el-table class="mt-[20px]" :data="menusTableData.data" row-key="menu_key" size="large" v-loading="menusTableData.loading">
                 <template #empty>
                     <span>{{ !menusTableData.loading ? t('emptyData') : '' }}</span>
                 </template>
+
                 <el-table-column prop="menu_name" :show-overflow-tooltip="true" :label="t('menuName')" min-width="150" />
                 <el-table-column :label="t('icon')" width="100" align="center">
                     <template #default="{ row }">

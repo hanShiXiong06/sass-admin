@@ -1,10 +1,13 @@
 <template>
+    <!--管理员-->
     <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
+
             <div class="flex justify-between items-center">
-                <span class="text-page-title">{{pageName}}</span>
+                <span class="text-page-title">{{ pageName }}</span>
             </div>
-            <div class="flex justify-between items-center mt-[16px]">
+
+            <div class="flex justify-between items-center mt-[20px]">
                 <el-form :inline="true" :model="userTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('accountNumber')" prop="seach">
                         <el-input v-model="userTableData.searchParam.seach" class="input-width" :placeholder="t('accountNumberPlaceholder')" />
@@ -16,11 +19,13 @@
                 </el-form>
                 <el-button type="primary" class="w-[100px] self-start" @click="addEvent">{{ t('addUser') }}</el-button>
             </div>
+
             <div>
                 <el-table :data="userTableData.data" size="large" v-loading="userTableData.loading">
                     <template #empty>
                         <span>{{ !userTableData.loading ? t('emptyData') : '' }}</span>
                     </template>
+
                     <el-table-column :label="t('headImg')" width="100" align="left">
                         <template #default="{ row }">
                             <div class="w-[35px] h-[35px] flex items-center justify-center">
@@ -30,7 +35,11 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="username" :label="t('accountNumber')" min-width="120" show-overflow-tooltip />
-                    <el-table-column prop="real_name" :label="t('userRealName')" min-width="120" show-overflow-tooltip />
+                    <el-table-column prop="real_name" :label="t('userRealName')" min-width="120" show-overflow-tooltip>
+                        <template #default="{ row }">
+                            <span>{{ row.real_name ? row.real_name :'--' }}</span>
+                        </template>
+                    </el-table-column>
                     <el-table-column :label="t('userRoleName')" min-width="120" show-overflow-tooltip>
                         <template #default="{ row }">
                             <span v-if="row.is_admin">{{ t('administrator') }}</span>
@@ -82,8 +91,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { t } from '@/lang'
-import { lockUser, unlockUser } from '@/app/api/site'
-import { getUserList } from '@/app/api/user'
+import { getUserList, lockUser, unlockUser } from '@/app/api/site'
 import EditUser from '@/app/views/auth/components/edit-user.vue'
 import { img } from '@/utils/common'
 import { ElMessageBox } from 'element-plus'

@@ -1,8 +1,7 @@
 <template>
     <el-form :model="formData" :rules="formRules" class="page-form" ref="formRef">
         <el-form-item :label="t('continueSign')" prop="continue_sign">
-            <el-input class="input-width" v-model.trim="formData.continue_sign" clearable /><span class="ml-[10px]">{{ t('day')
-            }}</span>
+            <el-input class="input-width" v-model.trim="formData.continue_sign" clearable /><span class="ml-[10px]">{{ t('day') }}</span>
         </el-form-item>
         <el-form-item :label="t('continueSign')" >
             <div>
@@ -13,13 +12,10 @@
         </el-form-item>
         <el-form-item :label="t('receiveLimit')" prop="receive_num">
             <div>
-                <el-radio class="mb-[15px]" v-model="formData.receive_limit" :label="1" @change="radioChange($event, 1)">{{
-                    t('noLimit') }}</el-radio>
+                <el-radio class="mb-[15px]" v-model="formData.receive_limit" :label="1" @change="radioChange($event, 1)">{{ t('noLimit') }}</el-radio>
                 <div class="flex">
-                    <el-radio class="!mr-[15px]" v-model="formData.receive_limit" :label="2" @change="radioChange($event, 2)">{{
-                        t('everyOneLimit') }}</el-radio>
-                    <el-input class="input-width" v-model="formData.receive_num" clearable /><span class="ml-[10px]">{{
-                        t('time') }}</span>
+                    <el-radio class="!mr-[15px]" v-model="formData.receive_limit" :label="2" @change="radioChange($event, 2)">{{ t('everyOneLimit') }}</el-radio>
+                    <el-input class="input-width" v-model="formData.receive_num" clearable /><span class="ml-[10px]">{{ t('time') }}</span>
                 </div>
             </div>
         </el-form-item>
@@ -33,6 +29,7 @@ import { FormRules } from 'element-plus'
 import { getGiftDict } from '@/app/api/member'
 import { guid } from '@/utils/common'
 import Test from '@/utils/test'
+
 const gifts = ref({})
 const props = defineProps({
     modelValue: {
@@ -85,7 +82,6 @@ const formRules = reactive<FormRules>({
         { required: true, message: t('continueSignPlaceholder'), trigger: 'blur' },
         {
             validator: (rule: any, value: any, callback: Function) => {
-                console.log(formData.value.continue_sign)
                 if (!Test.digits(formData.value.continue_sign)) {
                     callback('连续签到格式错误')
                 } else if (formData.value.continue_sign <= 0) {

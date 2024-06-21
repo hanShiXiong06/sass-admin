@@ -9,8 +9,7 @@
                 <el-form-item :label="t('headImg')">
                     <el-image class="w-[70px] h-[70px]" :src="img(saveInfo.head_img)" fit="contain">
                         <template #error>
-                            <div
-                                class="image-slot bg-[#c0c4cc] flex items-center justify-center w-[70px] h-[70px] rounded-full">
+                            <div class="image-slot bg-[#c0c4cc] flex items-center justify-center w-[70px] h-[70px] rounded-full">
                                 <el-icon class="!text-[#fff] !text-[45px]">
                                     <UserFilled />
                                 </el-icon>

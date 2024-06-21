@@ -81,6 +81,7 @@ export function getMenus(type: string) {
 
 /**
  * 获取菜单信息
+ * @param app_type
  * @param menu_key
  */
 export function getMenuInfo(app_type: string, menu_key: string) {
@@ -106,6 +107,7 @@ export function editMenu(params: Record<string, any>) {
 
 /**
  * 删除菜单
+ * @param app_type
  * @param menu_key
  */
 export function deleteMenu(app_type: string, menu_key: string) {
@@ -311,7 +313,6 @@ export function getIconList(params: Record<string, any>) {
 
 /**
  * 获取evn
- * @param params
  * @returns
  */
 export function getEnv() {
@@ -414,7 +415,7 @@ export function getPayList() {
  * 获取打款设置配置
  * @param channel
  */
-export function getTransferInfo(channel) {
+export function getTransferInfo(channel: string) {
     return request.get(`pay/channel/lists/${channel}`)
 }
 
@@ -625,14 +626,6 @@ export function setIndexList(params: Record<string, any>) {
 }
 
 /**
- * 获取布局
- * @returns
- */
-export function getLayouts() {
-    return request.get('sys/layout')
-}
-
-/**
  * 获取支付待审核记录
  */
 export function getPayAuditList(params: Record<string, any>) {
@@ -719,6 +712,24 @@ export function setLayout(params: Record<string, any>) {
     return request.put(`sys/config/layout`, params, { showSuccessMessage: true })
 }
 
+/**
+ * 获取色调设置
+ * @returns
+ */
+export function getThemecolor() {
+    return request.get('sys/config/themecolor')
+}
+
+/**
+ * 更新色调设置
+ * @param params
+ * @returns
+ */
+export function setThemecolor(params: Record<string, any>) {
+    return request.put(`sys/config/themecolor`, params)
+}
+
+
 /***************************************************** 报表导出 ****************************************************/
 
 /**
@@ -767,4 +778,12 @@ export function exportDataCheck(type: string, params: Record<string, any>) {
  */
 export function deleteExport(id: number) {
     return request.delete(`sys/export/${id}`, { showSuccessMessage: true })
+}
+
+/**
+ * 获取网站开放平台设置
+ * @returns
+ */
+export function getWxoplatform() {
+    return request.get('sys/wxoplatform/config')
 }

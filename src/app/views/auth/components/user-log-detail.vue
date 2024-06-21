@@ -23,7 +23,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { t } from '@/lang'
-// import type { FormInstance } from 'element-plus'
 import { getLogInfo } from '@/app/api/site'
 
 const showDialog = ref(false)

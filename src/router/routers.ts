@@ -1,4 +1,3 @@
-import { toRaw } from 'vue'
 import { RouteRecordRaw, RouterView } from 'vue-router'
 import Default from '@/layout/index.vue'
 import Decorate from '@/layout/decorate/index.vue'
@@ -77,6 +76,15 @@ export const SITE_ROUTE: RouteRecordRaw = {
             component: Default
         },
         {
+            path: 'wxoplatform/callback',
+            name: 'wxoplatform_callback',
+            meta: {
+                type: 1,
+                title: '微信公众号平台授权'
+            },
+            component: () => import('@/app/views/index/wxoplatform_callback.vue')
+        },
+        {
             path: 'login',
             meta: {
                 type: 1,
@@ -116,8 +124,8 @@ interface Route {
 
 /**
  * 创建路由
- * @param data
- * @returns
+ * @param route
+ * @param parentRoute
  */
 const createRoute = function (route: Route, parentRoute: RouteRecordRaw | null = null): RouteRecordRaw {
     const record: RouteRecordRaw = {
@@ -137,7 +145,6 @@ const createRoute = function (route: Route, parentRoute: RouteRecordRaw | null =
     }
     if (route.menu_type == 0) {
         record.component = parentRoute ? RouterView : () => Promise.resolve(Default)
-        if (!route.children) record.component = RouterView
     } else {
         record.component = route.addon ? addonModules[`/src/addon/${route.addon}/views/${route.view_path}.vue`] : modules[`/src/app/views/${route.view_path}.vue`]
     }
@@ -147,7 +154,7 @@ const createRoute = function (route: Route, parentRoute: RouteRecordRaw | null =
 /**
  * 格式化路由
  * @param routes
- * @returns
+ * @param parentRoute
  */
 export function formatRouters(routes: Route[], parentRoute: RouteRecordRaw | null = null) {
     return routes.map((route) => {

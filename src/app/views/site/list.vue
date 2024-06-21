@@ -1,4 +1,5 @@
 <template>
+    <!--站点列表-->
     <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
 
@@ -25,26 +26,21 @@
                     </el-form-item>
 
                     <el-form-item :label="t('app')" prop="app_id">
-                        <el-select v-model="siteTableData.searchParam.app" clearable @change="appChangeFn"
-                            :placeholder="t('appIdPlaceholder')" class="input-width">
+                        <el-select v-model="siteTableData.searchParam.app" clearable @change="appChangeFn" :placeholder="t('appIdPlaceholder')" class="input-width">
                             <el-option :label="t('selectPlaceholder')" value="all" />
-                            <el-option :label="item['title']" :value="item['key']"
-                                v-for="(item, index) in Object.values(addonList)"  :key="index"/>
+                            <el-option :label="item['title']" :value="item['key']" v-for="(item, index) in Object.values(addonList)"  :key="index"/>
                         </el-select>
                     </el-form-item>
 
                     <el-form-item :label="t('groupId')" prop="group_id">
-                        <el-select v-model="siteTableData.searchParam.group_id" clearable
-                            :placeholder="t('groupIdPlaceholder')" class="input-width">
+                        <el-select v-model="siteTableData.searchParam.group_id" clearable :placeholder="t('groupIdPlaceholder')" class="input-width">
                             <el-option :label="t('selectPlaceholder')" value="" />
-                            <el-option :label="item['group_name']" :value="item['group_id']"
-                                v-for="(item, index) in groupList.all" :key="index"/>
+                            <el-option :label="item['group_name']" :value="item['group_id']" v-for="(item, index) in groupList.all" :key="index"/>
                         </el-select>
                     </el-form-item>
 
                     <el-form-item :label="t('status')" prop="status">
-                        <el-select v-model="siteTableData.searchParam.status" clearable
-                            :placeholder="t('groupIdPlaceholder')" class="input-width">
+                        <el-select v-model="siteTableData.searchParam.status" clearable :placeholder="t('groupIdPlaceholder')" class="input-width">
                             <el-option :label="t('selectPlaceholder')" value="" />
                             <el-option :label="item" :value="index" v-for="(item, index) in statusList" :key="index"/>
                         </el-select>
@@ -71,7 +67,6 @@
 
             <div class="mt-[20px]">
                 <el-table :data="siteTableData.data" size="large" v-loading="siteTableData.loading">
-
                     <template #empty>
                         <span>{{ !siteTableData.loading ? t('emptyData') : '' }}</span>
                     </template>
@@ -81,8 +76,7 @@
                         <template #default="{ row }">
                             <div class="flex items-center">
                                 <img class="w-[50px] h-[50px] mr-[10px]" v-if="row.logo" :src="img(row.logo)" alt="">
-                                <img class="w-[50px] h-[50px] mr-[10px]" v-else src="@/app/assets/images/site_logo.png"
-                                    alt="">
+                                <img class="w-[50px] h-[50px] mr-[10px]" v-else src="@/app/assets/images/site_logo.png" alt="">
                                 <div class="flex flex flex-col">
                                     <span>{{ row.site_name || '' }}</span>
                                 </div>
@@ -102,8 +96,7 @@
 
                     <el-table-column prop="group_name" :label="t('groupId')" width="150" :show-overflow-tooltip="true" />
                     <el-table-column prop="site_domain" :label="t('siteDomain')" width="150" :show-overflow-tooltip="true" />
-                    <el-table-column prop="create_time" :label="t('createTime')" width="250"
-                        :show-overflow-tooltip="true" />
+                    <el-table-column prop="create_time" :label="t('createTime')" width="250" :show-overflow-tooltip="true" />
                     <el-table-column prop="expire_time" :label="t('expireTime')" width="250" :show-overflow-tooltip="true">
                         <template #default="{ row }">
                             <div v-if="row.expire_time == 0">永久</div>
@@ -124,13 +117,20 @@
 
                     <el-table-column :label="t('operation')" min-width="210" align="right" fixed="right">
                         <template #default="{ row }">
-                            <el-button type="primary" link @click="openClose(row.status, row.site_id)"
-                                v-if="row.status == 1 || row.status == 3">{{ row.status == 1 ? t('closeTxt') : t('openTxt')
-                                }}</el-button>
-                            <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
-                            <el-button type="primary" link @click="deleteEvent(row)">{{ t('delete') }}</el-button>
-                            <el-button type="primary" link @click="infoEvent(row)">{{ t('info') }}</el-button>
+                            <el-button type="primary" link @click="openClose(row.status, row.site_id)" v-if="row.status == 1 || row.status == 3">{{ row.status == 1 ? t('closeTxt') : t('openTxt') }}</el-button>
                             <el-button type="primary" link @click="toSiteLink(row.site_id)">{{ t('toSite') }}</el-button>
+                            <el-dropdown>
+                                <span class="el-dropdown-link ml-[12px] h-[20px] leading-[24px] text-[var(--el-color-primary)]">
+                                    更多
+                                </span>
+                                <template #dropdown>
+                                    <div class="flex flex-col py-[5px] px-[10px]">
+                                        <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
+                                        <el-button type="primary" class="mt-[5px] !ml-[0]" link @click="deleteEvent(row)">{{ t('delete') }}</el-button>
+                                        <el-button type="primary" class="mt-[5px] !ml-[0]" link @click="infoEvent(row)">{{ t('info') }}</el-button>
+                                    </div>
+                                </template>
+                            </el-dropdown>
                         </template>
                     </el-table-column>
 
@@ -280,7 +280,7 @@ const editEvent = (data: any) => {
 
 /**
  * 站点登录
- * @param data
+ * @param siteId
  */
 const toSiteLink = (siteId:number = 0) => {
     window.localStorage.setItem('site.token', getToken())
@@ -335,9 +335,4 @@ const deleteEvent = (data: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-:deep(.warm-prompt) {
-    .el-alert__description {
-        margin: 0;
-    }
-}</style>
+<style lang="scss" scoped></style>

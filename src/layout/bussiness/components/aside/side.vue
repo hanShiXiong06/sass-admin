@@ -111,15 +111,18 @@ watch(route, () => {
         oneMenuActive.value = route.matched[1].name
     } else {
         // 单应用
-        if (route.meta.addon == '') {
+        const oneMenu = route.matched[1]
+        if (oneMenu.meta.addon == '') {
             oneMenuActive.value = route.matched[1].name
             twoMenuData.value = route.matched[1].children ?? []
-        } else if (route.meta.addon && route.meta.addon != siteInfo?.apps[0].key) {
-            oneMenuActive.value = '/site/app'
-            twoMenuData.value = route.matched[1].children ?? []
         } else {
-            oneMenuActive.value = route.matched[2].name
-            twoMenuData.value = route.matched[2].children ?? []
+            if (oneMenu.meta.addon == siteInfo?.apps[0].key) {
+                oneMenuActive.value = route.matched[2].name
+                twoMenuData.value = route.matched[2].children ?? []
+            } else {
+                oneMenuActive.value = route.matched[1].name
+                twoMenuData.value = route.matched[1].children ?? []
+            }
         }
     }
 }, { immediate: true })

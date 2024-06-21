@@ -1,10 +1,13 @@
 <template>
+    <!--角色管理-->
     <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
+
             <div class="flex justify-between items-center">
-                <span class="text-page-title">{{pageName}}</span>
+                <span class="text-page-title">{{ pageName }}</span>
             </div>
-            <div class="flex justify-between items-center mt-[16px]">
+
+            <div class="flex justify-between items-center mt-[20px]">
                 <el-form :inline="true" :model="roleTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('roleName')" prop="search">
                         <el-input v-model="roleTableData.searchParam.search" class="w-[240px]" :placeholder="t('roleNamePlaceholder')" />

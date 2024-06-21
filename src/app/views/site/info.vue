@@ -1,15 +1,19 @@
 <template>
+    <!--站点详情-->
     <div class="main-container" v-loading="loading">
-        <div class="detail-head !mb-[10px]">
-            <div class="left" @click="router.push({ path: '/admin/site/list' })">
-                <span class="iconfont iconxiangzuojiantou !text-xs"></span>
-                <span class="ml-[1px]">{{t('returnToPreviousPage')}}</span>
-            </div>
-            <span class="adorn">|</span>
-            <span class="right">{{ pageName }}</span>
-            <el-button class="ml-auto w-[100px] mr-[10px]" type="primary" @click="editEvent(formRef)">{{ t('edit') }}</el-button>
-        </div>
-        <el-form :model="formData" label-width="90px" ref="formRef" class="page-form">
+
+        <el-card class="card !border-none" shadow="never">
+            <el-page-header :icon="ArrowLeft" @back="$router.back()">
+                <template #content>
+                    <span class="text-large font-600 mr-3">{{ pageName }}</span>
+                </template>
+                <template #extra>
+                    <el-button class="w-[100px]" type="primary" @click="editEvent(formRef)">{{ t('edit') }}</el-button>
+                </template>
+            </el-page-header>
+        </el-card>
+
+        <el-form class="page-form mt-[15px]" :model="formData" label-width="90px" ref="formRef">
             <el-card class="box-card !border-none relative" shadow="never">
                 <el-form-item :label="t('siteName')">
                     <div class="input-width">{{ formData.site_name }}</div>
@@ -17,7 +21,7 @@
 
                 <el-form-item :label="t('siteLogo')">
                     <el-image v-if="formData.logo" class="w-20 h-20" :src="img(formData.logo)" fit="contain"></el-image>
-					<img class="w-20 h-20" v-else src="@/app/assets/images/site_logo.png" alt="" >
+                    <img class="w-20 h-20" v-else src="@/app/assets/images/site_logo.png" alt="" >
                 </el-form-item>
 
                 <el-form-item :label="t('siteDomain')">
@@ -49,10 +53,9 @@
                 <el-form-item :label="t('app')">
                     <div class="flex flex-wrap">
                         <template v-for="item in formData.site_addons">
-                            <div class="flex w-[300px] border border-solid p-[10px] !mr-[10px] !mb-[10px] rounded-md" v-if="item.type == 'app'">
+                            <div class="flex w-[300px] border border-[var(--el-color-info-light-7)] border-solid p-[10px] !mr-[10px] !mb-[10px] rounded-md" v-if="item.type == 'app'">
                                 <div class="w-[60px] h-[60px] mr-[10px] rounded-md overflow-hidden">
-                                    <el-image :src="img(item.icon)" v-if="item.icon"
-                                              class="w-full h-full" />
+                                    <el-image :src="img(item.icon)" v-if="item.icon" class="w-full h-full" />
                                     <el-image v-else class="w-full h-full">
                                         <template #error>
                                             <div class="image-error">
@@ -73,10 +76,9 @@
                 <el-form-item :label="t('addon')">
                     <div class="flex flex-wrap">
                         <template v-for="item in formData.site_addons">
-                            <div class="flex w-[300px] border border-solid p-[10px] !mr-[10px] !mb-[10px] rounded-md" v-if="item.type == 'addon'">
+                            <div class="flex w-[300px] border border-[var(--el-color-info-light-7)] border-solid p-[10px] !mr-[10px] !mb-[10px] rounded-md" v-if="item.type == 'addon'">
                                 <div class="w-[60px] h-[60px] mr-[10px] rounded-md overflow-hidden">
-                                    <el-image :src="img(item.icon)" v-if="item.icon"
-                                              class="w-full h-full" />
+                                    <el-image :src="img(item.icon)" v-if="item.icon" class="w-full h-full" />
                                     <el-image v-else class="w-full h-full">
                                         <template #error>
                                             <div class="image-error">
@@ -110,14 +112,13 @@
 import { ref, reactive } from 'vue'
 import { t } from '@/lang'
 import type { FormInstance } from 'element-plus'
+import { ArrowLeft } from '@element-plus/icons-vue'
 import { img } from '@/utils/common'
 import { getSiteInfo } from '@/app/api/site'
 import { useRoute, useRouter } from 'vue-router'
 import EditSite from '@/app/views/site/components/edit-site.vue'
 import useTabbarStore from '@/stores/modules/tabbar'
-// import useAppStore from '@/stores/modules/app'
 
-// const appStore = useAppStore()
 const tabbarStore = useTabbarStore()
 const route = useRoute()
 const router = useRouter()

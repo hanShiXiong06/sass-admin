@@ -35,7 +35,7 @@
                             <ul class="flex flex-row flex-wrap">
                                 <li v-for="(compItem, compKey) in item.list" :key="compKey" class="w-2/6 text-center cursor-pointer h-[65px]" :title="compItem.title" @click="posterStore.addComponent(compKey, compItem)">
                                     <icon v-if="compItem.icon" :name="compItem.icon" size="20px" class="inline-block mt-[3px]" />
-                                    <icon v-else name="iconfont-iconkaifazujian" size="20px" class="inline-block mt-[3px]" />
+                                    <icon v-else name="iconfont iconkaifazujian" size="20px" class="inline-block mt-[3px]" />
                                     <span class="block text-[12px] truncate">{{ compItem.title }}</span>
                                 </li>
                             </ul>
@@ -58,19 +58,19 @@
                         <div class="preview-block relative">
                             <ul class="quick-action absolute text-center -right-[70px] top-[20px] w-[42px] rounded shadow-md">
                                 <el-tooltip effect="light" :content="t('moveUpComponentZIndex')" placement="right">
-                                    <icon name="iconfont-iconjiantoushang" size="20px" class="block cursor-pointer leading-[40px]" @click="posterStore.moveUpComponent" />
+                                    <icon name="iconfont iconjiantoushang" size="20px" class="block cursor-pointer leading-[40px]" @click="posterStore.moveUpComponent" />
                                 </el-tooltip>
                                 <el-tooltip effect="light" :content="t('moveDownComponentZIndex')" placement="right">
-                                    <icon name="iconfont-iconjiantouxia" size="20px" class="block cursor-pointer leading-[40px]" @click="posterStore.moveDownComponent" />
+                                    <icon name="iconfont iconjiantouxia" size="20px" class="block cursor-pointer leading-[40px]" @click="posterStore.moveDownComponent" />
                                 </el-tooltip>
                                 <el-tooltip effect="light" :content="t('copyComponent')" placement="right">
-                                    <icon name="iconfont-iconcopy-line" size="20px" class="block cursor-pointer leading-[40px]" @click="posterStore.copyComponent" />
+                                    <icon name="iconfont iconcopy-line" size="20px" class="block cursor-pointer leading-[40px]" @click="posterStore.copyComponent" />
                                 </el-tooltip>
                                 <el-tooltip effect="light" :content="t('delComponent')" placement="right">
-                                    <icon name="iconfont-icondelete-line" size="20px" class="block cursor-pointer leading-[40px]" @click="posterStore.delComponent" />
+                                    <icon name="iconfont icondelete-line" size="20px" class="block cursor-pointer leading-[40px]" @click="posterStore.delComponent" />
                                 </el-tooltip>
                                 <el-tooltip effect="light" :content="t('resetComponent')" placement="right">
-                                    <icon name="iconfont-iconloader-line" size="20px" class="block cursor-pointer leading-[40px]" @click="posterStore.resetComponent" />
+                                    <icon name="iconfont iconloader-line" size="20px" class="block cursor-pointer leading-[40px]" @click="posterStore.resetComponent" />
                                 </el-tooltip>
                             </ul>
 

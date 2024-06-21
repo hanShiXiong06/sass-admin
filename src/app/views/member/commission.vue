@@ -1,10 +1,13 @@
 <template>
+    <!--会员佣金-->
     <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
-            <div class="flex justify-between items-center mb-[5px]">
+
+            <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
             </div>
-            <el-card class="box-card !border-none base-bg !px-[35px]" shadow="never">
+
+            <el-card class="box-card !border-none !px-[35px]" shadow="never">
                 <el-row class="flex">
                     <el-col :span="6" class="min-w-[100px]">
                         <div class="statistic-card">
@@ -128,7 +131,9 @@
                 </div>
             </div>
         </el-card>
+
         <money-info ref="moneyDialog" @complete="loadMemberAccountLogList" />
+
     </div>
 </template>
 
@@ -142,8 +147,9 @@ import moneyInfo from '@/app/views/member/components/member-commission-info.vue'
 import { useRouter, useRoute } from 'vue-router'
 
 const route = useRoute()
-const member_id: number = parseInt(route.query.id || 0)
 const pageName = route.meta.title
+
+const member_id: number = parseInt(route.query.id || 0)
 
 const memberAccountLogTableData = reactive({
     page: 1,

@@ -44,9 +44,10 @@
 <script lang="ts" setup>
 import { ref, reactive, computed } from 'vue'
 import { t } from '@/lang'
+import { deepClone } from '@/utils/common'
 import type { FormInstance } from 'element-plus'
 import { editMemberDetail, getMemberLabelAll, getMemberLevelAll } from '@/app/api/member'
-import Test from "@/utils/test";
+import Test from '@/utils/test'
 
 // 修改类型
 const type = ref('')
@@ -126,10 +127,12 @@ const confirm = async (formEl: FormInstance | undefined) => {
             if (repeat.value) return
             repeat.value = true
 
+            const val = saveData[type.value] ? deepClone(saveData[type.value]) : ''
+
             const data = ref({
                 member_id: memberId.value,
                 field: type.value,
-                value: saveData[type.value]
+                value: val
             })
 
             editMemberDetail(data.value).then(res => {

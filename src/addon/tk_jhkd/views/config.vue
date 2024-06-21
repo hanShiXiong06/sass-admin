@@ -176,6 +176,87 @@
             </el-form-item>
           </template>
         </el-popover>
+
+        <el-card class="!border-none" shadow="never" style="width: 640px">
+          <el-alert
+            type="warning"
+            title="开启配置通知，订单新增，催收等会同步到webhook群"
+            :closable="false"
+            show-icon
+          />
+        </el-card>
+        <el-form-item label="">
+          <el-radio-group v-model="formData.is_webhook">
+            <el-radio :label="'0'">否</el-radio>
+            <el-radio :label="'1'">是</el-radio>
+          </el-radio-group>
+          <span class="ml-4">是否开启群webhook通知</span>
+        </el-form-item>
+
+        <el-form-item
+          class="font-bold text-xs"
+          label="通知类型"
+          prop="checktype"
+        >
+          <el-select
+            v-model="formData.webhook_type"
+            clearable
+            placeholder="请选择"
+          >
+            <el-option key="0" label="企业微信" value="0" />
+            <el-option key="1" label="飞书" value="1" />
+            <el-option key="2" label="钉钉" value="2" />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          v-if="formData.webhook_type == 0"
+          class="font-bold text-xs"
+          label="Webhook 地址"
+          prop="action"
+        >
+          <el-input
+            clearable
+            v-model="formData.qwurl"
+            class="w-60"
+            placeholder="请输入webhook地址"
+          />
+        </el-form-item>
+        <el-form-item
+          v-if="formData.webhook_type == 1"
+          class="font-bold text-xs"
+          label="Webhook 地址"
+          prop="msg"
+        >
+          <el-input
+            type="textarea"
+            clearable
+            v-model="formData.fsurl"
+            style="width: 300px"
+            placeholder="请输入webhook地址"
+          />
+        </el-form-item>
+        <el-form-item
+          v-if="formData.webhook_type == 2"
+          class="font-bold text-xs"
+          label="Webhook 地址"
+          prop="msg"
+        >
+          <el-input
+            clearable
+            v-model="formData.ddurl"
+            class="w-60"
+            placeholder="请输入webhook地址"
+          />
+        </el-form-item>
+        <el-form-item class="font-bold text-xs" label="通知频率" prop="msg">
+          <el-input
+            clearable
+            v-model="formData.min"
+            style="width: 200px"
+            placeholder="以分钟计算，默认30分钟"
+          />
+          <span class="ml-4"> 单位:分钟，默认30分内只通知一次,0不限制</span>
+        </el-form-item>
       </el-card>
     </el-form>
     <div class="fixed-footer-wrap">
@@ -215,6 +296,12 @@ const formData = reactive({
   address_use: "0",
   tx_id: "",
   tx_secret: "",
+  is_webhook: "0",
+  webhook_type: "0",
+  qwurl: "",
+  fsurl: "",
+  ddurl: "",
+  min: "30",
 });
 const getData = async () => {
   const data = await getJhkdConfig({});

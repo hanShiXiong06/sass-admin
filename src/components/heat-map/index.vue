@@ -36,7 +36,7 @@
                                 <el-form-item :label="t('hotArea') + (index + 1)">
                                     <div class="flex items-center">
                                         <diy-link v-model="item.link" />
-                                        <icon class="del cursor-pointer mx-[10px]" name="element-CircleCloseFilled" color="#bbb" size="20px" @click="dragBoxArr.splice(index, 1)" />
+                                        <icon class="del cursor-pointer mx-[10px]" name="element CircleCloseFilled" color="#bbb" size="20px" @click="dragBoxArr.splice(index, 1)" />
                                     </div>
                                 </el-form-item>
                             </div>

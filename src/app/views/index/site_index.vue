@@ -31,8 +31,7 @@
 							</div>
 						</div>
 						<div class="ml-[40px]">
-							<el-button v-if="statInfo.site_info.over_date <= 7"
-								class="bottom-back w-[80px] h-[40px] text-[14px] bg-transparent" type="primary" plain @click="renew">{{ t('renew') }}</el-button>
+							<el-button v-if="statInfo.site_info.over_date <= 7" class="bottom-back w-[80px] h-[40px] text-[14px] bg-transparent" type="primary" plain @click="renew">{{ t('renew') }}</el-button>
 							<el-button class="w-[80px] h-[40px] text-[14px]" type="primary">{{ t('accessSite') }}</el-button>
 						</div>
 					</div>
@@ -68,8 +67,7 @@
 							</div>
 						</div>
 						<div v-else class="flex flex-wrap">
-							<div v-for="(items, index) in shortcut_menu" :style="{ backgroundColor: items.bg_color }" :key="index"
-								class="w-[180px] h-[120px] relative mt-[30px] rounded-[5px] overflow-hidden mr-[30px] cursor-pointer">
+							<div v-for="(items, index) in shortcut_menu" :style="{ backgroundColor: items.bg_color }" :key="index" class="w-[180px] h-[120px] relative mt-[30px] rounded-[5px] overflow-hidden mr-[30px] cursor-pointer">
 								<div class="flex items-center h-[88px]" @click="toLink(items.router_path)">
 									<!-- <img :src="img(items.img)"/> -->
 									<div class="ml-[24px] w-[40px]">
@@ -77,22 +75,19 @@
 									</div>
 									<span class="text-item text-[16px] text-[#fff] ml-[12px] max-w-[120px]">{{ items.name }}</span>
 								</div>
-								<div class="item-bottom h-[32px] leading-[32px] text-center"
-									@click="toLink(items.router_path)">
+								<div class="item-bottom h-[32px] leading-[32px] text-center" @click="toLink(items.router_path)">
 									<span class="text-item text-[12px] text-[#fff] max-w-[150px]">{{ items.desc }}</span>
 								</div>
 							</div>
 						</div>
-						<div v-if="edit_menu"
-							class="w-[180px] h-[120px] mt-[30px] rounded-[5px] overflow-hidden border-dashed border-[1px] border-[#D0D7D9] cursor-pointer"
-							@click="showFromMenu">
+						<div v-if="edit_menu" class="w-[180px] h-[120px] mt-[30px] rounded-[5px] overflow-hidden border-dashed border-[1px] border-[#D0D7D9] cursor-pointer" @click="showFromMenu">
 							<div class="w-[40px] mx-auto mt-[20px]"><img class="w-[40px]" src="@/app/assets/images/index/add_menu.png" /></div>
 							<p class="text-center mt-[5px] text-[20px]">{{ t('addMenu') }}</p>
 						</div>
 						<div v-if="shortcut_menu.length <= 0 && !edit_menu" class="flex w-full justify-center items-center min-w-[1000px] min-h-[400px]">
 							<div v-if="!loading">
-								<img src="@/app/assets/images/empty.png" />
-								<p class="text-center text-gray-400">{{ t('emptyMenu') }}</p>
+								<img src="@/app/assets/images/site_empty.png" />
+								<p class="text-center text-gray-400 mt-[20px]">{{ t('emptyMenu') }}</p>
 							</div>
 						</div>
 					</div>
@@ -166,7 +161,7 @@
 		<el-dialog v-model="renewDialog" :title="t('message')" width="500px" :destroy-on-close="true">
 			<div class="flex mt-1">
 				<div class="mr-[30px] flex">
-					<icon name="iconfont-icondianhua" class="leading-[1]" size="20px" color="#000"></icon>
+					<icon name="iconfont icondianhua" class="leading-[1]" size="20px" color="#000"></icon>
 					<p class="text-[14px] ml-2">{{ t('tel') }}</p>
 				</div>
 				<div>
@@ -181,8 +176,7 @@
 		</el-dialog>
 		<el-dialog v-model="showMenu" :title="t('pathSelect')" width="500px" :destroy-on-close="true">
 			<div class="flex mt-1 flex-wrap">
-				<el-button v-for="(item,index) in menu_list" class="menu-btn mb-[5px] mr-[10px] ml-[0px]" :key="index"
-					@click="selectMenu(item)">{{ item.menu_name }}</el-button>
+				<el-button v-for="(item,index) in menu_list" class="menu-btn mb-[5px] mr-[10px] ml-[0px]" :key="index" @click="selectMenu(item)">{{ item.menu_name }}</el-button>
 			</div>
 		</el-dialog>
 		<el-dialog v-model="customPath" width="500px" :destroy-on-close="true">

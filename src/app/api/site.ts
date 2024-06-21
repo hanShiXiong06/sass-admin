@@ -83,7 +83,7 @@ export function getSiteGroupList(params: Record<string, any>) {
 
 /**
  * 获取站点分组详情
- * @param site_id
+ * @param groupId
  */
 export function getSiteGroupInfo(groupId: number) {
     return request.get(`site/group/${groupId}`);
@@ -123,6 +123,14 @@ export function getSiteGroupAll(params: Record<string, any> = {}) {
     return request.get(`site/group/all`)
 }
 
+/**
+ * 获取全部站点分组(包含套餐下用户站点数量)
+ * @param params
+ */
+export function getUserSiteGroupAll(params: Record<string, any> = {}) {
+    return request.get(`site/group/user`, { params })
+}
+
 /***************************************************** 当前站点用户 *************************************************/
 
 /**
@@ -157,15 +165,6 @@ export function addUser(params: Record<string, any>) {
  */
 export function editUser(params: Record<string, any>) {
     return request.put(`site/user/${params.uid}`, params, { showSuccessMessage: true })
-}
-
-/**
- * 删除用户
- * @param uid
- * @returns
- */
-export function deleteUser(uid: number) {
-    return request.delete(`site/user/${uid}`, { showSuccessMessage: true })
 }
 
 

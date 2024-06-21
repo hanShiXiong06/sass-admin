@@ -6,7 +6,6 @@ import { language } from '@/lang'
 import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
 import { setWindowTitle, getAppType, urlToRouteRaw } from '@/utils/common'
-import storage from '@/utils/storage'
 
 // 加载插件中定义的router
 const ADDON_ROUTE = []
@@ -58,8 +57,9 @@ router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore()
     const systemStore = useSystemStore()
     const appType = getAppType()
+    const title = []
 
-    let title: string = to.meta.title ?? ''
+    to.meta.title && title.push(to.meta.title)
 
     if (!userStore.siteInfo && appType != 'home') {
         await userStore.getSiteInfo()
@@ -78,13 +78,14 @@ router.beforeEach(async (to, from, next) => {
     const loginPath = to.path == '/' ? '/admin/login' : `/${matched == '/admin' ? 'admin' : 'site'}/login`
 
     if (appType != 'site' || to.path === loginPath) {
-        title += systemStore.website.site_name ? ('-' + systemStore.website.site_name) : ''
+        systemStore.website.site_name && title.push(systemStore.website.site_name)
     } else {
-        title += userStore.siteInfo && userStore.siteInfo.site_name ? ('-' + userStore.siteInfo.site_name) : ''
+        userStore.siteInfo && userStore.siteInfo.site_name && title.push(userStore.siteInfo.site_name)
     }
 
     // 设置网站标题
-    setWindowTitle(title)
+    setWindowTitle(title.join('-'))
+
 
     // 判断是否需登录
     if (NO_LOGIN_ROUTES.includes(to.path)) {
@@ -154,14 +155,14 @@ router.beforeEach(async (to, from, next) => {
                 }
 
             } catch (err) {
-                next({ path: loginPath, query: { redirect: to.fullPath } })
+                next({ path: loginPath })
             }
         }
     } else {
         if (to.path === loginPath) {
             next()
         } else {
-            next({ path: loginPath, query: { redirect: to.fullPath } })
+            next({ path: loginPath })
         }
     }
 })

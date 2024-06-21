@@ -1,12 +1,14 @@
 <template>
     <el-container class="w-100 h-screen">
-        <el-main class="p-0 flex">
-            <div class="w-[124px] px-[8px] bg-[#282c34] h-screen one-menu">
+        <el-main class="flex p-0">
+            <div class="one-menu w-[124px] h-screen px-[8px] bg-[#282c34]">
                 <el-header class="logo-wrap">
                     <div class="logo flex items-center m-auto h-[64px]" v-if="!systemStore.menuIsCollapse">
                         <el-image style="width: 40px; height: 40px" :src="img(logoUrl)" fit="contain">
                             <template #error>
-                                <div class="flex justify-center items-center w-full h-[40px]"><img class="max-w-[40px]" src="@/app/assets/images/icon-addon.png" alt=""  object-fit="contain"></div>
+                                <div class="flex justify-center items-center w-full h-[40px]">
+                                    <img class="max-w-[40px]" src="@/app/assets/images/icon-addon.png" alt=""  object-fit="contain">
+                                </div>
                             </template>
                         </el-image>
                     </div>
@@ -14,6 +16,7 @@
                         <i class="text-3xl iconfont iconyunkongjian"></i>
                     </div>
                 </el-header>
+
                 <el-scrollbar class="h-[calc( 100vh - 64px )]">
                     <el-menu :default-active="oneMenuActive" :router="true" class="aside-menu" :unique-opened="true" :collapse="systemStore.menuIsCollapse">
                         <template v-for="(item, index) in oneMenuData" :key="index">
@@ -34,11 +37,16 @@
                     <div class="h-[48px]"></div>
                 </el-scrollbar>
             </div>
+
             <el-scrollbar v-if="twoMenuData.length" class="two-menu w-[140px]">
-                <div class="w-[140px] h-[64px] flex items-center justify-center text-[16px] border-0 border-b-[1px] border-solid border-[#eee]">{{ route.matched[1].meta.title }}</div>
-                <el-menu :default-active="route.name" :default-openeds="menuOption" :router="true" class="aside-menu" :collapse="systemStore.menuIsCollapse">
+                <div class="w-[140px] h-[64px] flex items-center justify-center text-[16px] border-b-[1px] border-solid border-[var(--el-border-color-lighter)]">
+                    {{ route.matched[1].meta.title }}
+                </div>
+
+                <el-menu class="aside-menu" :default-active="route.name" :default-openeds="menuOption" :router="true" :collapse="systemStore.menuIsCollapse">
                     <menu-item v-for="(route, index) in twoMenuData" :routes="route" :key="index" />
                 </el-menu>
+
                 <div class="h-[48px]"></div>
             </el-scrollbar>
         </el-main>
@@ -46,18 +54,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch,computed } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
-import menuItem from './menu-item.vue'
 import { img, isUrl } from '@/utils/common'
 import { findFirstValidRoute } from '@/router/routers'
+import menuItem from './menu-item.vue'
+
+const route = useRoute()
+const router = useRouter()
 
 const systemStore = useSystemStore()
 const userStore = useUserStore()
-const route = useRoute()
-const router = useRouter()
+
 const siteInfo = userStore.siteInfo
 const routers = userStore.routers
 const addonIndexRoute = userStore.addonIndexRoute
@@ -114,15 +124,18 @@ watch(route, () => {
         oneMenuActive.value = route.matched[1].name
     } else {
         // 单应用
-        if (route.meta.addon == '') {
+        const oneMenu = route.matched[1]
+        if (oneMenu.meta.addon == '') {
             oneMenuActive.value = route.matched[1].name
             twoMenuData.value = route.matched[1].children ?? []
-        } else if (route.meta.addon && route.meta.addon != siteInfo?.apps[0].key) {
-            oneMenuActive.value = '/site/app'
-            twoMenuData.value = route.matched[1].children ?? []
         } else {
-            oneMenuActive.value = route.matched[2].name
-            twoMenuData.value = route.matched[2].children ?? []
+            if (oneMenu.meta.addon == siteInfo?.apps[0].key) {
+                oneMenuActive.value = route.matched[2].name
+                twoMenuData.value = route.matched[2].children ?? []
+            } else {
+                oneMenuActive.value = route.matched[1].name
+                twoMenuData.value = route.matched[1].children ?? []
+            }
         }
     }
 }, { immediate: true })
@@ -141,81 +154,99 @@ watch(twoMenuData.value, () => {
 </script>
 
 <style lang="scss">
-.one-menu{
+.one-menu {
+
     .aside-menu:not(.el-menu--collapse) {
         background-color: transparent;
-        .el-menu-item{
-            margin-bottom: 4px;
+
+        .el-menu-item {
+            font-size: 14px;
             height: 40px;
+            margin-bottom: 4px;
             padding-left: 12px !important;
             color: rgba(255,255,255,.7);
-            font-size: 14px;
             border-radius: 2px;
-            &:hover{
-                background-color: transparent;
+
+            &:hover {
                 color: var(--el-color-primary);
+                background-color: transparent;
             }
-            &.is-active{
-                background-color: var(--el-color-primary) !important;
+
+            &.is-active {
                 color: #fff !important;
+                background-color: var(--el-color-primary) !important;
             }
-            span{
-                font-size: 14px;
+
+            span {
                 margin-left: 8px;
+                font-size: 14px;
             }
         }
     }
-    .el-menu{
+
+    .el-menu {
         border: 0;
     }
-    .el-scrollbar{
+
+    .el-scrollbar {
         height: calc(100vh - 65px);
     }
 }
-.two-menu{
+
+.two-menu {
+
     .aside-menu:not(.el-menu--collapse) {
         width: 140px;
-        border: 0;
         padding-top: 16px;
-        .el-menu-item{
+        border: 0;
+
+        .el-menu-item {
             height: 36px;
             margin: 0 8px 4px;
             padding: 0 8px !important;
             border-radius: 2px;
-            span{
+
+            span {
                 margin-left: 8px;
                 font-size: 14px;
             }
-            &.is-active{
+
+            &.is-active {
                 background-color: var(--el-color-primary-light-9) !important;
             }
-            &:hover{
-                background-color: #f7f7f7;
+
+            &:hover {
                 color: var(--el-color-primary);
+                background-color: var(--el-color-primary-light-9) !important;
             }
         }
-        .el-sub-menu{
+
+        .el-sub-menu {
             margin-bottom: 8px;
-            .el-sub-menu__title{
-                margin: 0 8px 4px;
+
+            .el-sub-menu__title {
                 height: 36px;
+                margin: 0 8px 4px;
                 padding-left: 8px;
                 border-radius: 2px;
-                span{
-                    height: 36px;
-                    display: flex;
-                    align-items: center;
+
+                span {
                     font-size: 14px;
+                    display: flex;
+                    height: 36px;
+                    align-items: center;
                 }
-                &:hover{
-                    background-color: #f7f7f7;
+
+                &:hover {
                     color: var(--el-color-primary);
+                    background-color: var(--el-color-primary-light-9) !important;
                 }
-                .el-icon.el-sub-menu__icon-arrow{
+                .el-icon.el-sub-menu__icon-arrow {
                     right: 5px;
                 }
             }
-            .el-menu-item{
+
+            .el-menu-item {
                 padding-left: 20px !important;
             }
         }
@@ -223,22 +254,14 @@ watch(twoMenuData.value, () => {
 }
 
 .logo-wrap {
-    padding: 0;
     display: flex;
+    padding: 0;
     white-space: nowrap;
     align-items: center;
 
     .logo {
         height: 100%;
         box-sizing: border-box;
-    }
-
-    .logo-title {
-        flex: 1;
-        width: 0;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        font-size: var(--el-font-size-base);
     }
 }
 </style>

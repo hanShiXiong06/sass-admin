@@ -73,7 +73,7 @@
                     <img class="max-w-[100%] max-h-[100%]" src="@/app/assets/images/diy/head/nav_style5.png" />
                 </div>
                 <div class="flex items-center justify-center overflow-hidden w-[32%] h-[100px] cursor-pointer border bg-gray-50" :class="{ 'border-primary': selectStyle == 'style-6' }" @click="selectStyle = 'style-6'">
-                    <img class="max-w-[100%] max-h-[100%]" src="@/app/assets/images/diy/head/nav_style6.png" />
+                    <img class="max-w-[100%] max-h-[100%]" src="@/app/assets/images/diy/head/nav_style6.jpg" />
                 </div>
             </div>
 
@@ -94,7 +94,7 @@
 			<el-form label-width="80px" class="px-[10px]">
 				<el-form-item :label="t('pageBgColor')">
 					<el-color-picker v-model="diyStore.editComponent.pageStartBgColor" show-alpha :predefine="diyStore.predefineColors" />
-					<icon name="iconfont-iconmap-connect" size="20px" class="block !text-gray-400 mx-[5px]"/>
+					<icon name="iconfont iconmap-connect" size="20px" class="block !text-gray-400 mx-[5px]"/>
 					<el-color-picker v-model="diyStore.editComponent.pageEndBgColor" show-alpha :predefine="diyStore.predefineColors" />
 				</el-form-item>
 				<el-form-item :label="t('bgGradientAngle')">
@@ -137,7 +137,7 @@
 
 <script lang="ts" setup>
 import { t } from '@/lang'
-import { watch, ref, onMounted, computed } from 'vue'
+import { watch, ref } from 'vue'
 import useDiyStore from '@/stores/modules/diy'
 import { img } from '@/utils/common'
 
@@ -152,6 +152,10 @@ watch(
         image.onload = async () => {
             diyStore.global.imgWidth = image.width
             diyStore.global.imgHeight = image.height
+        }
+        if(!diyStore.global.bgUrl){
+            diyStore.global.imgWidth = ''
+            diyStore.global.imgHeight = ''
         }
     }
 )

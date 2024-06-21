@@ -1,5 +1,5 @@
 <template>
-	<div class="main-container">
+	<div class="main-container el-card">
 		<!-- 实时概况 -->
 		<div class="realtime-overview p-4">
 			<el-row>

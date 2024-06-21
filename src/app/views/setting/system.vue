@@ -1,67 +1,61 @@
 <template>
     <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
-            <div class="flex justify-between items-center">
-                <span class="text-page-title">{{pageName}}</span>
-            </div>
-            <el-form :model="formData" label-width="150px" ref="formRef" :rules="formRules" class="page-form" v-loading="loading">
-                <el-card class="box-card !border-none" shadow="never">
-                    <h3 class="panel-title !text-sm">{{ t('websiteInfo') }}</h3>
 
-                    <el-form-item :label="t('siteName')" prop="site_name">
-                        <el-input v-model.trim="formData.site_name" :placeholder="t('siteNamePlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
-                    </el-form-item>
+        <el-form class="page-form" :model="formData" label-width="150px" ref="formRef" :rules="formRules" v-loading="loading">
+            <el-card class="box-card !border-none" shadow="never">
+                <h3 class="panel-title !text-sm">{{ t('websiteInfo') }}</h3>
 
-                    <el-form-item :label="t('logo')">
-                        <div>
-                            <upload-image v-model="formData.logo" />
-                            <p class="text-[12px] text-[#a9a9a9]">{{ t('logoPlaceholder') }}</p>
-                        </div>
-                    </el-form-item>
+                <el-form-item :label="t('siteName')" prop="site_name">
+                    <el-input v-model.trim="formData.site_name" :placeholder="t('siteNamePlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
+                </el-form-item>
+                <el-form-item :label="t('logo')">
+                    <div>
+                        <upload-image v-model="formData.logo" />
+                        <p class="text-[12px] text-[#a9a9a9]">{{ t('logoPlaceholder') }}</p>
+                    </div>
+                </el-form-item>
+                <el-form-item :label="t('icon')">
+                    <div>
+                        <upload-image v-model="formData.icon" />
+                        <p class="text-[12px] text-[#a9a9a9]">{{ t('iconPlaceholder') }}</p>
+                    </div>
+                </el-form-item>
+                <el-form-item :label="t('keywords')">
+                    <el-input v-model="formData.keywords" :placeholder="t('keywordsPlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
+                </el-form-item>
+                <el-form-item :label="t('desc')">
+                    <el-input v-model="formData.desc" type="textarea" :rows="4" clearable :placeholder="t('descPlaceholder')" class="input-width" maxlength="100" show-word-limit />
+                </el-form-item>
+            </el-card>
 
-                    <el-form-item :label="t('icon')">
-                        <div>
-                            <upload-image v-model="formData.icon" />
-                            <p class="text-[12px] text-[#a9a9a9]">{{ t('iconPlaceholder') }}</p>
-                        </div>
-                    </el-form-item>
+            <el-card class="box-card mt-[15px] !border-none" shadow="never" v-show="appType == 'site'">
+                <h3 class="panel-title !text-sm">{{ t('frontEndInfo') }}</h3>
+                <el-form-item :label="t('frontEndName')">
+                    <el-input v-model="formData.front_end_name" :placeholder="t('frontEndNamePlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
+                </el-form-item>
+                <el-form-item :label="t('logo')">
+                    <upload-image v-model="formData.front_end_logo" />
+                </el-form-item>
+                <el-form-item :label="t('icon')">
+                    <upload-image v-model="formData.front_end_icon" />
+                </el-form-item>
+            </el-card>
 
-                    <el-form-item :label="t('keywords')">
-                        <el-input v-model="formData.keywords" :placeholder="t('keywordsPlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
-                    </el-form-item>
+            <el-card class="box-card mt-[15px] !border-none" shadow="never" v-if="appType == 'admin'">
+                <h3 class="panel-title !text-sm">{{ t('serviceInformation') }}</h3>
 
-                    <el-form-item :label="t('desc')">
-                        <el-input v-model="formData.desc" type="textarea" rows="4" clearable :placeholder="t('descPlaceholder')" class="input-width" maxlength="100" show-word-limit />
-                    </el-form-item>
-                </el-card>
-                <el-card class="box-card !border-none" shadow="never" v-show="appType == 'site'">
-                    <h3 class="panel-title !text-sm">{{ t('frontEndInfo') }}</h3>
-                    <el-form-item :label="t('frontEndName')">
-                        <el-input v-model="formData.front_end_name" :placeholder="t('frontEndNamePlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
-                    </el-form-item>
+                <el-form-item :label="t('contactsTel')">
+                    <el-input v-model="formData.tel" :placeholder="t('contactsTelPlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
+                </el-form-item>
+                <el-form-item :label="t('wechatCode')">
+                    <upload-image v-model="formData.wechat_code" />
+                </el-form-item>
+                <el-form-item :label="t('customerServiceCode')">
+                    <upload-image v-model="formData.enterprise_wechat" />
+                </el-form-item>
+            </el-card>
+        </el-form>
 
-                    <el-form-item :label="t('logo')">
-                        <upload-image v-model="formData.front_end_logo" />
-                    </el-form-item>
-
-                    <el-form-item :label="t('icon')">
-                        <upload-image v-model="formData.front_end_icon" />
-                    </el-form-item>
-                </el-card>
-                <el-card class="box-card !border-none" shadow="never" v-if="appType == 'admin'">
-                    <h3 class="panel-title !text-sm">{{ t('serviceInformation') }}</h3>
-                    <el-form-item :label="t('contactsTel')">
-                        <el-input v-model="formData.tel" :placeholder="t('contactsTelPlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
-                    </el-form-item>
-                    <el-form-item :label="t('wechatCode')">
-                        <upload-image v-model="formData.wechat_code" />
-                    </el-form-item>
-                    <el-form-item :label="t('customerServiceCode')">
-                        <upload-image v-model="formData.enterprise_wechat" />
-                    </el-form-item>
-                </el-card>
-            </el-form>
-        </el-card>
         <div class="fixed-footer-wrap">
             <div class="fixed-footer">
                 <el-button type="primary" :loading="loading" @click="save(formRef)">{{ t('save') }}</el-button>

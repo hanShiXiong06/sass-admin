@@ -1,4 +1,5 @@
 <template>
+    <!--会员列表-->
     <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
 
@@ -7,31 +8,28 @@
                 <el-button type="primary" @click="addEvent">{{ t('addMember') }}</el-button>
             </div>
 
-            <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none my-[20px] table-search-wrap" shadow="never">
                 <el-form :inline="true" :model="memberTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('memberInfo')" prop="keyword">
                         <el-input v-model="memberTableData.searchParam.keyword" class="w-[240px]" :placeholder="t('memberInfoPlaceholder')" />
                     </el-form-item>
 
                     <el-form-item :label="t('registerChannel')" prop="register_channel">
-                        <el-select v-model="memberTableData.searchParam.register_channel" clearable
-                            :placeholder="t('channelPlaceholder')" class="input-width">
+                        <el-select v-model="memberTableData.searchParam.register_channel" clearable :placeholder="t('channelPlaceholder')" class="input-width">
                             <el-option :label="t('selectPlaceholder')" value="" />
                             <el-option :label="item" :value="key" v-for="(item, key) in channelList" :key="key" />
                         </el-select>
                     </el-form-item>
 
                     <el-form-item :label="t('memberLabel')" prop="member_label">
-                        <el-select v-model="memberTableData.searchParam.member_label" collapse-tags clearable
-                            :placeholder="t('memberLabelPlaceholder')" class="input-width">
+                        <el-select v-model="memberTableData.searchParam.member_label" collapse-tags clearable :placeholder="t('memberLabelPlaceholder')" class="input-width">
                             <el-option :label="t('selectPlaceholder')" value="" />
                             <el-option :label="item['label_name']" :value="item['label_id']" v-for="(item, index) in labelSelectData" :key="index" />
                         </el-select>
                     </el-form-item>
 
                     <el-form-item :label="t('memberLevel')" prop="member_label">
-                        <el-select v-model="memberTableData.searchParam.member_level" collapse-tags clearable
-                            :placeholder="t('memberLevelPlaceholder')" class="input-width">
+                        <el-select v-model="memberTableData.searchParam.member_level" collapse-tags clearable :placeholder="t('memberLevelPlaceholder')" class="input-width">
                             <el-option :label="t('selectPlaceholder')" value="" />
                             <el-option :label="item['level_name']" :value="item['level_id']" v-for="(item, index) in levelSelectData" :key="index" />
                         </el-select>
@@ -47,19 +45,19 @@
                     </el-form-item>
                 </el-form>
             </el-card>
+
             <div class="mt-[10px]">
                 <el-table :data="memberTableData.data" size="large" v-loading="memberTableData.loading">
-
                     <template #empty>
                         <span>{{ !memberTableData.loading ? t('emptyData') : '' }}</span>
                     </template>
+
                     <el-table-column prop="member_no" :label="t('memberNo')" min-width="120" />
                     <el-table-column prop="nickname" :show-overflow-tooltip="true" :label="t('memberInfo')" min-width="170">
                         <template #default="{ row }">
                             <div class="flex items-center">
                                 <img class="w-[50px] h-[50px] mr-[10px]" v-if="row.headimg" :src="img(row.headimg)" alt="">
-                                <img class="w-[50px] h-[50px] mr-[10px]" v-else
-                                    src="@/app/assets/images/default_headimg.png" alt="">
+                                <img class="w-[50px] h-[50px] mr-[10px]" v-else src="@/app/assets/images/default_headimg.png" alt="">
                                 <div class="flex flex flex-col">
                                     <span>{{ row.nickname || '' }}</span>
                                 </div>
@@ -107,7 +105,7 @@
                         <template #default="{ row }">
                             <div class="flex items-center">
                                 <el-button type="primary" link @click="detailEvent(row)">{{ t('detail') }}</el-button>
-                                <el-button type="primary" link @click="setMemberLable(row)">{{ t('setLable') }}</el-button>
+                                <el-button type="primary" link @click="setMemberLablel(row)">{{ t('setLable') }}</el-button>
                                 <!-- <el-button type="primary" link @click="deleteEvent(row)">{{ t('memberDelete') }}</el-button> -->
                             </div>
                         </template>
@@ -140,6 +138,7 @@ import EditMember from '@/app/views/member/components/edit-member.vue'
 
 const route = useRoute()
 const pageName = route.meta.title
+
 const memberTableData = reactive({
     page: 1,
     limit: 10,
@@ -209,7 +208,7 @@ const editMemberDialog: Record<string, any> | null = ref(null)
 /**
  * 获取标签
  */
-function memberLable(res: any) {
+function memberLablel(res: any) {
     let data
     if (!res.member_label_array) return ''
     data = res.member_label_array.map((item: any) => {
@@ -222,7 +221,7 @@ function memberLable(res: any) {
 /**
  * 设置标签
  */
-function setMemberLable(res: any) {
+function setMemberLablel(res: any) {
     const data = ref({
         type: 'member_label',
         id: res.member_id,

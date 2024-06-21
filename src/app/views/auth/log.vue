@@ -1,10 +1,13 @@
 <template>
+    <!--操作日志-->
     <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
+
             <div class="flex justify-between items-center">
-                <span class="text-page-title">{{pageName}}</span>
+                <span class="text-page-title">{{ pageName }}</span>
             </div>
-            <div class="flex justify-between items-center mt-[16px]">
+
+            <div class="flex justify-between items-center mt-[20px]">
                 <el-form :inline="true" :model="sysUserLogTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('ip')" prop="ip">
                         <el-input v-model="sysUserLogTableData.searchParam.ip" :placeholder="t('ipPlaceholder')" />
@@ -43,11 +46,12 @@
                             <el-button type="primary" link @click="detailEvent(row)">{{ t('detail') }}</el-button>
                         </template>
                     </el-table-column>
-
                 </el-table>
+
                 <div class="mt-[16px] flex justify-end">
                     <el-pagination v-model:current-page="sysUserLogTableData.page" v-model:page-size="sysUserLogTableData.limit" layout="total, sizes, prev, pager, next, jumper" :total="sysUserLogTableData.total" @size-change="loadSysUserLogList()" @current-change="loadSysUserLogList" />
                 </div>
+
                 <user-log-detail ref="userLogDetailDialog" @complete="loadSysUserLogList()" />
             </div>
         </el-card>

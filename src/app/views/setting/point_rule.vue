@@ -1,29 +1,31 @@
 <template>
-    <div class="main-container rounded-[4px]" v-loading="loading">
+    <div class="main-container" v-loading="loading">
         <el-card class="box-card !border-none" shadow="never">
+
             <div class="flex justify-between items-center">
-                <span class="text-page-title">{{pageName}}</span>
+                <span class="text-page-title">{{ pageName }}</span>
             </div>
+
             <div class="mt-[20px]">
-                <div class="bg-[#f7f7f7] flex items-center">
-                    <span class="p-[15px] w-[20%] text-[14px] text-[#666]">规则名称</span>
-                    <span class="p-[15px] w-[50%] text-[14px] text-[#666]">规则详情</span>
-                    <span class="p-[15px] w-[15%] text-[14px] text-[#666]">是否启用</span>
-                    <span class="p-[15px] w-[15%] text-[14px] text-[#666]">操作</span>
+                <div class="flex items-center bg">
+                    <span class="p-[15px] w-[25%] text-[14px]">规则名称</span>
+                    <span class="p-[15px] w-[50%] text-[14px]">规则详情</span>
+                    <span class="p-[15px] w-[15%] text-[14px]">是否启用</span>
+                    <span class="p-[15px] w-[10%] text-[14px]">操作</span>
                 </div>
-                <div v-for="(item, key) in rules.grant" :key="key"  class="flex items-center">
-                    <span class="p-[15px] w-[20%] text-[14px] text-[#666]">{{ item.name }}</span>
+                <div v-for="(item, key) in rules.grant" :key="key" class="flex items-center">
+                    <span class="p-[15px] w-[25%] text-[14px]">{{ item.name }}</span>
                     <span class="p-[15px] w-[50%] text-[14px] text-[#666]">{{ formData.grant[item.key] && formData.grant[item.key].content ? formData.grant[item.key].content : '--' }}</span>
-                    <span class="p-[15px] w-[15%] text-[14px] text-[#666]">
+                    <span class="p-[15px] w-[10%] text-[14px] text-[#666]">
                         <el-tag type="success" v-if="formData.grant[item.key] && formData.grant[item.key].is_use">已启用</el-tag>
                         <el-tag type="danger" v-else>未启用</el-tag>
                     </span>
                     <span class="p-[15px] w-[15%] text-[14px] text-[#666] text-[var(--el-color-primary)] cursor-pointer" @click="examineFn(key)">配置</span>
                 </div>
                 <div v-for="(item, key) in rules.consume" :key="key"  class="flex items-center">
-                    <span class="p-[15px] w-[20%] text-[14px] text-[#666]">{{ item.name }}</span>
+                    <span class="p-[15px] w-[25%] text-[14px]">{{ item.name }}</span>
                     <span class="p-[15px] w-[50%] text-[14px] text-[#666]">{{ formData.consume[item.key] && formData.consume[item.key].content ? formData.consume[item.key].content : '--' }}</span>
-                    <span class="p-[15px] w-[15%] text-[14px] text-[#666]">
+                    <span class="p-[15px] w-[10%] text-[14px] text-[#666]">
                         <el-tag type="success" v-if="formData.consume[item.key] && formData.consume[item.key].is_use">已启用</el-tag>
                         <el-tag type="danger" v-else>未启用</el-tag>
                     </span>
@@ -60,6 +62,7 @@ import Test from '@/utils/test'
 
 const route = useRoute()
 const pageName = route.meta.title
+
 const rules = ref({})
 const formData = ref({
     grant: {},
@@ -114,5 +117,4 @@ const examineFn = (key:string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

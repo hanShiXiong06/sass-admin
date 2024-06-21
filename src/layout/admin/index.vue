@@ -1,32 +1,34 @@
-
 <template>
-    <div class="common-layout min-w-[1200px]" >
-        <el-container class="w-100 h-screen">
-            <layout-aside></layout-aside>
+    <div class="flex w-full h-screen">
+        <!-- 左侧边栏 -->
+        <layout-aside></layout-aside>
+        <!-- 左侧边栏 end -->
 
-            <el-container>
-                <el-header class="!h-[64px]">
-                    <layout-header></layout-header>
-                </el-header>
+        <el-container>
+            <!-- 顶部 -->
+            <el-header>
+                <layout-header></layout-header>
+            </el-header>
+            <!-- 顶部 end -->
 
-                <el-main :class="['main-wrap h-full p-0 bg-page']">
-                    <el-scrollbar>
-                        <div class="p-[10px]">
-                            <router-view v-slot="{ Component, route }" v-if="appStore.routeRefreshTag">
-                                <keep-alive :include="tabbarStore.tabNames">
-                                    <component :is="Component" :key="route.fullPath" />
-                                </keep-alive>
-                            </router-view>
-                        </div>
-                    </el-scrollbar>
-                </el-main>
-
-            </el-container>
+            <!-- 主体 -->
+            <el-main class="h-full p-0 bg-page">
+                <el-scrollbar>
+                    <div class="p-[15px]">
+                        <router-view v-slot="{ Component, route }" v-if="appStore.routeRefreshTag">
+                            <keep-alive :include="tabbarStore.tabNames">
+                                <component :is="Component" :key="route.fullPath" />
+                            </keep-alive>
+                        </router-view>
+                    </div>
+                </el-scrollbar>
+            </el-main>
+            <!-- 主体 end -->
         </el-container>
     </div>
 </template>
+
 <script lang="ts" setup>
-import { computed, ref, onMounted} from 'vue'
 import layoutHeader from './components/header/index.vue'
 import layoutAside from './components/aside/index.vue'
 import useAppStore from '@/stores/modules/app'
@@ -36,8 +38,4 @@ const appStore = useAppStore()
 const tabbarStore = useTabbarStore()
 </script>
 
-<style lang="scss" scoped>
-.layout-content-height{
-    height: calc(100vh - 130px);
-}
-</style>
+<style lang="scss" scoped></style>

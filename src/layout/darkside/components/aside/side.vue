@@ -14,7 +14,7 @@
         </el-header>
         <el-main class="menu-wrap">
             <el-scrollbar>
-                <el-menu :default-active="route.name" :router="true" background-color="--side-dark-color" text-color="#fff" :unique-opened="true" :collapse="systemStore.menuIsCollapse" >
+                <el-menu :default-active="route.name" :router="true" background-color="--side-dark-color" text-color="#fff" active-text-color="#fff" :unique-opened="true" :collapse="systemStore.menuIsCollapse" >
                     <menu-item v-for="(route, index) in menuData" :routes="route" :key="index" />
                 </el-menu>
                 <div class="h-[48px]"></div>
@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch,computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
@@ -94,8 +94,12 @@ if (siteInfo?.apps.length > 1) {
 
         .el-sub-menu .el-menu-item {
             --el-menu-sub-item-height: 40px;
-            --el-menu-sub-item-height: 40px;
+        }
+
+        .el-menu-item.is-active {
+            background-color: var(--el-color-primary)
         }
     }
+
 }
 </style>

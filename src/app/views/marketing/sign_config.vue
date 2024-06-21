@@ -1,127 +1,110 @@
 <template>
-    <div class="main-container bg-[#fff] rounded-[4px]">
-        <el-card class="box-card !border-none" shadow="never">
-            <div class="flex justify-between items-center mb-[5px]">
-                <span class="text-page-title">{{ pageName }}</span>
-            </div>
-            <el-card class="box-card !border-none my-[10px]" shadow="never">
-                <el-form :model="formData" label-width="150px" ref="ruleFormRef" :rules="formRules" class="page-form"
-                    v-loading="loading">
-                    <el-card class="box-card !border-none" shadow="never">
-                        <h3 class="panel-title !text-sm">{{ t('signRule') }}</h3>
-                        <el-form-item :label="t('isUse')">
-                            <el-switch v-model="formData.is_use" />
-                        </el-form-item>
+    <!--签到设置-->
+    <div class="main-container">
 
-                        <el-form-item :label="t('signPeriod')" v-if="formData.is_use">
-                            <el-input-number v-model="formData.sign_period" clearable class="input-width"
-                                controls-position="right" /><span class="ml-[10px]">天</span>
-                        </el-form-item>
+        <el-form class="page-form" :model="formData" label-width="150px" ref="ruleFormRef" :rules="formRules" v-loading="loading">
+            <el-card class="box-card !border-none" shadow="never">
+                <h3 class="panel-title !text-sm">{{ t('signRule') }}</h3>
 
-                        <el-form-item :label="t('daySignAward')" prop="formData.day_award" v-if="formData.is_use">
-                            <div v-for="(item, index) in daySignAwardText" :key="index">
-                                <span v-if="item.is_use == '1'">{{ item.content }}&nbsp;&nbsp;</span>
-                            </div>
-                            <span class="cursor-pointer tutorial-btn ml-[5px]" @click="daySignAwardSet"
-                                v-if="formData.day_award == ''">{{ t('set') }}</span>
-                            <div class="flex ml-[5px]" v-else>
-                                <span class="cursor-pointer tutorial-btn" @click="daySignAwardSet">{{ t('modify') }}</span>
-                                <span class="ml-[5px] mr-[5px]">|</span>
-                                <span class="cursor-pointer tutorial-btn" @click="daySignAwardDel">{{ t('delete') }}</span>
-                            </div>
+                <el-form-item :label="t('isUse')">
+                    <el-switch v-model="formData.is_use" />
+                </el-form-item>
 
-                            <div class="form-tip">{{ t('daySignAwardTip') }}</div>
-                        </el-form-item>
+                <el-form-item :label="t('signPeriod')" v-if="formData.is_use">
+                    <el-input-number v-model="formData.sign_period" clearable class="input-width" controls-position="right" /><span class="ml-[10px]">天</span>
+                </el-form-item>
 
-                        <el-form-item :label="t('continueSignAward')" prop="formData.continue_award" v-if="formData.is_use">
-                            <div>
-                                <div class="form-tip">{{ t('continueSignAwardTipTop') }}</div>
-                                <div class="mt-[10px]">
-                                    <el-table :data="continueSignAwardTableData.data" size="large"
-                                        v-loading="continueSignAwardTableData.loading">
-                                        <template #empty>
-                                            <span>{{ !continueSignAwardTableData.loading ? t('emptyData') : '' }}</span>
-                                        </template>
-
-                                        <el-table-column prop="continue_sign" :label="t('continueSign')" min-width="120" />
-
-                                        <el-table-column :label="t('continueSignAward')" min-width="300">
-                                            <template #default="{ row }">
-                                                <div v-for="(item, index) in row.continue_award" :key="index">
-                                                    <span v-if="item.is_use == '1'">{{ item.content }}</span>
-                                                </div>
-                                            </template>
-                                        </el-table-column>
-
-                                        <el-table-column :label="t('receiveLimit')" min-width="120">
-                                            <template #default="{ row }">
-                                                <span v-if="row.receive_limit == 1">{{ t('noLimit') }}</span>
-                                                <span v-else>{{ t('everyOneLimit') }}{{ row.receive_num }}{{
-                                                    t('time') }}</span>
-                                            </template>
-                                        </el-table-column>
-
-                                        <el-table-column :label="t('operation')" align="right" fixed="right" width="130">
-                                            <template #default="scope">
-                                                <el-button type="primary" link
-                                                    @click="continueSignAwardModify(true, scope.$index)">{{
-                                                        t('modify') }}</el-button>
-                                                <el-button type="primary" link
-                                                    @click="deleteContinueSignAwardEvent(scope.$index)">{{
-                                                        t('delete') }}</el-button>
-                                            </template>
-                                        </el-table-column>
-                                    </el-table>
-                                </div>
-                                <div class="flex mt-[10px]">
-                                    <span class="cursor-pointer tutorial-btn" @click="continueSignAwardSet">{{
-                                        t('add') }}</span>
-                                </div>
-
-                                <div class="form-tip">{{ t('continueSignAwardTipBottom') }}</div>
-                            </div>
-                        </el-form-item>
-
-                        <el-form-item :label="t('ruleExplain')" prop="formData.rule_explain" v-if="formData.is_use">
-                            <div class="flex">
-                                <el-input v-model="formData.rule_explain" :placeholder="t('ruleExplainTip')" type="textarea"
-                                    rows="5" class="textarea-width" clearable />
-                                <el-button class="ml-[20px]" type="primary" @click="defaultExplainEvent()" plain>{{
-                                    t('useDefaultExplain') }}</el-button>
-                            </div>
-
-                        </el-form-item>
-                    </el-card>
-                </el-form>
-                <!-- 日签奖励 -->
-                <el-dialog v-model="daySignDialog" :title="t('daySignTitle')" width="1200px" :destroy-on-close="true"
-                    v-if="formData.is_use">
-                    <sign-day ref="benefitsRef" v-model="formData.day_award" />
-                    <template #footer>
-                        <span class="dialog-footer">
-                            <el-button @click="daySignDialog = false">{{ t('cancel') }}</el-button>
-                            <el-button type="primary" @click="setDaySignAward()">{{ t('confirm') }}</el-button>
-                        </span>
-                    </template>
-                </el-dialog>
-                <!-- 连签奖励 -->
-                <el-dialog v-model="continueSignDialog" :title="t('continueSignTitle')" width="1200px"
-                    :destroy-on-close="true" v-if="formData.is_use">
-                    <sign-continue ref="continueRef" v-model="continue_award" />
-                    <template #footer>
-                        <span class="dialog-footer">
-                            <el-button @click="continueSignDialog = false">{{ t('cancel') }}</el-button>
-                            <el-button type="primary" @click="setContinueSignAward()">{{ t('confirm') }}</el-button>
-                        </span>
-                    </template>
-                </el-dialog>
-                <div class="fixed-footer-wrap">
-                    <div class="fixed-footer">
-                        <el-button type="primary" @click="onSave(ruleFormRef)">{{ t('save') }}</el-button>
+                <el-form-item :label="t('daySignAward')" prop="formData.day_award" v-if="formData.is_use">
+                    <div v-for="(item, index) in daySignAwardText" :key="index">
+                        <span v-if="item.is_use == '1'">{{ item.content }}&nbsp;&nbsp;</span>
                     </div>
-                </div>
+                    <span class="cursor-pointer tutorial-btn ml-[5px]" @click="daySignAwardSet" v-if="formData.day_award == ''">{{ t('set') }}</span>
+                    <div class="flex ml-[5px]" v-else>
+                        <span class="cursor-pointer tutorial-btn" @click="daySignAwardSet">{{ t('modify') }}</span>
+                        <span class="ml-[5px] mr-[5px]">|</span>
+                        <span class="cursor-pointer tutorial-btn" @click="daySignAwardDel">{{ t('delete') }}</span>
+                    </div>
+                    <div class="form-tip">{{ t('daySignAwardTip') }}</div>
+                </el-form-item>
+
+                <el-form-item :label="t('continueSignAward')" prop="formData.continue_award" v-if="formData.is_use">
+                    <div>
+                        <div class="form-tip">{{ t('continueSignAwardTipTop') }}</div>
+                        <div class="mt-[10px]">
+                            <el-table :data="continueSignAwardTableData.data" size="large" v-loading="continueSignAwardTableData.loading">
+                                <template #empty>
+                                    <span>{{ !continueSignAwardTableData.loading ? t('emptyData') : '' }}</span>
+                                </template>
+
+                                <el-table-column prop="continue_sign" :label="t('continueSign')" min-width="120" />
+
+                                <el-table-column :label="t('continueSignAward')" min-width="300">
+                                    <template #default="{ row }">
+                                        <div v-for="(item, index) in row.continue_award" :key="index">
+                                            <span v-if="item.is_use == '1'">{{ item.content }}</span>
+                                        </div>
+                                    </template>
+                                </el-table-column>
+
+                                <el-table-column :label="t('receiveLimit')" min-width="120">
+                                    <template #default="{ row }">
+                                        <span v-if="row.receive_limit == 1">{{ t('noLimit') }}</span>
+                                        <span v-else>{{ t('everyOneLimit') }}{{ row.receive_num }}{{ t('time') }}</span>
+                                    </template>
+                                </el-table-column>
+
+                                <el-table-column :label="t('operation')" align="right" fixed="right" width="130">
+                                    <template #default="scope">
+                                        <el-button type="primary" link @click="continueSignAwardModify(true, scope.$index)">{{ t('modify') }}</el-button>
+                                        <el-button type="primary" link @click="deleteContinueSignAwardEvent(scope.$index)">{{ t('delete') }}</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </div>
+                        <div class="flex mt-[10px]">
+                            <span class="cursor-pointer tutorial-btn" @click="continueSignAwardSet">{{ t('add') }}</span>
+                        </div>
+                        <div class="form-tip">{{ t('continueSignAwardTipBottom') }}</div>
+                    </div>
+                </el-form-item>
+
+                <el-form-item :label="t('ruleExplain')" prop="formData.rule_explain" v-if="formData.is_use">
+                    <div class="flex">
+                        <el-input v-model="formData.rule_explain" :placeholder="t('ruleExplainTip')" type="textarea" rows="5" class="textarea-width" clearable />
+                        <el-button class="ml-[20px]" type="primary" @click="defaultExplainEvent()" plain>{{ t('useDefaultExplain') }}</el-button>
+                    </div>
+                </el-form-item>
             </el-card>
-        </el-card>
+        </el-form>
+
+        <!-- 日签奖励 -->
+        <el-dialog v-model="daySignDialog" :title="t('daySignTitle')" width="1200px" :destroy-on-close="true" v-if="formData.is_use">
+            <sign-day ref="benefitsRef" v-model="formData.day_award" />
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="daySignDialog = false">{{ t('cancel') }}</el-button>
+                    <el-button type="primary" @click="setDaySignAward()">{{ t('confirm') }}</el-button>
+                </span>
+            </template>
+        </el-dialog>
+
+        <!-- 连签奖励 -->
+        <el-dialog v-model="continueSignDialog" :title="t('continueSignTitle')" width="1200px" :destroy-on-close="true" v-if="formData.is_use">
+            <sign-continue ref="continueRef" v-model="continue_award" />
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="continueSignDialog = false">{{ t('cancel') }}</el-button>
+                    <el-button type="primary" @click="setContinueSignAward()">{{ t('confirm') }}</el-button>
+                </span>
+            </template>
+        </el-dialog>
+
+        <div class="fixed-footer-wrap">
+            <div class="fixed-footer">
+                <el-button type="primary" @click="onSave(ruleFormRef)">{{ t('save') }}</el-button>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -238,7 +221,6 @@ const setMemberBenefitsContent = async () => {
     })
 }
 
-
 /**
  * 获取连签奖励显示文本
  * @param content 请求参数
@@ -257,7 +239,6 @@ const setMemberBenefitsContents = async (content: any, item: any, index: number 
     newArr.continue_sign = item.continue_sign
     newArr.receive_limit = item.receive_limit
     newArr.continue_award = continueSignAwardText.value
-
 
     if (!isEdit) {
         if (tag == 0) {
@@ -304,7 +285,6 @@ const daySignAwardSet = () => {
 const benefitsRef = ref(null)
 const setDaySignAward = async () => {
     if (!await benefitsRef.value?.verify()) return
-    console.log(formData.day_award)
     daySignDialog.value = false
     if (!formData.day_award.hasOwnProperty('balance') && !formData.day_award.hasOwnProperty('point') && formData.day_award.shop_coupon.is_use == 0) {
         formData.day_award = ''
@@ -393,25 +373,23 @@ const deleteContinueSignAwardEvent = (index: number) => {
 const defaultExplainEvent = () => {
     formData.rule_explain = t('ruleExplainDefault');
 }
-
-
 </script>
 
 <style lang="scss" scoped>
-.input-width {
-    width: 100px;
-}
+    .input-width {
+        width: 100px;
+    }
 
-.textarea-width {
-    width: 400px;
-}
+    .textarea-width {
+        width: 400px;
+    }
 
-.el-form .form-tip {
-    line-height: 1.5;
-    margin-top: 5px;
-}
+    .el-form .form-tip {
+        line-height: 1.5;
+        margin-top: 5px;
+    }
 
-.tutorial-btn {
-    color: var(--el-color-primary);
-}
+    .tutorial-btn {
+        color: var(--el-color-primary);
+    }
 </style>

@@ -1,11 +1,12 @@
 <template>
-    <div class="main-container rounded-[4px]">
+    <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
+
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
             </div>
 
-            <div class="mt-[10px]">
+            <div class="mt-[20px]">
                 <el-table :data="addonList" size="large" v-loading="loading">
                     <template #empty>
                         <span>{{ !loading ? t('emptyData') : '' }}</span>
@@ -31,38 +32,39 @@
                             <el-button type="primary" link @click="openSettingLayer(row.key)">{{ t('setting') }}</el-button>
                         </template>
                     </el-table-column>
-
                 </el-table>
             </div>
         </el-card>
     </div>
 
-    <el-dialog v-model="showDialog" :title="t('selectLayout')" width="50%" class="diy-dialog-wrap"
-               :destroy-on-close="true">
-        <div class="h-[50vh]">
+    <el-dialog v-model="showDialog" :title="t('selectLayout')" width="800" :destroy-on-close="true">
+        <div class="h-[300px]">
             <el-scrollbar >
-                <div class="flex flex-wrap">
-                    <div class="w-[180px] h-[130px] border mr-[10px] mb-[10px] hover:border-primary cursor-pointer"
+                <h3 class="panel-title !text-sm">{{ t('layout') }}</h3>
+                <div class="flex justify-items-stretch">
+                    <div class="w-[180px] h-[130px] mr-[10px] mb-[10px] border hover:border-primary cursor-pointer"
                          :class="{'border-primary': ((!layoutConfig[currAddon] && item.layout == 'default') || (layoutConfig[currAddon] == item.layout)) }"
                          @click="layoutConfig[currAddon] = item.layout"
                          v-for="item in systemLayout">
-                        <img :src="assetImg(item.cover)" class="w-full h-full" />
+                        <img :src="img(item.cover)" class="w-full h-full" />
                     </div>
-                    <div class="w-[180px] h-[130px] border mr-[10px] mb-[10px] hover:border-primary cursor-pointer"
+                    <div class="w-[180px] h-[130px] mr-[20px] border hover:border-primary cursor-pointer"
                          :class="{'border-primary': ((!layoutConfig[currAddon] && addonLayout.layout == 'default') || (layoutConfig[currAddon] == addonLayout.layout)) }"
                          @click="layoutConfig[currAddon] = addonLayout.layout"
                          v-if="addonLayout">
-                        <img :src="assetImg(addonLayout.cover)" class="w-full h-full" />
+                        <img :src="img(addonLayout.cover)" class="w-full h-full" />
                     </div>
+                </div>
+                <h3 class="panel-title !text-sm">{{ t('themeColor') }}</h3>
+                <div class="flex justify-items-stretch">
+                    <el-color-picker v-model="themeColor[currAddon]" size="large" />
                 </div>
             </el-scrollbar>
         </div>
         <template #footer>
             <span class="dialog-footer">
                 <el-button @click="showDialog = false">{{ t('cancel') }}</el-button>
-                <el-button type="primary" :loading="loading" @click="confirm()">{{
-                        t('confirm')
-                    }}</el-button>
+                <el-button type="primary" :loading="loading" @click="confirm()">{{ t('confirm') }}</el-button>
             </span>
         </template>
     </el-dialog>
@@ -73,8 +75,8 @@ import { ref } from 'vue'
 import { t } from '@/lang'
 import { useRoute } from 'vue-router'
 import { getInstalledAddonList } from '@/app/api/addon'
-import { setLayout, getLayout } from '@/app/api/sys'
-import { assetImg } from '@/utils/common'
+import { setLayout, getLayout, getThemecolor, setThemecolor } from '@/app/api/sys'
+import { img } from '@/utils/common'
 
 const route = useRoute()
 const pageName = route.meta.title
@@ -82,6 +84,7 @@ const loading = ref(true)
 const layoutConfig = ref({})
 const systemLayout = ref([])
 const addonLayout = ref(null)
+const themeColor = ref({})
 const addonList = ref([
     {
         title: t('manyApp'),
@@ -109,6 +112,9 @@ const getLayoutConfig = () => {
     getLayout().then(({ data }) => {
         layoutConfig.value = data
     })
+    getThemecolor().then(({ data }) => {
+        themeColor.value = data
+    })
 }
 getLayoutConfig()
 
@@ -126,14 +132,16 @@ const openSettingLayer = async (key: string) => {
 }
 
 const confirm = () => {
+    setThemecolor({
+        key: currAddon.value,
+        value: themeColor.value[currAddon.value] ? themeColor.value[currAddon.value] : ''
+    })
     setLayout({
         key: currAddon.value,
         value: layoutConfig.value[currAddon.value] ? layoutConfig.value[currAddon.value] : 'default'
-    }).then(() => {
-        showDialog.value = false
     })
+    showDialog.value = false
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -1,68 +1,64 @@
 <template>
-    <div class="main-container p-5 bg-[#fff] rounded-[4px]">
-        <div class="flex justify-between items-center mb-[20px]">
-            <span class="text-page-title">{{ pageName }}</span>
-        </div>
-        <el-tabs v-model="activeName" class="demo-tabs" @tab-change="handleClick">
-            <el-tab-pane :label="t('wechatAccessFlow')" name="/channel/wechat" />
-            <el-tab-pane :label="t('customMenu')" name="/channel/wechat/menu" />
-            <el-tab-pane :label="t('wechatTemplate')" name="/channel/wechat/message" />
-            <el-tab-pane :label="t('reply')" name="/channel/wechat/reply" />
-        </el-tabs>
-        <el-card class="box-card !border-none" shadow="never">
+    <!--模板消息-->
+    <div class="main-container">
+        <el-card class="card !border-none" shadow="never">
+
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
-                <el-button type="primary" class="w-[100px]" @click="batchAcquisitionFn()">{{ t('batchAcquisition')
-                }}</el-button>
+                <el-button type="primary" class="w-[100px]" @click="batchAcquisitionFn()">{{ t('batchAcquisition') }}</el-button>
             </div>
-            <div class="mt-[10px]">
-                <el-table :data="cronTableData.data" :span-method="templateSpan" size="large" v-loading="cronTableData.loading">
-                    <template #empty>
-                        <span>{{ !cronTableData.loading ? t('emptyData') : '' }}</span>
+
+            <el-tabs v-model="activeName" class="my-[20px]" @tab-change="handleClick">
+                <el-tab-pane :label="t('wechatAccessFlow')" name="/channel/wechat" />
+                <el-tab-pane :label="t('customMenu')" name="/channel/wechat/menu" />
+                <el-tab-pane :label="t('wechatTemplate')" name="/channel/wechat/message" />
+                <el-tab-pane :label="t('reply')" name="/channel/wechat/reply" />
+            </el-tabs>
+
+            <el-table :data="cronTableData.data" :span-method="templateSpan" size="large" v-loading="cronTableData.loading">
+                <template #empty>
+                    <span>{{ !cronTableData.loading ? t('emptyData') : '' }}</span>
+                </template>
+
+                <el-table-column prop="addon_name" :label="t('addon')" min-width="120" />
+                <el-table-column prop="name" :show-overflow-tooltip="true" :label="t('name')" min-width="150" >
+                    <template #default="{ row }">
+                        <div class="flex items-center">
+                            <span class="mr-[5px]">{{row.name }}</span>
+                            <el-tooltip :content="row.wechat.tips" v-if="row.wechat.tips" placement="top">
+                                <icon name="element WarningFilled" />
+                            </el-tooltip>
+                        </div>
                     </template>
-                    <el-table-column prop="addon_name" :label="t('addon')" min-width="120" />
-                    <el-table-column prop="name" :show-overflow-tooltip="true" :label="t('name')" min-width="150" >
-                        <template #default="{ row }">
-                            <div class="flex items-center">
-                                <span class="mr-[5px]">{{row.name }}</span>
-                                <el-tooltip :content="row.wechat.tips" v-if="row.wechat.tips" placement="top">
-                                    <icon name="element-WarningFilled" />
-                                </el-tooltip>
-                            </div>
-                        </template>
-                    </el-table-column>
+                </el-table-column>
 
-                    <el-table-column :label="t('messageType')" min-width="100" align="center">
-                        <template #default="{ row }">
-                            <span>{{ row.message_type == 1 ? t('buyerNews') : t('sellerMessage') }}</span>
-                        </template>
-                    </el-table-column>
+                <el-table-column :label="t('messageType')" min-width="100" align="center">
+                    <template #default="{ row }">
+                        <span>{{ row.message_type == 1 ? t('buyerNews') : t('sellerMessage') }}</span>
+                    </template>
+                </el-table-column>
 
-                    <el-table-column :label="t('isStart')" min-width="100" align="center">
-                        <template #default="{ row }">
-                            {{ row.is_wechat == 1 ? t('startUsing') : t('statusDeactivate') }}
-                        </template>
-                    </el-table-column>
+                <el-table-column :label="t('isStart')" min-width="100" align="center">
+                    <template #default="{ row }">
+                        {{ row.is_wechat == 1 ? t('startUsing') : t('statusDeactivate') }}
+                    </template>
+                </el-table-column>
 
-                    <el-table-column :label="t('response')" min-width="180">
-                        <template #default="{ row }">
-                            <div v-for="(item, index) in row.wechat.content" :key="'a' + index" class="text-left">
-                                {{ item.join("：") }}</div>
-                        </template>
-                    </el-table-column>
+                <el-table-column :label="t('response')" min-width="180">
+                    <template #default="{ row }">
+                        <div v-for="(item, index) in row.wechat.content" :key="'a' + index" class="text-left">{{ item.join("：") }}</div>
+                    </template>
+                </el-table-column>
 
-                    <el-table-column prop="wechat_template_id" :label="t('serialNumber')" min-width="140" />
+                <el-table-column prop="wechat_template_id" :label="t('serialNumber')" min-width="140" />
 
-                    <el-table-column :label="t('operation')" fixed="right" align="right" width="200">
-                        <template #default="{ row }">
-                            <el-button type="primary" link @click="infoSwitch(row)">{{ row.is_wechat == 1 ? t('close') :
-                                t('open') }}</el-button>
-                            <el-button type="primary" link @click="batchAcquisitionFn(row)">{{ t('regain') }}</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
-
+                <el-table-column :label="t('operation')" fixed="right" align="right" width="200">
+                    <template #default="{ row }">
+                        <el-button type="primary" link @click="infoSwitch(row)">{{ row.is_wechat == 1 ? t('close') : t('open') }}</el-button>
+                        <el-button type="primary" link @click="batchAcquisitionFn(row)">{{ t('regain') }}</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
         </el-card>
     </div>
 </template>

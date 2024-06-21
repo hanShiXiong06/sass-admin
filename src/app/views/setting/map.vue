@@ -1,11 +1,12 @@
 <template>
     <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
+
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ t('mapSetting') }}</span>
             </div>
 
-            <el-form :model="formData" :rules="formRules" label-width="150px" ref="formRef" class="page-form" v-loading="loading">
+            <el-form class="page-form mt-[20px]" :model="formData" :rules="formRules" label-width="150px" ref="formRef" v-loading="loading">
                 <el-form-item :label="t('mapKey')" prop="key">
                     <el-input v-model.trim="formData.key" class="input-width" clearable />
                     <span class="ml-2 cursor-pointer tutorial-btn" @click="tutorialFn">{{ t('clickTutorial') }}</span>
@@ -20,13 +21,14 @@
                 </el-form-item>
                 <div class="ml-[150px] text-sm text-gray-400">{{ t('validTimeTips') }}</div>
             </el-form>
-
-            <div class="fixed-footer-wrap">
-                <div class="fixed-footer">
-                    <el-button type="primary" :loading="loading" @click="save(formRef)">{{ t('save') }}</el-button>
-                </div>
-            </div>
         </el-card>
+
+        <div class="fixed-footer-wrap">
+            <div class="fixed-footer">
+                <el-button type="primary" :loading="loading" @click="save(formRef)">{{ t('save') }}</el-button>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -104,14 +106,14 @@ const tutorialFn = () => {
 const secretFn = () => {
     window.open('https://lbs.qq.com/dev/console/key/manage')
 }
-
 </script>
-<style lang="scss" scoped>
-.tutorial-btn{
-    color:var(--el-color-primary);
-}
 
-.secret-btn{
-    color:var(--el-color-primary);
-}
+<style lang="scss" scoped>
+    .tutorial-btn {
+        color:var(--el-color-primary);
+    }
+
+    .secret-btn {
+        color:var(--el-color-primary);
+    }
 </style>

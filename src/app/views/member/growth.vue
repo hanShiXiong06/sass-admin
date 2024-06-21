@@ -1,9 +1,12 @@
 <template>
+    <!--会员成长值-->
     <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
-            <div class="flex justify-between items-center mb-[5px]">
+
+            <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
             </div>
+
             <el-card class="box-card !border-none mb-[10px] table-search-wrap" shadow="never">
                 <el-form :inline="true" :model="memberAccountLogTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('fromType')" prop="from_type">
@@ -88,8 +91,9 @@ import pointInfo from '@/app/views/member/components/member-point-info.vue'
 import { useRouter, useRoute } from 'vue-router'
 
 const route = useRoute()
-const memberId: number = parseInt(route.query.id || 0)
 const pageName = route.meta.title
+
+const memberId: number = parseInt(route.query.id || 0)
 
 const memberAccountLogTableData = reactive({
     page: 1,

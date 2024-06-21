@@ -21,6 +21,7 @@
     "verifyType": "核销类型",
     "verifyTypePlaceholder": "请选择核销类型",
     "verifier": "核销员",
+    "verifierPlaceholder": "请选择核销员",
     "createTime":"添加时间",
 	"addVerifier":"添加核销员",
 	"verifierDeleteTips":"确定要删除该核销员吗？",

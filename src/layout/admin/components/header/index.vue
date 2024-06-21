@@ -4,17 +4,19 @@
         <div class="left-panel flex items-center text-[14px] leading-[1]">
             <!-- 刷新当前页 -->
             <div class="navbar-item flex items-center h-full cursor-pointer" @click="refreshRouter">
-                <icon name="element-Refresh" />
+                <icon name="element Refresh" />
             </div>
             <!-- 面包屑导航 -->
             <div class="flex items-center h-full pl-[10px] hidden-xs-only">
                 <el-breadcrumb separator="/">
-                    <el-breadcrumb-item v-for="(route, index) in breadcrumb" :key="index">{{route.meta.title }}</el-breadcrumb-item>
-                    </el-breadcrumb>
+	                <el-breadcrumb-item v-for="(route, index) in breadcrumb" :key="index">{{route.meta.title }}</el-breadcrumb-item>
+                </el-breadcrumb>
             </div>
         </div>
         <div class="right-panel h-full flex items-center justify-end">
-           
+            <div class="navbar-item flex items-center h-full cursor-pointer">
+                <layout-setting />
+            </div>
             <!-- 用户信息 -->
             <div class="navbar-item flex items-center h-full cursor-pointer">
                 <user-info />
@@ -55,19 +57,19 @@
 </template>
 
 <script lang="ts" setup>
-import { ref,computed } from 'vue'
+import { ref, computed } from 'vue'
 import useUserStore from '@/stores/modules/user'
 import useAppStore from '@/stores/modules/app'
-import { useRoute,useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { t } from '@/lang'
 import storage from '@/utils/storage'
 import userInfo from './user-info.vue'
-import { findFirstValidRoute } from "@/router/routers"
+import layoutSetting from './layout-setting.vue'
+
 const route = useRoute()
-const router = useRouter()
 const appStore = useAppStore()
 const userStore = useUserStore()
-const routers = userStore.routers
+
 // 检测登录 start
 const detectionLoginDialog = ref(false)
 const comparisonToken = ref('')
@@ -123,9 +125,4 @@ storage.set({ key: 'currHeadMenuName', data: "" })
         background-color: var(--el-color-primary);
     }
 }
-</style>
-<style>
-/* .layout-admin .el-dropdown{
-    color: #fff;
-} */
 </style>

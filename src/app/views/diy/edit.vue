@@ -13,12 +13,14 @@
                 <!--<el-icon class="font-bold"><EditPen /></el-icon>-->
             </div>
 
-            <div v-if="diyStore.type && diyStore.type != 'DIY_PAGE'">
+            <div v-if="diyStore.type && diyStore.type != 'DIY_PAGE'" class="flex items-center">
                 <span class="text-white mr-[10px] text-base">{{ t('templatePagePlaceholder') }}</span>
-                <el-select size="small" v-model="template" class="w-[180px]" :placeholder="t('templatePagePlaceholder')" @change="changeTemplatePage">
-                    <el-option :label="t('templatePageEmpty')" value="" />
-                    <el-option v-for="(item, key) in templatePages" :label="item.title" :value="key" :key="key"/>
-                </el-select>
+                <div class="w-[180px]">
+                    <el-select size="small" v-model="template" :placeholder="t('templatePagePlaceholder')" @change="changeTemplatePage">
+                        <el-option :label="t('templatePageEmpty')" value="" />
+                        <el-option v-for="(item, key) in templatePages" :label="item.title" :value="key" :key="key"/>
+                    </el-select>
+                </div>
             </div>
             <div class="flex-1"></div>
             <el-button @click="preview()">{{ t('preview') }}</el-button>
@@ -36,7 +38,7 @@
                             <ul class="flex flex-row flex-wrap">
                                 <li v-for="(compItem, compKey) in item.list" :key="compKey" class="w-2/6 text-center cursor-pointer h-[65px]" :title="compItem.title" @click="diyStore.addComponent(compKey, compItem)">
                                     <icon v-if="compItem.icon" :name="compItem.icon" size="20px" class="inline-block mt-[3px]" />
-                                    <icon v-else name="iconfont-iconkaifazujian" size="20px" class="inline-block mt-[3px]" />
+                                    <icon v-else name="iconfont iconkaifazujian" size="20px" class="inline-block mt-[3px]" />
                                     <span class="block text-[12px] truncate">{{ compItem.title }}</span>
                                 </li>
                             </ul>
@@ -84,19 +86,19 @@
 
                             <ul class="quick-action absolute text-center -right-[70px] top-[20px] w-[42px] rounded shadow-md">
                                 <el-tooltip effect="light" :content="t('moveUpComponent')" placement="right">
-                                    <icon name="iconfont-iconjiantoushang" size="20px" class="block cursor-pointer leading-[40px]" @click="diyStore.moveUpComponent" />
+                                    <icon name="iconfont iconjiantoushang" size="20px" class="block cursor-pointer leading-[40px]" @click="diyStore.moveUpComponent" />
                                 </el-tooltip>
                                 <el-tooltip effect="light" :content="t('moveDownComponent')" placement="right">
-                                    <icon name="iconfont-iconjiantouxia" size="20px" class="block cursor-pointer leading-[40px]" @click="diyStore.moveDownComponent" />
+                                    <icon name="iconfont iconjiantouxia" size="20px" class="block cursor-pointer leading-[40px]" @click="diyStore.moveDownComponent" />
                                 </el-tooltip>
                                 <el-tooltip effect="light" :content="t('copyComponent')" placement="right">
-                                    <icon name="iconfont-iconcopy-line" size="20px" class="block cursor-pointer leading-[40px]" @click="diyStore.copyComponent" />
+                                    <icon name="iconfont iconcopy-line" size="20px" class="block cursor-pointer leading-[40px]" @click="diyStore.copyComponent" />
                                 </el-tooltip>
                                 <el-tooltip effect="light" :content="t('delComponent')" placement="right">
-                                    <icon name="iconfont-icondelete-line" size="20px" class="block cursor-pointer leading-[40px]" @click="diyStore.delComponent" />
+                                    <icon name="iconfont icondelete-line" size="20px" class="block cursor-pointer leading-[40px]" @click="diyStore.delComponent" />
                                 </el-tooltip>
                                 <el-tooltip effect="light" :content="t('resetComponent')" placement="right">
-                                    <icon name="iconfont-iconloader-line" size="20px" class="block cursor-pointer leading-[40px]" @click="diyStore.resetComponent" />
+                                    <icon name="iconfont iconloader-line" size="20px" class="block cursor-pointer leading-[40px]" @click="diyStore.resetComponent" />
                                 </el-tooltip>
                             </ul>
 
@@ -145,7 +147,7 @@
                                             <template v-if="diyStore.editComponent.ignore.indexOf('pageBgColor') == -1">
                                                 <el-form-item :label="t('bottomBgColor')">
                                                     <el-color-picker v-model="diyStore.editComponent.pageStartBgColor" show-alpha :predefine="diyStore.predefineColors" />
-                                                    <icon name="iconfont-iconmap-connect" size="20px" class="block !text-gray-400 mx-[5px]"/>
+                                                    <icon name="iconfont iconmap-connect" size="20px" class="block !text-gray-400 mx-[5px]"/>
                                                     <el-color-picker v-model="diyStore.editComponent.pageEndBgColor" show-alpha :predefine="diyStore.predefineColors" />
                                                 </el-form-item>
                                                 <div class="text-sm text-gray-400 ml-[90px] mb-[10px]">{{ t('bottomBgTips') }}</div>
@@ -168,7 +170,7 @@
 
                                             <el-form-item :label="t('componentBgColor')" v-if="diyStore.editComponent.ignore.indexOf('componentBgColor') == -1">
                                                 <el-color-picker v-model="diyStore.editComponent.componentStartBgColor" show-alpha :predefine="diyStore.predefineColors" />
-                                                <icon name="iconfont-iconmap-connect" size="20px" class="block !text-gray-400 mx-[5px]"/>
+                                                <icon name="iconfont iconmap-connect" size="20px" class="block !text-gray-400 mx-[5px]"/>
                                                 <el-color-picker v-model="diyStore.editComponent.componentEndBgColor" show-alpha :predefine="diyStore.predefineColors" />
                                             </el-form-item>
 
@@ -328,7 +330,7 @@ watch(
 // 切换模板页面
 const changeTemplatePage = (value:any)=> {
     // 存在数据则弹框提示确认
-    if(diyStore.value.length) {
+    if (diyStore.value.length) {
         ElMessageBox.confirm(t('changeTemplatePageTips'), t('warning'), {
             confirmButtonText: t('confirm'),
             cancelButtonText: t('cancel'),
@@ -344,13 +346,13 @@ const changeTemplatePage = (value:any)=> {
             } else {
                 // 清空
                 diyStore.init();
-                if(route.query.title) diyStore.global.title = diyStore.typeName
+                if (route.query.title) diyStore.global.title = diyStore.typeName
             }
         }).catch(() => {
             // 还原
             template.value = oldTemplate.value;
         });
-    }else{
+    } else {
         if (value) {
             let data = templatePages[value].data;
             diyStore.global = data.global;
@@ -360,7 +362,7 @@ const changeTemplatePage = (value:any)=> {
         } else {
             // 清空
             diyStore.init();
-            if(route.query.title) diyStore.global.title = diyStore.typeName
+            if (route.query.title) diyStore.global.title = diyStore.typeName
         }
     }
 };
@@ -402,6 +404,7 @@ initPage({
     diyStore.type = data.type
     diyStore.typeName = data.type_name
     diyStore.templateName = data.template
+    template.value = data.template;
     diyStore.isDefault = data.is_default
     diyStore.pageMode = data.mode
     if (data.value) {
@@ -440,23 +443,6 @@ initPage({
             delete com.type
             delete com.icon
             diyStore.components.push(com)
-        }
-    }
-
-    // 加载插件引用
-    if (data.addon_list) {
-        const addonModules = import.meta.glob('@/**/views/diy/components/*.vue')
-        for (let i = 0; i < data.addon_list.length; i++) {
-            const item = data.addon_list[i]
-            for (const [key, value] of Object.entries(addonModules)) {
-                const moduleName = key.split('/')
-                const addonName = moduleName[2]
-                if (item.key == addonName) {
-                    const name = moduleName[moduleName.length - 1].replace('.vue', '')
-                    const module = await value()
-                    modules[name] = module.default
-                }
-            }
         }
     }
 
@@ -737,100 +723,104 @@ const settingTips = () => {
     border: none;
 }
 
-
-.diy-view-wrap .preview-head{
+.diy-view-wrap .preview-head {
     padding: 28px 15px 0;
-    .content-wrap{
+
+    .content-wrap {
         height: 30px;
     }
-	&.style-1 {
-		.content-wrap {
-			.title-wrap {
+
+    &.style-1 {
+        .content-wrap {
+            .title-wrap {
                 height: 30px;
                 line-height: 30px;
-			}
-		}
-	}
+            }
+        }
+    }
 
-	&.style-2 {
-		.content-wrap {
-			.title-wrap {
-				display: flex;
+    &.style-2 {
+        .content-wrap {
+            .title-wrap {
+                display: flex;
                 align-items: center;
 
-				> div {
-					height: 30px;
-					line-height: 30px;
-					max-width: 150px;
-					font-size: 14px;
+                > div {
+                    height: 30px;
+                    line-height: 30px;
+                    max-width: 150px;
+                    font-size: 14px;
 
-					&:last-child {
-						overflow: hidden; //超出的文本隐藏
-						text-overflow: ellipsis; //用省略号显示
-						white-space: nowrap; //不换行
-						flex: 1;
-					    max-width: 200px;
-					}
-				}
-			}
-		}
-	}
+                    &:last-child {
+                        overflow: hidden; //超出的文本隐藏
+                        text-overflow: ellipsis; //用省略号显示
+                        white-space: nowrap; //不换行
+                        flex: 1;
+                        max-width: 200px;
+                    }
+                }
+            }
+        }
+    }
 
-	&.style-3 {
-		.content-wrap {
+    &.style-3 {
+        .content-wrap {
             display: flex;
             align-items: center;
-			.title-wrap {
-				height: 30px;
-				max-width: 85px;
-				margin-right: 5px;
-				display: flex;
-				align-items: center;
-                justify-content: center;
-			}
 
-			.search {
-				flex: 1;
-				padding-right: 10px;
+            .title-wrap {
+                height: 30px;
+                max-width: 85px;
+                margin-right: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .search {
+                flex: 1;
+                padding-right: 10px;
                 padding-left: 31px;
                 position: relative;
-				background-color: #fff;
-				text-align: left;
-				border-radius: 30px;
-				height: 30px;
-				line-height: 30px;
-				border: 1px solid #eeeeee;
-				color: rgb(102, 102, 102);
-				display: flex;
-				align-items: center;
-				margin-right: 105px;
+                background-color: #fff;
+                text-align: left;
+                border-radius: 30px;
+                height: 30px;
+                line-height: 30px;
+                border: 1px solid #eeeeee;
+                color: rgb(102, 102, 102);
+                display: flex;
+                align-items: center;
+                margin-right: 105px;
                 overflow: hidden;
-                span{
+
+                span {
                     overflow: hidden; //超出的文本隐藏
                     text-overflow: ellipsis; //用省略号显示
                     white-space: nowrap; //不换行
                 }
-				.iconfont {
-					color: #909399;
-					font-size: 16px;
-					margin-right: 5px;
-				}
-			}
-		}
-	}
 
-	&.style-4 {
-		.content-wrap {
+                .iconfont {
+                    color: #909399;
+                    font-size: 16px;
+                    margin-right: 5px;
+                }
+            }
+        }
+    }
+
+    &.style-4 {
+        .content-wrap {
             display: flex;
             align-items: center;
 
-			.title-wrap {
-				flex: none;
-				margin: 0 5px;
-				max-width: 180px;
-				font-size: 14px;
-			}
-		}
-	}
+            .title-wrap {
+                flex: none;
+                margin: 0 5px;
+                max-width: 180px;
+                font-size: 14px;
+            }
+        }
+    }
 }
 </style>

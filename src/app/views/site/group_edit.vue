@@ -1,36 +1,30 @@
 <template>
-    <div class="main-container mb-80" v-loading="loading">
-        <div class="detail-head !mb-[10px]">
-            <div class="left" @click="back">
-                <span class="iconfont iconxiangzuojiantou !text-xs"></span>
-                <span class="ml-[1px]">{{ t('returnToPreviousPage') }}</span>
-            </div>
-            <span class="adorn">|</span>
-            <span class="right">{{ pageName }}</span>
-        </div>
-        <el-card class="box-card !border-none" shadow="never">
+    <!--站点套餐编辑-->
+    <div class="main-container" v-loading="loading">
+
+        <el-card class="card !border-none" shadow="never">
+            <el-page-header :content="pageName" :icon="ArrowLeft" @back="$router.back()" />
+        </el-card>
+
+        <el-card class="box-card mt-[15px] !border-none" shadow="never">
             <el-form :model="formData" label-width="110px" ref="formRef" :rules="formRules" class="page-form">
                 <el-form-item :label="t('groupName')" prop="group_name">
-                    <el-input v-model="formData.group_name" :placeholder="t('groupNamePlaceholder')" clearable
-                        :disabled="formData.uid" class="input-width" maxlength="20" :show-word-limit="true" />
+                    <el-input v-model="formData.group_name" :placeholder="t('groupNamePlaceholder')" clearable :disabled="formData.uid" class="input-width" maxlength="20" :show-word-limit="true" />
                 </el-form-item>
                 <el-form-item :label="t('groupDesc')" prop="group_desc">
-                    <el-input v-model="formData.group_desc" type="textarea" rows="4" clearable
-                        :placeholder="t('groupDescPlaceholder')" class="input-width" maxlength="100" />
+                    <el-input v-model="formData.group_desc" type="textarea" rows="4" clearable :placeholder="t('groupDescPlaceholder')" class="input-width" maxlength="100" />
                 </el-form-item>
                 <el-form-item :label="t('mainApp')" prop="app">
                     <div class="text-gray-400" v-if="!appList.length">{{ t('appListEmpty') }}</div>
                     <el-checkbox-group v-model="formData.app" class="flex flex-wrap w-full" v-else>
                         <template #default>
                             <div class="flex w-[300px]" v-for="(item, index) in appList" :key="index">
-                                <el-checkbox :label="item.key" name=""
-                                             class="w-full !h-auto border border-solid p-[10px] !mr-[10px] !mb-[10px] rounded-md">
+                                <el-checkbox :label="item.key" name="" class="w-full !h-auto border border-[var(--el-color-info-light-7)] border-solid p-[10px] !mr-[10px] !mb-[10px] rounded-md">
                                     <template #default>
                                         <div class="w-full">
                                             <div class="flex">
                                                 <div class="w-[60px] h-[60px] mr-[10px] rounded-md overflow-hidden">
-                                                    <el-image :src="item.icon" v-if="item.icon"
-                                                              class="w-full h-full" />
+                                                    <el-image :src="item.icon" v-if="item.icon" class="w-full h-full" />
                                                     <el-image v-else class="w-full h-full">
                                                         <template #error>
                                                             <div class="image-error">
@@ -57,14 +51,12 @@
                     <el-checkbox-group v-model="formData.addon" class="flex flex-wrap w-full" v-else>
                         <template #default>
                             <div class="flex w-[300px]" v-for="(item, index) in addonList" :key="index">
-                                <el-checkbox :label="item.key" name=""
-                                    class="w-full !h-auto border border-solid p-[10px] !mr-[10px] !mb-[10px] rounded-md">
+                                <el-checkbox :label="item.key" name="" class="w-full !h-auto border border-[var(--el-color-info-light-7)] border-solid p-[10px] !mr-[10px] !mb-[10px] rounded-md">
                                     <template #default>
                                         <div class="w-full">
                                             <div class="flex">
                                                 <div class="w-[60px] h-[60px] mr-[10px] rounded-md overflow-hidden">
-                                                    <el-image :src="item.icon" v-if="item.icon"
-                                                        class="w-full h-full" />
+                                                    <el-image :src="item.icon" v-if="item.icon" class="w-full h-full" />
                                                     <el-image v-else class="w-full h-full">
                                                         <template #error>
                                                             <div class="image-error">
@@ -89,7 +81,7 @@
 
             <div class="fixed-footer-wrap">
                 <div class="fixed-footer">
-                    <el-button type="primary" @click="confirm(formRef)" v-loading="saveLoding">{{ t('save') }}</el-button>
+                    <el-button type="primary" @click="confirm(formRef)" v-loading="saveLoading">{{ t('save') }}</el-button>
                     <el-button @click="back()">{{ t('cancel') }}</el-button>
                 </div>
             </div>
@@ -101,9 +93,10 @@
 import { ref, computed } from 'vue'
 import { t } from '@/lang'
 import type { FormInstance } from 'element-plus'
+import { ArrowLeft } from '@element-plus/icons-vue'
 import { addSiteGroup, editSiteGroup, getSiteGroupInfo } from '@/app/api/site'
 import { getInstalledAddonList } from '@/app/api/addon'
-import { img } from '@/utils/common'
+import { img, deepClone } from '@/utils/common'
 import { useRouter, useRoute } from 'vue-router'
 
 const loading = ref(true)
@@ -112,7 +105,7 @@ const addonList = ref([])
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
-const saveLoding = ref(false)
+const saveLoading = ref(false)
 
 /**
  * 表单数据
@@ -144,9 +137,8 @@ const getInstalledAddonListFn = async () => {
 getInstalledAddonListFn()
 
 if (route.query.id) {
-    getSiteGroupInfo(route.query.id).then(({ data }) => {
-        data.app = data.app.filter((key: string) => installAddon.includes(key))
-        data.addon = data.addon.filter((key: string) => installAddon.includes(key))
+    getSiteGroupInfo(route.query.id).then((res) => {
+        let data = deepClone(res.data)
         formData.value = data
         loading.value = false
     }).catch()
@@ -177,19 +169,19 @@ const formRules = computed(() => {
  * @param formEl
  */
 const confirm = async (formEl: FormInstance | undefined) => {
-    if (saveLoding.value || !formEl) return
+    if (saveLoading.value || !formEl) return
     const save = formData.value.group_id ? editSiteGroup : addSiteGroup
 
     await formEl.validate(async (valid) => {
         if (valid) {
-            saveLoding.value = true
+            saveLoading.value = true
 
             save(formData.value).then(res => {
                 setTimeout(() => {
                     back()
                 }, 1000)
             }).catch(() => {
-                saveLoding.value = false
+                saveLoading.value = false
             })
         }
     })
@@ -197,13 +189,13 @@ const confirm = async (formEl: FormInstance | undefined) => {
 </script>
 
 <style lang="scss" scoped>
-.image-error {
-    background: var(--el-border-color-extra-light);
-    width: 100%;
-    height: 100%;
-}
+    .image-error {
+        background: var(--el-border-color-extra-light);
+        width: 100%;
+        height: 100%;
+    }
 
-:deep(.el-checkbox__label) {
-    width: 100%;
-}
+    :deep(.el-checkbox__label) {
+        width: 100%;
+    }
 </style>

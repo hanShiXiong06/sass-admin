@@ -6,6 +6,7 @@ import router from '@/router'
 import { formatRouters, findFirstValidRoute } from '@/router/routers'
 import useTabbarStore from './tabbar'
 import Test from '@/utils/test'
+import { setUserInfo } from '@/app/api/personal'
 
 interface User {
     token: string,
@@ -41,7 +42,7 @@ const userStore = defineStore('user', {
         login(form: object, app_type: any) {
             return new Promise((resolve, reject) => {
                 login(form, app_type)
-                    .then((res) => {
+                    .then(async (res) => {
                         if (app_type == 'admin' && Test.empty(res.data.userrole)) {
                             storage.setPrefix('site')
                         }
@@ -67,7 +68,7 @@ const userStore = defineStore('user', {
             this.userInfo = {}
             this.siteInfo = {}
             removeToken()
-            storage.remove(['userinfo', 'siteId', 'siteInfo'])
+            storage.remove(['userinfo', 'siteInfo'])
             this.routers = []
             logout()
             // 清除tabbar
@@ -96,6 +97,10 @@ const userStore = defineStore('user', {
                         reject(error)
                     })
             })
+        },
+        setUserInfo(data: any) {
+            this.userInfo = data
+            storage.set({ key: 'userinfo', data: data})
         }
     }
 })

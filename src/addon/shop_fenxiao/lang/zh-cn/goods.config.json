@@ -21,6 +21,7 @@
     "calculatePricePlaceholderTwo":"分销计算价不可小等于0",
     "typeLabelOne":"默认规则",
     "typeLabelTwo":"单独设置",
+    "typeLabelThree":"单独价格设置",
     "levelname":"默认规则",
     "oneRate":"一级佣金比例",
     "oneRatePlaceholder":"一级佣金比例或一级佣金金额，请填写一项",

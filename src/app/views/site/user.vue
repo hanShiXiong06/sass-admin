@@ -1,9 +1,17 @@
 <template>
+    <!--站点用户-->
     <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
+
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
+                <div>
+                    <el-button type="primary" class="w-[100px]" @click="userEditRef.setFormData()">
+                        {{ t('addUser') }}
+                    </el-button>
+                </div>
             </div>
+
             <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
                 <el-form :inline="true" :model="userTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('userName')" prop="username">
@@ -25,6 +33,7 @@
                     </el-form-item>
                 </el-form>
             </el-card>
+
             <div>
                 <el-table :data="userTableData.data" size="large" v-loading="userTableData.loading">
                     <template #empty>
@@ -56,9 +65,10 @@
                             {{ row.last_ip || '' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="t('operation')" align="right" fixed="right" width="100">
+                    <el-table-column :label="t('operation')" align="right" fixed="right" width="150">
                         <template #default="{ row }">
                             <el-button type="primary" link @click="detailEvent(row.uid)">{{ t('detail') }}</el-button>
+                            <el-button type="primary" link @click="detailEvent(row.uid, 'userCreateSiteLimit')" v-if="!row.is_super_admin">{{ t('userCreateSiteLimit') }}</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -71,20 +81,24 @@
             </div>
 
         </el-card>
+
+        <user-edit ref="userEditRef" @complete="loadUserList()"/>
     </div>
 </template>
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { t } from '@/lang'
-import { getUserList } from '@/app/api/site'
+import { getUserList } from '@/app/api/user'
 import { img } from '@/utils/common'
 import type { FormInstance } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
+import userEdit from './components/user-edit.vue'
 
 const router = useRouter()
 const route = useRoute()
 const pageName = route.meta.title
+const userEditRef = ref(null)
 
 const userTableData = reactive({
     page: 1,
@@ -133,10 +147,10 @@ loadUserList()
 
 /**
  * 查看详情
- * @param data
+ * @param uid
  */
-const detailEvent = (uid: number) => {
-    router.push({ path: '/admin/site/user_info', query: { uid } })
+const detailEvent = (uid: number, tab: string = '') => {
+    router.push({ path: '/admin/site/user_info', query: { uid, tab } })
 }
 </script>
 

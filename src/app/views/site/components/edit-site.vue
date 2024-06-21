@@ -1,20 +1,14 @@
 <template>
     <el-dialog v-model="showDialog" :title="elDialogTitle" width="500px" :destroy-on-close="true">
-        <el-form :model="formData" label-width="90px" ref="formRef" :rules="formRules" class="page-form" autocomplete="off"
-            v-loading="loading">
-            <!-- 用于处理点击站点管理出现账号密码浮窗，位置不能变，类型不能变 -->
-            <input type="password" class="absolute left-[9999px]"> 
+        <el-form :model="formData" label-width="100px" ref="formRef" :rules="formRules" class="page-form" autocomplete="off" v-loading="loading">
             <div v-if="formData.site_id == 0">
                 <el-form-item :label="t('siteName')" prop="site_name">
-                    <el-input v-model="formData.site_name" clearable :placeholder="t('siteNamePlaceholder')"
-                        class="input-width" />
+                    <el-input v-model="formData.site_name" maxlength="20" clearable :placeholder="t('siteNamePlaceholder')" class="input-width" />
                 </el-form-item>
 
                 <el-form-item :label="t('groupId')" prop="group_id">
-                    <el-select v-model="formData.group_id" clearable :placeholder="t('groupIdPlaceholder')"
-                        class="input-width">
-                        <el-option :label="item['group_name']" :value="item['group_id']"
-                            v-for="(item,index) in groupList" :key="index"/>
+                    <el-select v-model="formData.group_id" clearable :placeholder="t('groupIdPlaceholder')" class="input-width">
+                        <el-option :label="item['group_name']" :value="item['group_id']" v-for="(item,index) in groupList" :key="index"/>
                     </el-select>
                 </el-form-item>
                 <!-- <el-form-item :label="t('realName')" prop="real_name" v-if="!formData.site_id && !loading">
@@ -44,18 +38,15 @@
 
                 <div v-show="formData.uid === 0">
                     <el-form-item :label="t('username')" prop="username">
-                        <el-input v-model="formData.username" clearable :placeholder="t('usernamePlaceholder')"
-                            class="input-width"/>
+                        <el-input v-model="formData.username" clearable :placeholder="t('usernamePlaceholder')" class="input-width" :readonly="user_name_input" @click="user_name_input = false" @blur="user_name_input = true" />
                     </el-form-item>
 
                     <el-form-item :label="t('password')" prop="password">
-                        <el-input v-model="formData.password" clearable :placeholder="t('passwordPlaceholder')"
-                            class="input-width" :show-password="true" type="password"/>
+                        <el-input v-model="formData.password" clearable :placeholder="t('passwordPlaceholder')" class="input-width" :show-password="true" type="password" :readonly="password_input" @click="password_input = false" @blur="password_input = true" />
                     </el-form-item>
 
                     <el-form-item :label="t('confirmPassword')" prop="confirm_password">
-                        <el-input v-model="formData.confirm_password" :placeholder="t('confirmPasswordPlaceholder')"
-                            type="password" :show-password="true" clearable class="input-width"/>
+                        <el-input v-model="formData.confirm_password" :placeholder="t('confirmPasswordPlaceholder')" type="password" :show-password="true" clearable class="input-width" :readonly="confirm_password_input" @click="confirm_password_input = false" @blur="confirm_password_input = true" />
                     </el-form-item>
                 </div>
             </div>
@@ -65,17 +56,14 @@
                 </el-form-item>
 
                 <el-form-item :label="t('groupId')" prop="group_id">
-                    <el-select v-model="formData.group_id" clearable :placeholder="t('groupIdPlaceholder')"
-                        class="input-width">
-                        <el-option :label="item['group_name']" :value="item['group_id']"
-                            v-for="(item,index) in groupList" :key="index"/>
+                    <el-select v-model="formData.group_id" clearable :placeholder="t('groupIdPlaceholder')" class="input-width">
+                        <el-option :label="item['group_name']" :value="item['group_id']" v-for="(item,index) in groupList" :key="index"/>
                     </el-select>
                 </el-form-item>
             </div>
 
             <el-form-item :label="t('siteDomain')" prop="site_domain">
-                <el-input v-model="formData.site_domain" clearable :placeholder="t('siteDomainPlaceholder')"
-                          class="input-width" />
+                <el-input v-model="formData.site_domain" clearable :placeholder="t('siteDomainPlaceholder')" class="input-width" />
                 <div>
                     <p class="text-[12px] text-[#a9a9a9] leading-normal mt-[5px]">{{ t('siteDomainTips') }}</p>
                     <p class="text-[12px] text-[#a9a9a9] leading-normal mt-[5px]">{{ t('siteDomainTipsTwo') }}</p>
@@ -84,8 +72,7 @@
             </el-form-item>
 
             <el-form-item :label="t('expireTime')" prop="expire_time" class="input-width">
-                <el-date-picker class="flex-1 !flex" v-model="formData.expire_time" clearable type="datetime"
-                    :placeholder="t('expireTimePlaceholder')" />
+                <el-date-picker class="flex-1 !flex" v-model="formData.expire_time" clearable type="datetime" :placeholder="t('expireTimePlaceholder')" />
             </el-form-item>
         </el-form>
 
@@ -139,15 +126,15 @@ const formData: Record<string, any> = reactive({ ...initialFormData })
 
 const formRef = ref<FormInstance>()
 
+const user_name_input = ref(true)
+const password_input = ref(true)
+const confirm_password_input = ref(true)
+
 const setGroupList = async () => {
     groupList.value = await (await getSiteGroupAll()).data
 }
 setGroupList()
 
-/**
- * 应用选择
- */
-// const appChangeFn = (val) => { formData.group_id = '' }
 /**
  * 获取应用列表
  */
@@ -179,6 +166,7 @@ const formRules = computed(() => {
             { required: true, message: t('groupIdPlaceholder'), trigger: 'blur' }
         ],
         uid: [
+            { required: true, message: t('uIdPlaceholder'), trigger: 'blur' },
             {
                 validator: (rule: any, value: string, callback: any) => {
                     if (formData.uid === '') callback(new Error(t('managerPlaceholder')))
