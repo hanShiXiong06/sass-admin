@@ -1,17 +1,14 @@
 <template>
     <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
+
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
-                <el-button type="primary" @click="addEvent">
-                    {{ t('addGoods') }}
-                </el-button>
+                <el-button type="primary" @click="addEvent">{{ t('addGoods') }}</el-button>
             </div>
+
             <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
                 <el-form :inline="true" :model="goodsTable.searchParam" ref="searchFormRef">
-                  <el-form-item :label="t('商品串号')" prop="goods_name">
-                    <el-input v-model.trim="goodsTable.searchParam.sku_no" :placeholder="t('请输入商品串号_id')" maxlength="60" clearable />
-                  </el-form-item>
                     <el-form-item :label="t('goodsName')" prop="goods_name">
                         <el-input v-model.trim="goodsTable.searchParam.goods_name" :placeholder="t('goodsNamePlaceholder')" maxlength="60" />
                     </el-form-item>
@@ -76,11 +73,7 @@
                         <span>{{ !goodsTable.loading ? t('emptyData') : '' }}</span>
                     </template>
                     <el-table-column type="selection" width="55" />
-                  <el-table-column prop="sku_no" :label="t('id')" min-width="70" sortable="custom">
-                    <template #default="{ row }">
-                      <span :title="row.goods_id">{{ row.goods_id }}</span>
-                    </template>
-                  </el-table-column>
+
                     <el-table-column prop="goods_id" :label="t('goodsInfo')" min-width="300">
                         <template #default="{ row }">
                             <div class="flex items-center cursor-pointer" @click="previewEvent(row)">
@@ -94,24 +87,14 @@
                                     </el-image>
                                     <img v-else class="w-[70px] h-[70px]" src="@/addon/shop/assets/goods_default.png" fit="contain" />
                                 </div>
-                              <div class="ml-2">
-                                <span :title="row.goods_name" class="multi-hidden">{{ row.goods_name }}</span>
-                                <view class="text-[12px] multi-hidden"> {{ row.sub_title }}  </view>
-                                <view>
-                                  <el-tag type="success" v-if="row.brand_name" size="small">{{ row.brand_name }}</el-tag>
-                                  <span class="tag text-[12px]" v-if="row.brand_name"> | </span>
-                                  <span class="text-primary text-[12px]">  {{ row.goods_type_name }}</span>
-                                </view>
-
-                              </div>
+                                <div class="ml-2">
+                                    <span :title="row.goods_name" class="multi-hidden">{{ row.goods_name }}</span>
+                                    <span class="text-primary text-[12px]">{{ row.goods_type_name }}</span>
+                                </div>
                             </div>
                         </template>
                     </el-table-column>
-                  <el-table-column prop="sku_no" :label="t('串号')" min-width="130" sortable="custom">
-                    <template #default="{ row }">
-                      <span :title="row.sku_no">{{ row.goodsSku.sku_no}}</span>
-                    </template>
-                  </el-table-column>
+
                     <el-table-column prop="price" :label="t('skuPrice')" min-width="120" align="right" sortable="custom">
                         <template #default="{ row }">
                             <div class="cursor-pointer price-wrap" @click="editPriceEvent(row)">
@@ -142,7 +125,7 @@
                     </el-table-column>
                     <el-table-column prop="sort" :label="t('sort')" min-width="120" sortable="custom">
                         <template #default="{ row }">
-                            <el-input v-model="row.sort" class="input-width-sort" maxlength="10" @input="sortInputListener($event, row)" />
+                            <el-input v-model="row.sort" class="w-[70px]" maxlength="10" @input="sortInputListener($event, row)" />
                         </template>
                     </el-table-column>
 
@@ -157,11 +140,10 @@
                             <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
                             <el-button type="primary" link @click="spreadEvent(row)">{{ t('spreadGoods') }}</el-button>
                             <el-button type="primary" link @click="memberPriceEvent(row)">{{ t('memberPrice') }}</el-button>
-                            <el-button type="primary" link @click="fenxiaoPriceEvent(row)">{{ t('分销价格') }}</el-button>
                             <el-button type="primary" v-if="row.status == 1" link @click="statusChange(row, 0)">{{ t('statusActionOff') }}</el-button>
                             <el-button type="primary" v-else link @click="statusChange(row, 1)">{{ t('statusActionOn') }}</el-button>
                             <el-button type="primary" link @click="copyEvent(row)">{{ t('copyGoods') }}</el-button>
-                            <el-button type="primary" link @click="deleteEvent(row.goods_id)">{{ t('delete') }}</el-button>
+                            <el-button type="primary" v-if="row.status != 1" link @click="deleteEvent(row.goods_id)">{{ t('delete') }}</el-button>
                         </template>
                     </el-table-column>
 
@@ -200,7 +182,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { t } from '@/lang'
-import { debounce, img, filterDigit, filterNumber } from '@/utils/common'
+import { debounce, img, filterDigit } from '@/utils/common'
 import { ElMessage, ElMessageBox, FormInstance } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 import { cloneDeep } from 'lodash-es'
@@ -235,8 +217,7 @@ const goodsTable = reactive({
         end_price: '',
         status: '1',
         order: '',
-        sort: '',
-        sku_no:''
+        sort: ''
     }
 })
 
@@ -247,8 +228,6 @@ const regExp = {
     number: /^\d{0,10}$/,
     digit: /^\d{0,10}(.?\d{0,2})$/
 }
-
-// 条件筛选查询
 
 // 商品分类
 const goodsCategoryOptions: any = reactive([])
@@ -272,10 +251,6 @@ const initData = () => {
             data.forEach((item: any) => {
                 const children: any = []
                 if (item.child_list) {
-                  children.push({
-                    value: item.category_id,
-                    label: "全部"
-                  })
                     item.child_list.forEach((childItem: any) => {
                         children.push({
                             value: childItem.category_id,
@@ -507,7 +482,7 @@ const loadGoodsList = (page: number = 1) => {
         })
         return
     }
-    if (Number(goodsTable.searchParam.start_sale_num) > Number(goodsTable.searchParam.end_sale_num) ) {
+    if (Number(goodsTable.searchParam.start_sale_num) > Number(goodsTable.searchParam.end_sale_num)) {
         ElMessage({
             type: 'warning',
             message: `${t('shopSaleNumTips')}`
@@ -528,7 +503,7 @@ const loadGoodsList = (page: number = 1) => {
         })
         return
     }
-    if (Number(goodsTable.searchParam.start_price) > Number(goodsTable.searchParam.end_price) ) {
+    if (Number(goodsTable.searchParam.start_price) > Number(goodsTable.searchParam.end_price)) {
         ElMessage({
             type: 'warning',
             message: `${t('shopPriceTips')}`
@@ -555,8 +530,6 @@ const loadGoodsList = (page: number = 1) => {
 
 loadGoodsList()
 
-
-
 /**
  * 添加商品
  */
@@ -573,14 +546,12 @@ const addEvent = () => {
  * @param data
  */
 const editEvent = (data: any) => {
-    // router.push(data.goods_edit_path + '?goods_id=' + data.goods_id)
-
-
-    let url = router.resolve({
-        path: data.goods_edit_path,
-        query: {goods_id: data.goods_id}
-    });
-    window.open(url.href);
+    router.push(data.goods_edit_path + '?goods_id=' + data.goods_id)
+    // let url = router.resolve({
+    //     path: data.goods_edit_path,
+    //     query: {goods_id: data.goods_id}
+    // });
+    // window.open(url.href);
 }
 
 const goodsPriceEditPopupRef: any = ref(null)
@@ -604,27 +575,22 @@ const spreadEvent = (data: any) => {
     goodsSpreadPopupRef.value.show(data)
 }
 
-
-/******************* 会员价-start *************************/
+/** ***************** 会员价-start *************************/
 // 会员等级
-let memberLevel = ref([])
-const getMemberLevelAllFn = ()=>{
-    getMemberLevelAll({}).then(res => {
+const memberLevel = ref([])
+const getMemberLevelAllFn = () => {
+    getMemberLevelAll().then(res => {
         memberLevel.value = res.data ? res.data : []
     })
 }
-getMemberLevelAllFn();
+getMemberLevelAllFn()
 
 const memberPricePopupRef: any = ref(null)
-const memberPriceEvent = (data: any) =>{
-    memberPricePopupRef.value.show(data, memberLevel.value);
+const memberPriceEvent = (data: any) => {
+    memberPricePopupRef.value.show(data, memberLevel.value)
 }
-/******************* 会员价-end *************************/
-/******************* 分销价-start *************************/
-const fenxiaoPriceEvent = (item:any) : void => {
-  router.push('/shop_fenxiao/management/goods_config?goods_id='+item.goods_id)
-}
-/******************* 会员价-end *************************/
+/** ***************** 会员价-end *************************/
+
 // 复制商品
 const copyEvent = (data: any) => {
     ElMessageBox.confirm(t('goodsCopyTips'), t('warning'),
@@ -679,40 +645,18 @@ const resetForm = (formEl: FormInstance | undefined) => {
     goodsTable.searchParam.end_price = ''
     goodsTable.searchParam.start_sale_num = ''
     goodsTable.searchParam.end_sale_num = ''
-    goodsTable.searchParam.sku_no = ''
 
     loadGoodsList()
 }
 </script>
 
 <style lang="scss" scoped>
-/* 多行超出隐藏 */
-.multi-hidden {
-    word-break: break-all;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-}
-
-.input-width-sort {
-    width: 70px;
-}
-
-.price-wrap {
-    &:hover {
-        .icon-wrap {
-            visibility: visible;
+    .price-wrap, .stock-wrap {
+        &:hover {
+            .icon-wrap {
+                visibility: visible;
+                color: var(--el-color-primary);
+            }
         }
     }
-}
-
-.stock-wrap {
-    &:hover {
-        .icon-wrap {
-            visibility: visible;
-        }
-    }
-}
 </style>

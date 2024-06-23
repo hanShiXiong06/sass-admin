@@ -1,14 +1,11 @@
 <template>
     <div class="main-container">
-        <div class="detail-head">
-            <div class="left" @click="router.push(`/shop/goods/list`)">
-                <span class="iconfont iconxiangzuojiantou !text-xs"></span>
-                <span class="ml-[1px]">{{ t('returnToPreviousPage') }}</span>
-            </div>
-            <span class="adorn">|</span>
-            <span class="right">{{ goodsEdit.formData.goods_id ? t('updateGoods') : t('addGoods') }}</span>
-        </div>
+
         <el-card class="box-card !border-none" shadow="never">
+            <el-page-header :content="goodsEdit.formData.goods_id ? t('updateGoods') : t('addGoods')" :icon="ArrowLeft" @back="$router.back()" />
+        </el-card>
+
+        <el-card class="box-card mt-[15px] !border-none" shadow="never">
 
             <el-tabs v-model="goodsEdit.activeName" @tab-click="goodsEdit.tabHandleClick">
                 <el-tab-pane :label="t('basicInfoTab')" name="basic">
@@ -17,7 +14,7 @@
                         <el-form-item :label="t('goodsType')" v-if="goodsEdit.formData.goods_id">
                             <template v-for="(item) in goodsEdit.goodsType" :key="item.type">
                                 <div class="goods-type-wrap" :class="[goodsEdit.formData.goods_type == item.type ? 'selected' : 'disabled']">
-                                    <div class="goods-type-name">{{ item.name }} </div>
+                                    <div class="goods-type-name">{{ item.name }}</div>
                                     <div class="goods-type-desc">({{ item.desc }})</div>
                                     <template v-if="goodsEdit.formData.goods_type == item.type">
                                         <div class="triangle"></div>
@@ -26,7 +23,6 @@
                                 </div>
                             </template>
                         </el-form-item>
-
                         <el-form-item :label="t('goodsType')" v-else>
                             <div class="goods-type-wrap" :class="{ 'selected': goodsEdit.formData.goods_type == item.type }" v-for="(item) in goodsEdit.goodsType" :key="item.type" @click="goodsEdit.changeGoodsType(item)">
                                 <div class="goods-type-name">{{ item.name }}</div>
@@ -38,10 +34,10 @@
                             </div>
                         </el-form-item>
                         <el-form-item :label="t('goodsName')" prop="goods_name">
-                            <el-input v-model="goodsEdit.formData.goods_name" clearable :placeholder="t('goodsNamePlaceholder')" class="input-width" maxlength="60" show-word-limit />
+                            <el-input v-model.trim="goodsEdit.formData.goods_name" clearable :placeholder="t('goodsNamePlaceholder')" class="input-width" maxlength="60" show-word-limit />
                         </el-form-item>
                         <el-form-item :label="t('subTitle')" prop="sub_title">
-                            <el-input v-model="goodsEdit.formData.sub_title" clearable :placeholder="t('subTitlePlaceholder')" class="input-width" maxlength="80" show-word-limit />
+                            <el-input v-model.trim="goodsEdit.formData.sub_title" clearable :placeholder="t('subTitlePlaceholder')" class="input-width" maxlength="80" show-word-limit />
                         </el-form-item>
                         <el-form-item :label="t('goodsImage')" prop="goods_image">
                             <upload-image v-model="goodsEdit.formData.goods_image" :limit="10" />
@@ -112,21 +108,18 @@
                             </el-radio-group>
                         </el-form-item>
                         <el-form-item :label="t('unit')" prop="unit">
-                            <el-input v-model="goodsEdit.formData.unit" clearable :placeholder="t('unitPlaceholder')" class="input-width" show-word-limit maxlength="6" />
+                            <el-input v-model.trim="goodsEdit.formData.unit" clearable :placeholder="t('unitPlaceholder')" class="input-width" show-word-limit maxlength="6" />
                         </el-form-item>
                         <el-form-item :label="t('virtualSaleNum')" prop="virtual_sale_num">
                             <div>
-                                <el-input v-model="goodsEdit.formData.virtual_sale_num" clearable
-                                    :placeholder="t('virtualSaleNumPlaceholder')" class="input-width" show-word-limit
-                                    maxlength="8" @keyup="filterNumber($event)"
-                                    @blur="goodsEdit.formData.virtual_sale_num = $event.target.value">
+                                <el-input v-model.trim="goodsEdit.formData.virtual_sale_num" clearable :placeholder="t('virtualSaleNumPlaceholder')" class="input-width" show-word-limit maxlength="8" @keyup="filterNumber($event)" @blur="goodsEdit.formData.virtual_sale_num = $event.target.value">
                                     <template #append>{{ goodsEdit.formData.unit ? goodsEdit.formData.unit : '件' }}</template>
                                 </el-input>
                                 <div class="mt-[10px] text-[12px] text-[#999] leading-[20px]">{{ t('virtualSaleNumDesc') }}</div>
                             </div>
                         </el-form-item>
                         <el-form-item :label="t('sort')" prop="sort">
-                            <el-input v-model="goodsEdit.formData.sort" clearable :placeholder="t('sortPlaceholder')"
+                            <el-input v-model.trim="goodsEdit.formData.sort" clearable :placeholder="t('sortPlaceholder')"
                                 class="input-width" show-word-limit maxlength="8" @keyup="filterNumber($event)"
                                 @blur="goodsEdit.formData.sort = $event.target.value" />
                         </el-form-item>
@@ -148,39 +141,39 @@
 
                         <template v-if="goodsEdit.formData.spec_type == 'single'">
                             <el-form-item :label="t('price')" prop="price">
-                                <el-input v-model="goodsEdit.formData.price" clearable placeholder="0.00" class="input-width" maxlength="8" :disabled="goodsEdit.isDisabledPrice()">
+                                <el-input v-model.trim="goodsEdit.formData.price" clearable placeholder="0.00" class="input-width" maxlength="8" :disabled="goodsEdit.isDisabledPrice()">
                                     <template #append>{{ t('yuan') }}</template>
                                 </el-input>
                             </el-form-item>
 
                             <el-form-item :label="t('marketPrice')" prop="market_price">
-                                <el-input v-model="goodsEdit.formData.market_price" clearable placeholder="0.00" class="input-width" maxlength="8">
+                                <el-input v-model.trim="goodsEdit.formData.market_price" clearable placeholder="0.00" class="input-width" maxlength="8">
                                     <template #append>{{ t('yuan') }}</template>
                                 </el-input>
                             </el-form-item>
 
                             <el-form-item :label="t('costPrice')" prop="cost_price">
-                                <el-input v-model="goodsEdit.formData.cost_price" clearable placeholder="0.00" class="input-width" maxlength="8">
+                                <el-input v-model.trim="goodsEdit.formData.cost_price" clearable placeholder="0.00" class="input-width" maxlength="8">
                                     <template #append>{{ t('yuan') }}</template>
                                 </el-input>
                             </el-form-item>
                             <el-form-item :label="t('weight')" prop="weight">
-                                <el-input v-model="goodsEdit.formData.weight" clearable placeholder="0.000" class="input-width" maxlength="12">
+                                <el-input v-model.trim="goodsEdit.formData.weight" clearable placeholder="0.00" class="input-width" maxlength="6">
                                     <template #append>kg</template>
                                 </el-input>
                             </el-form-item>
                             <el-form-item :label="t('volume')" prop="volume">
-                                <el-input v-model="goodsEdit.formData.volume" clearable placeholder="0.000" class="input-width" maxlength="12">
+                                <el-input v-model.trim="goodsEdit.formData.volume" clearable placeholder="0.00" class="input-width" maxlength="6">
                                     <template #append>m³</template>
                                 </el-input>
                             </el-form-item>
                             <el-form-item :label="t('goodsStock')" prop="stock">
-                                <el-input v-model="goodsEdit.formData.stock" clearable   :placeholder="t('goodsStockPlaceholder')" class="input-width" maxlength="8" @keyup="filterNumber($event)">
+                                <el-input v-model.trim="goodsEdit.formData.stock" clearable :placeholder="t('goodsStockPlaceholder')" class="input-width" maxlength="8" @keyup="filterNumber($event)" :disabled="goodsEdit.isDisabledPrice()">
                                     <template #append>{{ goodsEdit.formData.unit ? goodsEdit.formData.unit : t('defaultUnit') }}</template>
                                 </el-input>
                             </el-form-item>
                             <el-form-item :label="t('skuNo')">
-                                <el-input v-model="goodsEdit.formData.sku_no" clearable :placeholder="t('skuNoPlaceholder')" class="input-width" maxlength="50" @keyup="goodsEdit.filterSpecial($event)"  />
+                                <el-input v-model.trim="goodsEdit.formData.sku_no" clearable :placeholder="t('skuNoPlaceholder')" class="input-width" maxlength="50" @keyup="goodsEdit.filterSpecial($event)"  />
                             </el-form-item>
 
                         </template>
@@ -195,13 +188,13 @@
                                 <div class="spec-edit-list">
                                     <div class="spec-item" v-for="(item, index) in goodsEdit.goodsSpecFormat" :key="item.id">
                                         <div class="spec-name-wrap">
-                                            <el-input v-model="item.spec_name" clearable :placeholder="t('specNamePlaceholder')" class="input-width" maxlength="20" />
+                                            <el-input v-model.trim="item.spec_name" clearable :placeholder="t('specNamePlaceholder')" class="input-width" maxlength="20" />
                                         </div>
                                         <div class="spec-value-wrap">
                                             <ul ref="specValueRef">
                                                 <li :class="'draggable-element' + index" v-for="(specValue, specIndex) in item.values" :key="specValue.id">
 
-                                                    <el-input v-model="specValue.spec_value_name" clearable
+                                                    <el-input v-model.trim="specValue.spec_value_name" clearable
                                                         :placeholder="t('specValueNamePlaceholder')" class="input-width"
                                                         :suffix-icon="Rank" maxlength="20"
                                                         @input="goodsEdit.specValueNameInputListener">
@@ -237,13 +230,13 @@
                                         </template>
                                     </el-select>
 
-                                    <el-input v-if="goodsEdit.isDisabledPrice()" v-model="goodsEdit.batchOperation.price" clearable :placeholder="t('price')" class="set-input" maxlength="8" />
-                                    <el-input v-model="goodsEdit.batchOperation.market_price" clearable :placeholder="t('marketPrice')" class="set-input" maxlength="8" />
-                                    <el-input v-model="goodsEdit.batchOperation.cost_price" clearable :placeholder="t('costPrice')" class="set-input" maxlength="8" />
-                                    <el-input v-model="goodsEdit.batchOperation.stock" clearable :placeholder="t('stock')" class="set-input" maxlength="8" />
-                                    <el-input v-model="goodsEdit.batchOperation.weight" clearable :placeholder="t('skuWeight')" class="set-input" maxlength="12" />
-                                    <el-input v-model="goodsEdit.batchOperation.volume" clearable :placeholder="t('skuVolume')" class="set-input" maxlength="12" />
-                                    <el-input v-model="goodsEdit.batchOperation.sku_no" clearable maxlength="50" :placeholder="t('skuNo')" class="set-input" />
+                                    <el-input v-if="!goodsEdit.isDisabledPrice()" v-model.trim="goodsEdit.batchOperation.price" clearable :placeholder="t('price')" class="set-input" maxlength="8" />
+                                    <el-input v-model.trim="goodsEdit.batchOperation.market_price" clearable :placeholder="t('marketPrice')" class="set-input" maxlength="8" />
+                                    <el-input v-model.trim="goodsEdit.batchOperation.cost_price" clearable :placeholder="t('costPrice')" class="set-input" maxlength="8" />
+                                    <el-input v-if="!goodsEdit.isDisabledPrice()" v-model.trim="goodsEdit.batchOperation.stock" clearable :placeholder="t('stock')" class="set-input" maxlength="8"/>
+                                    <el-input v-model.trim="goodsEdit.batchOperation.weight" clearable :placeholder="t('skuWeight')" class="set-input" maxlength="6" />
+                                    <el-input v-model.trim="goodsEdit.batchOperation.volume" clearable :placeholder="t('skuVolume')" class="set-input" maxlength="6" />
+                                    <el-input v-model.trim="goodsEdit.batchOperation.sku_no" clearable maxlength="50" :placeholder="t('skuNo')" class="set-input" />
                                     <el-button type="primary" @click="goodsEdit.saveBatch">{{ t('confirm') }}</el-button>
                                 </div>
 
@@ -317,48 +310,48 @@
                                                                         <td class="el-table__cell">
                                                                             <div class="cell">
                                                                                 <el-form-item :prop="key + '.price'" :rules="goodsEdit.skuPriceRules()" class="sku-form-item-wrap">
-                                                                                    <el-input v-model="item.price" clearable placeholder="0.00" maxlength="8" :disabled="goodsEdit.isDisabledPrice()" />
+                                                                                    <el-input v-model.trim="item.price" clearable placeholder="0.00" maxlength="8" :disabled="goodsEdit.isDisabledPrice()" />
                                                                                 </el-form-item>
                                                                             </div>
                                                                         </td>
                                                                         <td class="el-table__cell">
                                                                             <div class="cell">
                                                                                 <el-form-item :prop="key + '.market_price'" :rules="goodsEdit.skuMarketPriceRules()" class="sku-form-item-wrap">
-                                                                                    <el-input v-model="item.market_price" clearable placeholder="0.00" maxlength="8" />
+                                                                                    <el-input v-model.trim="item.market_price" clearable placeholder="0.00" maxlength="8" />
                                                                                 </el-form-item>
                                                                             </div>
                                                                         </td>
                                                                         <td class="el-table__cell">
                                                                             <div class="cell">
                                                                                 <el-form-item :prop="key + '.cost_price'" :rules="goodsEdit.skuCostPriceRules()" class="sku-form-item-wrap">
-                                                                                    <el-input v-model="item.cost_price" clearable placeholder="0.00" maxlength="8" />
+                                                                                    <el-input v-model.trim="item.cost_price" clearable placeholder="0.00" maxlength="8" />
                                                                                 </el-form-item>
                                                                             </div>
                                                                         </td>
                                                                         <td class="el-table__cell">
                                                                             <div class="cell">
-                                                                                <el-form-item :prop="key + '.stock'" :rules="goodsEdit.skuStockRules()" class="sku-form-item-wrap">
-                                                                                    <el-input v-model="item.stock" clearable placeholder="0" @input="goodsEdit.specStockSum" maxlength="8" />
+                                                                                <el-form-item :prop="key + '.stock'" :rules="goodsEdit.skuStockRules()" class="sku-form-item-wrap" >
+                                                                                    <el-input v-model.trim="item.stock" clearable placeholder="0" @input="goodsEdit.specStockSum" maxlength="8" :disabled="goodsEdit.isDisabledPrice()"/>
                                                                                 </el-form-item>
                                                                             </div>
                                                                         </td>
                                                                         <td class="el-table__cell">
                                                                             <div class="cell">
                                                                                 <el-form-item :prop="key + '.weight'" :rules="skuWeightRules()" class="sku-form-item-wrap">
-                                                                                    <el-input v-model="item.weight" clearable placeholder="0.000" maxlength="12" />
+                                                                                    <el-input v-model.trim="item.weight" clearable placeholder="0.00" maxlength="6" />
                                                                                 </el-form-item>
                                                                             </div>
                                                                         </td>
                                                                         <td class="el-table__cell">
                                                                             <div class="cell">
                                                                                 <el-form-item :prop="key + '.volume'" :rules="skuVolumeRules()" class="sku-form-item-wrap">
-                                                                                    <el-input v-model="item.volume" clearable placeholder="0.000" maxlength="12" />
+                                                                                    <el-input v-model.trim="item.volume" clearable placeholder="0.00" maxlength="6" />
                                                                                 </el-form-item>
                                                                             </div>
                                                                         </td>
                                                                         <td class="el-table__cell">
                                                                             <div class="cell">
-                                                                                <el-input v-model="item.sku_no" clearable maxlength="50" />
+                                                                                <el-input v-model.trim="item.sku_no" clearable maxlength="50" />
                                                                             </div>
                                                                         </td>
                                                                         <td class="el-table__cell">
@@ -396,7 +389,6 @@
                 <el-tab-pane :label="t('deliveryTab')" name="delivery">
 
                     <el-form :model="goodsEdit.formData" label-width="120px" ref="deliveryFormRef" :rules="goodsEdit.formRules" class="page-form">
-
                         <el-form-item :label="t('deliveryType')" prop="delivery_type">
                             <div>
                                 <el-checkbox-group v-model="goodsEdit.formData.delivery_type">
@@ -442,7 +434,6 @@
                                 <el-select v-model="goodsEdit.formData.attr_id" :placeholder="t('goodsArgumentsTempPlaceholder')" clearable @change="goodsEdit.attrChange" @clear="goodsEdit.attrChange(-1)">
                                     <el-option v-for="item in goodsEdit.attrOptions" :key="item.attr_id" :label="item.attr_name" :value="item.attr_id" />
                                 </el-select>
-                                <el-button @click="oneKeyAll"> 一键全选</el-button>
                                 <div class="mt-[10px] text-[12px] text-[#999] leading-[20px]">{{t('goodsArgumentsTempHint')}}</div>
                                 <table class="attr-table mt-[10px]">
                                     <colgroup>
@@ -464,18 +455,17 @@
                                                 </div>
                                             </th>
                                             <th>{{t('operation')}}</th>
-
                                         </tr>
                                     </thead>
                                     <tbody class="attr-new">
                                         <template v-if="goodsEdit.attrTableData.length">
                                             <tr class="goods-attr-tr goods-new-attr-tr" v-for="(item,index) in goodsEdit.attrTableData" :key="index">
-                                                <td v-if="item.attr_value_id > 0">{{item.attr_value_name}} </td>
+                                                <td v-if="item.attr_value_id > 0">{{item.attr_value_name}}</td>
                                                 <td v-else>
-                                                    <el-input v-model="item.attr_value_name" maxlength="20" show-word-limit clearable/>
+                                                    <el-input v-model.trim="item.attr_value_name" maxlength="20" show-word-limit clearable/>
                                                 </td>
                                                 <td>
-                                                    <el-input v-if="item.type == 'text'" maxlength="20" show-word-limit v-model="item.select_child_val" clearable/>
+                                                    <el-input v-if="item.type == 'text'" maxlength="20" show-word-limit v-model.trim="item.select_child_val" clearable/>
                                                     <div v-else-if="item.type == 'radio'">
                                                         <el-radio-group v-model="item.select_child_name" @change="goodsEdit.attrRadioChange(index,$event)">
                                                             <el-radio v-for="(childItem,childIndex) in item.child" :key="childIndex" :label="childItem.id">{{ childItem.name }}</el-radio>
@@ -488,7 +478,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <el-input v-model="item.sort" maxlength="6" show-word-limit clearable @keyup="filterNumber($event)"/>
+                                                    <el-input v-model.trim="item.sort" maxlength="6" show-word-limit clearable @keyup="filterNumber($event)"/>
                                                 </td>
                                                 <td>
                                                     <span class="cursor-pointer text-[var(--el-color-primary)]" @click="goodsEdit.delAttr(index)">{{t('delAttr')}}</span>
@@ -514,8 +504,8 @@
                     </el-form>
                 </el-tab-pane>
             </el-tabs>
-
         </el-card>
+
         <div class="fixed-footer-wrap">
             <div class="fixed-footer">
                 <el-button type="primary" @click="save()">{{ t('save') }}</el-button>
@@ -529,13 +519,13 @@
 import { reactive, ref } from 'vue'
 import { t } from '@/lang'
 import { FormInstance } from 'element-plus'
-import { Rank } from '@element-plus/icons-vue'
+import { Rank, ArrowLeft } from '@element-plus/icons-vue'
 import { filterNumber } from '@/utils/common'
 import { useRoute, useRouter } from 'vue-router'
 import {
     addGoods,
     editGoods,
-    getGoodsInit,
+    getGoodsInit
 } from '@/addon/shop/api/goods'
 import {
     getShopDeliveryList,
@@ -545,6 +535,7 @@ import { useGoodsEdit } from './public/js/useGoodsEdit'
 
 const route = useRoute()
 const router = useRouter()
+const pageName = route.meta.title
 
 const basicFormRef = ref<FormInstance>()
 const priceStockFormRef = ref<FormInstance>()
@@ -557,10 +548,10 @@ const skuFormRef = ref<FormInstance>()
 const specValueRef = ref()
 
 const goodsEdit = useGoodsEdit({
-    getFormRef() {
+    getFormRef () {
         return {
             basicFormRef: basicFormRef.value,
-            priceStockFormRef: priceStockFormRef.value ,
+            priceStockFormRef: priceStockFormRef.value,
             deliveryFormRef: deliveryFormRef.value,
             goodsArgumentsFormRef: goodsArgumentsFormRef.value,
             detailFormRef: detailFormRef.value,
@@ -571,9 +562,7 @@ const goodsEdit = useGoodsEdit({
     addApi: addGoods,
     editApi: editGoods,
     formData: {
-        goods_type: 'real',
-        stock:1,
-        goods_desc:"-"
+        goods_type: 'real'
     },
     // 追加表单数据
     appendFormData: {
@@ -583,11 +572,10 @@ const goodsEdit = useGoodsEdit({
         is_free_shipping: 1,
         fee_type: 'template',
         delivery_money: '',
-        delivery_template_id: '',
+        delivery_template_id: ''
     },
     // 追加刷新商品sku数据
     appendRefreshGoodsSkuData: {
-
         // 重量
         weight: {
             value: '',
@@ -599,61 +587,60 @@ const goodsEdit = useGoodsEdit({
             value: '',
             regExp: 'special',
             message: t('volumeTips')
-        },
-
+        }
     },
     // 追加单规格数据
-    appendSingleGoodsData(data: any) {
+    appendSingleGoodsData (data: any) {
         return {
             weight: data.weight,
             volume: data.volume
-        };
+        }
     },
     // 表单验证规则
-    getFormRules(formData: any, regExp: any) {
+    getFormRules (formData: any, regExp: any) {
         return {
-            // weight: [
-            //     {
-            //         trigger: 'blur',
-            //         validator: (rule: any, value: any, callback: any) => {
-            //             if (formData.spec_type == 'single') {
-            //                 if (value == undefined || value == '') {
-            //                     callback(new Error(t('weightPlaceholder')))
-            //                 }else if (isNaN(value) || !regExp.special.test(value)) {
-            //                     callback(new Error(t('weightTips')))
-            //                 } else if (value < 0) {
-            //                     callback(new Error(t('weightNotZeroTips')))
-            //                 } else {
-            //                     callback()
-            //                 }
-            //             } else {
-            //                 callback()
-            //             }
-            //         }
-            //     }
-            // ],
-            // volume: [
-            //     {
-            //         trigger: 'blur',
-            //         validator: (rule: any, value: any, callback: any) => {
-            //             if (formData.spec_type == 'single') {
-            //                 if (value == undefined || value == '') {
-            //                     callback(new Error(t('volumePlaceholder')))
-            //                 }else if (isNaN(value) || !regExp.special.test(value)) {
-            //                     callback(new Error(t('volumeTips')))
-            //                 } else if (value < 0) {
-            //                     callback(new Error(t('volumeNotZeroTips')))
-            //                 } else {
-            //                     callback()
-            //                 }
-            //             } else {
-            //                 callback()
-            //             }
-            //         }
-            //     }
-            // ],
+            weight: [
+                {
+                    trigger: 'blur',
+                    validator: (rule: any, value: any, callback: any) => {
+                        if (formData.spec_type == 'single') {
+                            if (value == undefined || value == '') {
+                                callback(new Error(t('weightPlaceholder')))
+                            } else if (isNaN(value) || !regExp.special.test(value)) {
+                                callback(new Error(t('weightTips')))
+                            } else if (value < 0) {
+                                callback(new Error(t('weightNotZeroTips')))
+                            } else {
+                                callback()
+                            }
+                        } else {
+                            callback()
+                        }
+                    }
+                }
+            ],
+            volume: [
+                {
+                    trigger: 'blur',
+                    validator: (rule: any, value: any, callback: any) => {
+                        if (formData.spec_type == 'single') {
+                            if (value == undefined || value == '') {
+                                callback(new Error(t('volumePlaceholder')))
+                            } else if (isNaN(value) || !regExp.special.test(value)) {
+                                callback(new Error(t('volumeTips')))
+                            } else if (value < 0) {
+                                callback(new Error(t('volumeNotZeroTips')))
+                            } else {
+                                callback()
+                            }
+                        } else {
+                            callback()
+                        }
+                    }
+                }
+            ],
             delivery_type: [
-                {required: true, message: t('deliveryTypePlaceholder'), trigger: 'blur'}
+                { required: true, message: t('deliveryTypePlaceholder'), trigger: 'blur' }
             ],
             delivery_money: [
                 {
@@ -694,13 +681,13 @@ const goodsEdit = useGoodsEdit({
         }
     },
     // 表单验证
-    getVerify() {
+    getVerify () {
         return [
             {
                 key: 'delivery',
                 verify: false,
                 ref: deliveryFormRef.value
-            },
+            }
         ]
     }
 })
@@ -718,7 +705,7 @@ getShopDeliveryList().then((res) => {
     if (data) {
         deliveryTypeCheckBox.splice(0, deliveryTypeCheckBox.length, ...data)
         // deliveryTypeFlag.value = deliveryTypeCheckBox.every(el => {
-            // return el.status == '2'
+        // return el.status == '2'
         // })
     }
 })
@@ -747,25 +734,19 @@ refreshDeliveryTemplate()
 getGoodsInit({
     goods_id: goodsEdit.formData.goods_id
 }).then((res) => {
-
     const data = res.data
     if (data) {
         goodsEdit.handleGoodsInit(data)
 
         if (goodsEdit.formData.goods_id && data.goods_info) {
             // 配送设置
-          console.log(444)
             goodsEdit.formData.delivery_type = data.goods_info.delivery_type
             goodsEdit.formData.is_free_shipping = data.goods_info.is_free_shipping
             goodsEdit.formData.fee_type = data.goods_info.fee_type
             goodsEdit.formData.delivery_money = data.goods_info.delivery_money
             goodsEdit.formData.delivery_template_id = data.goods_info.delivery_template_id
-        }else{
-          goodsEdit.formData.delivery_type = ['express','store']
         }
-
     }
-
 })
 
 // 多规格，重量 验证规则
@@ -779,10 +760,10 @@ const skuWeightRules = () => {
                 } else if (value < 0) {
                     callback(t('weightNotZeroTips'))
                 } else {
-                    callback();
+                    callback()
                 }
             } else {
-                callback();
+                callback()
             }
         }
     }]
@@ -799,31 +780,16 @@ const skuVolumeRules = () => {
                 } else if (value < 0) {
                     callback(t('volumeNotZeroTips'))
                 } else {
-                    callback();
+                    callback()
                 }
             } else {
-                callback();
+                callback()
             }
         }
     }]
 }
-// 动态属性一键全选 默认选中第一个即可
- const oneKeyAll = ()=>{
-  //
-  // select_child_name
-   // select_child_val
 
-   goodsEdit.attrTableData.forEach(attribute => {
-
-     if (attribute.child.length > 0 && attribute.type=='radio') {
-       attribute.select_child_name = attribute.child[0].id;
-       attribute.select_child_val = attribute.child[0].name;
-     }
-   });
-   console.log( goodsEdit.attrTableData)
- }
-
-const save = ()=> {
+const save = () => {
     goodsEdit.save()
 }
 </script>

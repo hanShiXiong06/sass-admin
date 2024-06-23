@@ -76,7 +76,6 @@ import { cloneDeep } from 'lodash-es'
 
 const route = useRoute()
 const pageName = route.meta.title
-
 const tableRef = useTemplateRefsList<HTMLElement>()
 const categoryTable = reactive({
     loading: true,
