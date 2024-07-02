@@ -183,7 +183,7 @@ export function getOrderEditAddress(params: Record<string, any>) {
  * @return
  */
 export function getDeliveryList() {
-    return request.get(`shop/delivery/store/list`)
+    return request.get(`shop/delivery/store`)
 }
 
 /**
@@ -192,4 +192,12 @@ export function getDeliveryList() {
  */
 export function orderEditAddress(params: Record<string, any>) {
     return request.put(`shop/order/edit_delivery`, params)
+}
+/**
+ * 订单已付款
+ * orderFinished
+ * hsx
+ * */
+export function orderFinished(params: Record<string, any>) {
+    return request.put(`shop/order/order_pay`, params)
 }

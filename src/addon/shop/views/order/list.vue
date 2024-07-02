@@ -84,18 +84,20 @@
 								<el-table :data="(item as any).order_goods" size="large" :show-header="false" :span-method="arraySpanMethod" ref="multipleTable">
 									<el-table-column type="selection" width="40" />
 									<el-table-column align="left" min-width="200">
-										<template #default="{ row }">
-											<div class="flex cursor-pointer">
-												<div class="flex items-center min-w-[50px] mr-[10px]">
-													<img class="w-[50px] h-[50px]" v-if="row.goods_image" :src="img(row.goods_image)" alt="">
-													<img class="w-[50px] h-[50px]" v-else src="" alt="">
-												</div>
-												<div class="flex flex-col">
-													<p class="multi-hidden text-[14px]">{{ row.goods_name }}</p>
-													<span class="text-[12px] text-[#999]">{{ row.sku_name }}</span>
-												</div>
-											</div>
-										</template>
+                    <template #default="{ row }">
+                      <div class="flex cursor-pointer">
+                        <div class="flex items-center min-w-[50px] mr-[10px]">
+                          <img class="w-[50px] h-[50px]" v-if="row.goods_image"
+                               :src="img(row.goods_image)" alt="">
+                          <img class="w-[50px] h-[50px]" v-else src="" alt="">
+                        </div>
+                        <div class="flex flex-col">
+                          <p class="multi-hidden text-[14px]">{{ row.goods_name }}</p>
+                          <span class="text-[12px] text-[#999]">{{ row.sku_name }}</span>
+                          <span  v-if='row.sku_no' class="text-[12px] text-[#999]">{{ t('商品编号') }}: {{row.sku_no}}  </span>
+                        </div>
+                      </div>
+                    </template>
 									</el-table-column>
 									<el-table-column min-width="120">
 										<template #default="{ row }">
@@ -146,6 +148,8 @@
 										<template #default>
 											<template v-if="item.status == 1">
 												<el-button type="primary" link @click="close(item)">{{ t('orderClose') }}</el-button>
+                        <el-button type="primary" link @click="_orderFinish(item)" v-if="item.status == 1">{{
+                            t('已付款') }}</el-button>
 												<el-button type="primary" link @click="orderAdjustMoney(item)">{{ t('editPrice') }}</el-button>
 												<el-button type="primary" v-if="item.delivery_type != 'virtual'" link @click="orderEditAddressFn(item)">{{ t('editAddress') }}</el-button>
 											</template>
@@ -182,7 +186,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { t } from '@/lang'
-import { getOrderList, getOrderStatus, orderClose, orderFinish, getOrderPayType, getOrderFrom, getOrderEditAddress } from '@/addon/shop/api/order'
+import { getOrderList, getOrderStatus, orderClose, orderFinish, getOrderPayType, getOrderFrom, getOrderEditAddress ,orderFinished } from '@/addon/shop/api/order'
 import DeliveryAction from '@/addon/shop/views/order/components/delivery-action.vue'
 import OrderNotes from '@/addon/shop/views/order/components/order-notes.vue'
 import OrderExportSelect from '@/addon/shop/views/order/components/order-export-select.vue'
@@ -413,6 +417,22 @@ const orderEditAddressFn = async (data:any) =>{
 	orderEditAddressDialog.value.showDialog = true
 	orderEditAddressDialog.value.setFormData(data)
 }
+
+// TODO: pay 已支付 hsx
+const _orderFinish = (data:any) => {
+  ElMessageBox.confirm(t('确定用户通过线下完成付款了吗?'), t('warning'),
+      {
+        confirmButtonText: t('confirm'),
+        cancelButtonText: t('cancel'),
+        type: 'warning'
+      }
+  ).then(() => {
+    orderFinished({order_id: data.order_id}).then(() => {
+      loadOrderList()
+    })
+  })
+}
+
 </script>
 
 <style lang="scss" scoped>
