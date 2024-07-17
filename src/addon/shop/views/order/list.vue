@@ -154,6 +154,7 @@
 												<el-button type="primary" v-if="item.delivery_type != 'virtual'" link @click="orderEditAddressFn(item)">{{ t('editAddress') }}</el-button>
 											</template>
 											<el-button type="primary" link @click="delivery(item)" v-if="item.status == 2">{{ t('sendOutGoods') }}</el-button>
+                      <el-button type="primary" link @click="juhedelivery(item)" v-if="item.status == 2">{{ t('聚合快递发货') }}</el-button>
 											<el-button type="primary" link @click="finish(item)" v-if="item.status == 3">{{ t('confirmTakeDelivery') }}</el-button>
 										</template>
 									</el-table-column>
@@ -378,6 +379,13 @@ const deliveryActionDialog: Record<string, any> | null = ref(null)
 const delivery = (data: any) => {
 	deliveryActionDialog.value.setFormData(data)
 	deliveryActionDialog.value.showDialog = true
+}
+/*
+* hsx
+* */
+const juhedelivery = ()=>{
+  // 聚合快递发货
+  router.push('/thkd_shop_order/list')
 }
 
 const orderNotesDialog: Record<string, any> | null = ref(null)

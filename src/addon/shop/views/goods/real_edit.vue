@@ -556,6 +556,13 @@ const skuFormRef = ref<FormInstance>()
 // 拖拽规格值
 const specValueRef = ref()
 
+// 获取站点 id
+const site_id = localStorage.getItem('site.siteId') || 0
+let delivery_template_id = ''
+if( site_id == '100005'){
+  delivery_template_id = 2
+}
+
 const goodsEdit = useGoodsEdit({
   getFormRef() {
     return {
@@ -580,10 +587,10 @@ const goodsEdit = useGoodsEdit({
     // 配送设置
     delivery_type: [],
 
-    is_free_shipping: 1,
+    is_free_shipping: 0,
     fee_type: 'template',
     delivery_money: '',
-    delivery_template_id: '',
+    delivery_template_id: delivery_template_id,
   },
   // 追加刷新商品sku数据
   appendRefreshGoodsSkuData: {
@@ -754,7 +761,7 @@ getGoodsInit({
 
     if (goodsEdit.formData.goods_id && data.goods_info) {
       // 配送设置
-      console.log(444)
+
       goodsEdit.formData.delivery_type = data.goods_info.delivery_type
       goodsEdit.formData.is_free_shipping = data.goods_info.is_free_shipping
       goodsEdit.formData.fee_type = data.goods_info.fee_type
@@ -820,7 +827,7 @@ const oneKeyAll = ()=>{
       attribute.select_child_val = attribute.child[0].name;
     }
   });
-  console.log( goodsEdit.attrTableData)
+
 }
 
 const save = ()=> {

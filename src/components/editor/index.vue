@@ -37,7 +37,8 @@ const content = computed({
         return prop.modelValue
     },
     set (value) {
-        emit('update:modelValue', value)
+      const processedContent = value.replace(/src="[^"]*(https:\/\/[^"]+)"/g, 'src="$1"')
+      emit('update:modelValue', processedContent)
     }
 })
 
@@ -73,6 +74,7 @@ const editorConfig = ref({
 })
 
 const imageSelect = (data: Record<string, any>) => {
+  console.log(1112)
     data.forEach((item: any) => {
         editorEl?.execCommand('insertHtml', `<img src="${img(item.url)}">`)
     })

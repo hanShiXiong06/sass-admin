@@ -10,7 +10,7 @@
       <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
         <el-form :inline="true" :model="goodsTable.searchParam" ref="searchFormRef">
           <el-form-item :label="t('商品串号')" prop="goods_name">
-            <el-input v-model.trim="goodsTable.searchParam.sku_no" :placeholder="t('请输入商品串号_id')" maxlength="60" clearable />
+            <el-input v-model.trim="goodsTable.searchParam.sku_no" :placeholder="t('请输入商品串号_id')" style="width: 150px" maxlength="60" clearable />
           </el-form-item>
           <el-form-item :label="t('goodsName')" prop="goods_name">
             <el-input v-model.trim="goodsTable.searchParam.goods_name" :placeholder="t('goodsNamePlaceholder')" maxlength="60" />
@@ -81,7 +81,7 @@
               <span :title="row.goods_id">{{ row.goods_id }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="goods_id" :label="t('goodsInfo')" min-width="300">
+          <el-table-column prop="goods_id" :label="t('goodsInfo')" min-width="250">
             <template #default="{ row }">
               <div class="flex items-center cursor-pointer" @click="previewEvent(row)">
                 <div class="min-w-[70px] h-[70px] flex items-center justify-center">
@@ -122,6 +122,18 @@
               </div>
             </template>
           </el-table-column>
+          <el-table-column prop="price" :label="t('会员价格')" min-width="100" align="left" sortable="custom">
+            <template #default="{ row }">
+              <div class="cursor-pointer price-wrap" @click="memberPriceEvent(row)">
+                <span  v-if="!!parseJson(row.goodsSku.member_price)">￥{{ parseJson(row.goodsSku.member_price) }}</span>
+                <el-icon class="icon-wrap ml-[5px] invisible">
+                  <EditPen />
+                </el-icon>
+              </div>
+            </template>
+          </el-table-column>
+
+
 
           <el-table-column prop="stock" :label="t('stock')" min-width="120" sortable="custom">
             <template #default="{ row }">
@@ -174,9 +186,10 @@
               <el-button @click="batchDeleteGoods" size="small">{{ t('batchDeleteGoods') }}</el-button>
           </div> -->
 
-          <el-pagination v-model:current-page="goodsTable.page" v-model:page-size="goodsTable.limit"
-                         layout="total, sizes, prev, pager, next, jumper" :total="goodsTable.total"
-                         @size-change="loadGoodsList()" @current-change="loadGoodsList" />
+          <el-pagination v-model:current-page="paginationStore.page" v-model:page-size="paginationStore.limit"
+                         layout="total, sizes, prev, pager, next, jumper" :total="paginationStore.total"
+                         @size-change="handleSizeChange"
+                         @current-change="handlePageChange" />
         </div>
 
       </div>
@@ -210,18 +223,20 @@ import goodsPriceEditPopup from '@/addon/shop/views/goods/components/goods-price
 import goodsSpreadPopup from '@/addon/shop/views/goods/components/goods-spread-popup.vue'
 import { getGoodsPageList, getCategoryTree, getGoodsType, getBrandList, getLabelList, editGoodsSort, editGoodsStatus, copyGoods, deleteGoods } from '@/addon/shop/api/goods'
 import { getMemberLevelAll } from '@/app/api/member'
+import { usePaginationStore } from '@/stores/modules/paginationStore'
 
 const router = useRouter()
 const route = useRoute()
+const paginationStore = usePaginationStore();
 
 const pageName = route.meta.title
 const repeat = ref(false)
 
 const goodsTable = reactive({
-  page: 1,
-  limit: 10,
-  total: 0,
-  loading: true,
+  page: paginationStore.page,
+  limit: paginationStore.limit,
+  total: paginationStore.total,
+  loading: paginationStore.loading,
   data: [],
   searchParam: {
     goods_name: '',
@@ -239,6 +254,31 @@ const goodsTable = reactive({
     sku_no:''
   }
 })
+/*hsx
+* 页码 及数量 初始化
+*
+* */
+const initPage = () => {
+  paginationStore.page = 1
+  paginationStore.limit = 10
+}
+
+/*hsx*/
+
+// 使用computed 解析json 数据 函数
+const parseJson = (json: string): any => {
+  try {
+    const data = JSON.parse(json)
+    let str = ''
+    for(let item in data ){
+      str += data[item]+' ￥'
+    }
+    // 移除最后一个字符
+    return str.slice(0, -1)
+  } catch (error) {
+    return {}
+  }
+}
 
 const searchFormRef = ref<FormInstance>()
 
@@ -264,6 +304,7 @@ const labelOptions: any = reactive([])
 
 // 初始化数据
 const initData = () => {
+  initPage()
   // 查询商品分类树结构
   getCategoryTree().then((res) => {
     const data = res.data
@@ -324,6 +365,7 @@ initData()
 
 // 当前选中tab页面
 const tabHandleClick = (tab: any, event: Event) => {
+  initPage()
   goodsTable.searchParam.status = tab.props.name
   loadGoodsList()
 }
@@ -540,18 +582,36 @@ const loadGoodsList = (page: number = 1) => {
 
   const searchData = cloneDeep(goodsTable.searchParam)
 
+
   getGoodsPageList({
-    page: goodsTable.page,
-    limit: goodsTable.limit,
+    page: paginationStore.page,
+    limit: paginationStore.limit,
     ...searchData
   }).then(res => {
     goodsTable.loading = false
     goodsTable.data = res.data.data
     goodsTable.total = res.data.total
+    paginationStore.setLoading(false)
+    // 更新总条目数，这里是假设总条目数为100
+    paginationStore.setTotal(res.data.total)
   }).catch(() => {
     goodsTable.loading = false
   })
 }
+
+/*
+* 页码和数量进行缓存
+* */
+function handleSizeChange ( newSize : number) {
+  paginationStore.setLimit(newSize)
+  loadGoodsList()
+}
+
+function handlePageChange ( newPage : number) {
+  paginationStore.setPage(newPage)
+  loadGoodsList()
+}
+
 
 loadGoodsList()
 
