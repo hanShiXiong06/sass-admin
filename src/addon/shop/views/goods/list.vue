@@ -107,7 +107,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="sku_no" :label="t('串号')" min-width="130" sortable="custom">
+          <el-table-column prop="sku_no" :label="t('sn')" min-width="130" sortable="custom">
             <template #default="{ row }">
               <span :title="row.sku_no">{{ row.goodsSku.sku_no}}</span>
             </template>
@@ -161,6 +161,11 @@
           <el-table-column prop="create_time" :label="t('createTime')" min-width="150" sortable="custom">
             <template #default="{ row }">
               <div>{{ row.create_time }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="update_time" :label="t('更新时间')" min-width="150" sortable="custom">
+            <template #default="{ row }">
+              <div>{{ row.update_time }}</div>
             </template>
           </el-table-column>
 

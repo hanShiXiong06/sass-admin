@@ -180,7 +180,7 @@
                 </el-input>
               </el-form-item>
               <el-form-item :label="t('skuNo')">
-                <el-input v-model="goodsEdit.formData.sku_no" clearable :placeholder="t('skuNoPlaceholder')" class="input-width" maxlength="50" @keyup="goodsEdit.filterSpecial($event)"  />
+                <el-input v-model.trim="goodsEdit.formData.sku_no" clearable :placeholder="t('skuNoPlaceholder')" class="input-width" maxlength="50" @keyup="goodsEdit.filterSpecial($event)"  />
               </el-form-item>
 
             </template>

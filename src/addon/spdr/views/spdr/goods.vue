@@ -443,7 +443,7 @@ const exportEvent = async () => {
 };
 const exportEvents = async () => {
   exportGoods_hsx(goodsTable);
-  // router.push("/setting/export");
+  router.push("/setting/export");
 };
 
 /**
