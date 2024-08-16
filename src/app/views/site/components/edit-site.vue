@@ -38,15 +38,15 @@
 
                 <div v-show="formData.uid === 0">
                     <el-form-item :label="t('username')" prop="username">
-                        <el-input v-model="formData.username" clearable :placeholder="t('usernamePlaceholder')" class="input-width" :readonly="user_name_input" @click="user_name_input = false" @blur="user_name_input = true" />
+                        <el-input v-model="formData.username" clearable :placeholder="t('usernamePlaceholder')" class="input-width" :readonly="user_name_input" @click="inputClick('user_name_input')" @blur="user_name_input = true" />
                     </el-form-item>
 
                     <el-form-item :label="t('password')" prop="password">
-                        <el-input v-model="formData.password" clearable :placeholder="t('passwordPlaceholder')" class="input-width" :show-password="true" type="password" :readonly="password_input" @click="password_input = false" @blur="password_input = true" />
+                        <el-input v-model="formData.password" clearable :placeholder="t('passwordPlaceholder')" class="input-width" :show-password="true" type="password" :readonly="password_input" @click="inputClick('password_input')" @blur="password_input = true" />
                     </el-form-item>
 
                     <el-form-item :label="t('confirmPassword')" prop="confirm_password">
-                        <el-input v-model="formData.confirm_password" :placeholder="t('confirmPasswordPlaceholder')" type="password" :show-password="true" clearable class="input-width" :readonly="confirm_password_input" @click="confirm_password_input = false" @blur="confirm_password_input = true" />
+                        <el-input v-model="formData.confirm_password" :placeholder="t('confirmPasswordPlaceholder')" type="password" :show-password="true" clearable class="input-width" :readonly="confirm_password_input" @click="inputClick('confirm_password_input')" @blur="confirm_password_input = true" />
                     </el-form-item>
                 </div>
             </div>
@@ -90,7 +90,7 @@ import { ref, reactive, computed } from 'vue'
 import { t } from '@/lang'
 import type { FormInstance } from 'element-plus'
 import { addSite, getSiteGroupAll, getSiteInfo, editSite } from '@/app/api/site'
-import { getAllUserList } from '@/app/api/user'
+import { getUserListSelect } from '@/app/api/user'
 import { getInstalledAddonList } from '@/app/api/addon'
 import { img } from '@/utils/common'
 
@@ -100,9 +100,9 @@ const groupList = ref([])
 const siteUser = ref([])
 const siteType = ref([])
 const domain = location.hostname
-getAllUserList({}).then(({ data }) => {
+getUserListSelect({}).then(({ data }) => {
     siteUser.value = data
-}).catch()
+})
 
 const end = new Date()
 
@@ -129,7 +129,14 @@ const formRef = ref<FormInstance>()
 const user_name_input = ref(true)
 const password_input = ref(true)
 const confirm_password_input = ref(true)
-
+const inputClick=(key:any)=>{
+    let time = setTimeout(() => {
+        clearTimeout(time)
+        if(key=='user_name_input') user_name_input.value = false
+        if(key=='password_input') password_input.value = false
+        if(key=='confirm_password_input') confirm_password_input.value = false
+    }, 200);
+}
 const setGroupList = async () => {
     groupList.value = await (await getSiteGroupAll()).data
 }
@@ -204,7 +211,6 @@ const emit = defineEmits(['complete'])
 
 // 弹窗头部
 const elDialogTitle = computed(() => {
-    // const title = ref<string>('')
     if (loading.value) return ''
     return formData.site_id ? t('editSite') : t('addSite')
 })

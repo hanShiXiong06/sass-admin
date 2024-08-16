@@ -17,7 +17,7 @@
                 <el-form-item :label="t('keyword')" prop="keyword">
                     <el-input v-model.trim="formData.keyword" :placeholder="t('keywordPlaceholder')" class="input-width" clearable >
                         <template #prepend>
-                            <el-select v-model="formData.matching_type" placeholder="Select" style="width: 115px">
+                            <el-select v-model="formData.matching_type" style="width: 115px">
                                 <el-option :label="t('allMatching')" value="full" />
                                 <el-option :label="t('fuzzyMatching')" value="like" />
                             </el-select>
@@ -94,7 +94,7 @@ const router = useRouter()
 const pageName = route.meta.title
 const showDialog = ref(false)
 
-const formData = reactive<Record<string, string>>({
+const formData: any = reactive({
     id: 0,
     name: '',
     keyword: '',

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-//包含站点管理，站点用户管理，站点操作日志
+// 包含站点管理，站点用户管理，站点操作日志
 
 /***************************************************** 站点管理 ****************************************************/
 
@@ -68,7 +68,6 @@ export function openSite(params: Record<string, any>) {
 export function getStatusList() {
     return request.get(`site/statuslist`)
 }
-
 
 /***************************************************** 站点分组管理 ****************************************************/
 
@@ -167,7 +166,6 @@ export function editUser(params: Record<string, any>) {
     return request.put(`site/user/${params.uid}`, params, { showSuccessMessage: true })
 }
 
-
 /**
  * 锁定用户
  * @param uid
@@ -177,7 +175,6 @@ export function lockUser(uid: number) {
     return request.put(`site/user/lock/${uid}`)
 }
 
-
 /**
  * 解锁用户
  * @param uid
@@ -186,7 +183,6 @@ export function lockUser(uid: number) {
 export function unlockUser(uid: number) {
     return request.put(`site/user/unlock/${uid}`)
 }
-
 
 /***************************************************** 操作日志 **************************************************/
 

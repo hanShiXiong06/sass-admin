@@ -50,16 +50,14 @@
                 <el-form-item :label="t('empowerStartDomain')">
                     <el-input v-model="staticInfo.auth_launch_domain" placeholder="Please input" class="input-width" :readonly="true">
                         <template #append>
-                            <div class="cursor-pointer" @click="copyEvent(staticInfo.auth_launch_domain)">{{ t('copy') }}
-                            </div>
+                            <div class="cursor-pointer" @click="copyEvent(staticInfo.auth_launch_domain)">{{ t('copy') }}</div>
                         </template>
                     </el-input>
                 </el-form-item>
                 <el-form-item :label="t('wechatDomain')">
                     <el-input v-model="staticInfo.wechat_auth_domain" placeholder="Please input" class="input-width" :readonly="true">
                         <template #append>
-                            <div class="cursor-pointer" @click="copyEvent(staticInfo.wechat_auth_domain)">{{ t('copy') }}
-                            </div>
+                            <div class="cursor-pointer" @click="copyEvent(staticInfo.wechat_auth_domain)">{{ t('copy') }}</div>
                         </template>
                     </el-input>
                 </el-form-item>

@@ -87,7 +87,7 @@
                         <template #default="{ row }">
                             <el-button class="!text-[13px]" v-if="row.install_info && Object.keys(row.install_info)?.length && row.install_info.version != row.version" type="primary" link @click="upgradeAddonFn(row.key)">{{ t('upgrade') }}</el-button>
                             <el-button class="!text-[13px]" v-if="row.install_info && Object.keys(row.install_info)?.length" type="primary" link @click="uninstallAddonFn(row.key)">{{ t('unload') }}</el-button>
-                            <template v-if="row.is_download && Object.keys(row.install_info) <= 0">
+                            <template v-if="row.is_download && (!row.install_info || !Object.keys(row.install_info).length)">
                                 <el-button class="!text-[13px]" type="primary" link @click="installAddonFn(row.key)">{{ t('install') }}</el-button>
                                 <el-button class="!text-[13px]" type="primary" link @click="deleteAddonFn(row.key)">{{ t('delete') }}</el-button>
                             </template>
@@ -135,7 +135,7 @@
                         </p>
                     </template>
                 </el-empty>
-                <div v-if="!localList.all.length && !loading && !authinfo && activeName == 'all'&&!authLoading" class="mx-auto overview-empty flex flex-col items-center pt-14 pb-6">
+                <div v-if="!localList.all.length && !loading && !authinfo && activeName == 'all' && !authLoading" class="mx-auto overview-empty flex flex-col items-center pt-14 pb-6">
                     <div class="mb-[20px] text-sm text-[#888]">检测到当前账号尚未绑定授权，请先绑定授权！</div>
                     <div class="flex flex-1  flex-wrap justify-center relative">
                         <el-button class="w-[154px] !h-[48px] mt-[8px]" type="primary" @click="authCodeApproveFn">授权码认证</el-button>
@@ -145,8 +145,7 @@
                                     您在官方应用市场购买任意一款应用，即可获得授权码。输入正确授权码认证通过后，即可支持在线升级和其它相关服务</p>
                                 <div class="flex justify-end mt-[36px]">
                                     <el-button class="w-[182px] !h-[48px]" plain @click="market">去应用市场逛逛</el-button>
-                                    <el-button class="w-[100px] !h-[48px]" plain
-                                        @click="getAuthCodeDialog.hide()">关闭</el-button>
+                                    <el-button class="w-[100px] !h-[48px]" plain @click="getAuthCodeDialog.hide()">关闭</el-button>
                                 </div>
                             </div>
                             <template #reference>
@@ -155,7 +154,7 @@
                         </el-popover>
                     </div>
                 </div>
-                <el-empty class="mx-auto overview-empty" v-if="!localList.all.length && !loading && authinfo && activeName == 'all'&&!authLoading">
+                <el-empty class="mx-auto overview-empty" v-if="!localList.all.length && !loading && authinfo && activeName == 'all' && !authLoading">
                     <template #image>
                         <div class="w-[230px] mx-auto">
                             <img src="@/app/assets/images/index/apply_empty.png" class="max-w-full" alt="">
@@ -367,7 +366,7 @@
         </el-card>
     </div>
 
-    <upgrade ref="upgradeRef" @complete="localListFn"/>
+    <upgrade ref="upgradeRef" @complete="localListFn" @cloudbuild="handleCloudBuild"/>
     <cloud-build ref="cloudBuildRef" />
 </template>
 
@@ -376,7 +375,7 @@ import { ref, reactive, watch, h } from 'vue'
 import { t } from '@/lang'
 import { getAddonLocal, uninstallAddon, installAddon, preInstallCheck, cloudInstallAddon, getAddonInstalltask, getAddonCloudInstallLog, preUninstallCheck, cancelInstall } from '@/app/api/addon'
 import { deleteAddonDevelop } from '@/app/api/tools'
-import { downloadVersion, getAuthinfo, setAuthinfo } from '@/app/api/module'
+import { downloadVersion, getAuthInfo, setAuthInfo } from '@/app/api/module'
 import { ElMessage, ElMessageBox, ElNotification, FormInstance, FormRules } from 'element-plus'
 import 'vue-web-terminal/lib/theme/dark.css'
 import { Terminal, TerminalFlash } from 'vue-web-terminal'
@@ -432,7 +431,7 @@ const downEvent = (param: Record<string, any>, isDown = false) => {
 }
 
 const authCode = ref('')
-getAuthinfo().then(res => {
+getAuthInfo().then(res => {
     if (res.data.data && res.data.data.auth_code) {
         authCode.value = res.data.data.auth_code
     }
@@ -688,25 +687,23 @@ const authElMessageBox = () => {
 
 let installLog: string[] = []
 const getCloudInstallLog = () => {
-    getAddonCloudInstallLog(currAddon.value)
-        .then(res => {
-            const data = res.data.data ?? []
-            if (data[0] && data[0].length && installShowDialog.value == true) {
-                data[0].forEach(item => {
-                    if (!installLog.includes(item.action)) {
-                        terminalRef.value.pushMessage({ content: `正在执行：${item.action}` })
-                        installLog.push(item.action)
+    getAddonCloudInstallLog(currAddon.value).then(res => {
+        const data = res.data.data ?? []
+        if (data[0] && data[0].length && installShowDialog.value == true) {
+            data[0].forEach(item => {
+                if (!installLog.includes(item.action)) {
+                    terminalRef.value.pushMessage({ content: `正在执行：${ item.action }` })
+                    installLog.push(item.action)
 
-                        if (item.code == 0) {
-                            terminalRef.value.pushMessage({ content: item.msg, class: 'error' })
-                        }
+                    if (item.code == 0) {
+                        terminalRef.value.pushMessage({ content: item.msg, class: 'error' })
                     }
-                })
-            }
-        })
-        .catch(() => {
-            notificationEl?.close()
-        })
+                }
+            })
+        }
+    }).catch(() => {
+        notificationEl?.close()
+    })
 }
 
 watch(currAddon, (nval) => {
@@ -806,11 +803,14 @@ const installShowDialogClose = (done: () => {}) => {
         ).then(() => {
             cancelInstall(currAddon.value)
             done()
-        }).catch(() => { })
+        }).catch(() => {
+        })
     } else if (installStep.value == 3) {
         activeNameTabFn('installed')
         location.reload()
-    } else done()
+    } else {
+        done()
+    }
 
     flashInterval && clearInterval(flashInterval)
 }
@@ -831,7 +831,7 @@ const saveLoading = ref(false)
 const authLoading = ref(true)
 const checkAppMange = () => {
     authLoading.value = true
-    getAuthinfo()
+    getAuthInfo()
         .then((res) => {
             authLoading.value = false
             if (res.data.data && res.data.data.length != 0) {
@@ -867,20 +867,18 @@ const formRules = reactive<FormRules>({
 const save = async (formEl: FormInstance | undefined) => {
     if (saveLoading.value || !formEl) return
 
-    await formEl.validate(async (valid) => {
+    await formEl.validate(async(valid) => {
         if (valid) {
             saveLoading.value = true
 
-            setAuthinfo(formData)
-                .then(() => {
-                    saveLoading.value = false
-                    setTimeout(() => {
-                        location.reload()
-                    }, 1000)
-                })
-                .catch(() => {
-                    saveLoading.value = false
-                })
+            setAuthInfo(formData).then(() => {
+                saveLoading.value = false
+                setTimeout(() => {
+                    location.reload()
+                }, 1000)
+            }).catch(() => {
+                saveLoading.value = false
+            })
         }
     })
 }

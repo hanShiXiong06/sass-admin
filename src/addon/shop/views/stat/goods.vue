@@ -1,5 +1,5 @@
 <template>
-    <div class="min-w-[100px] h-[75px] p-[15px] bg-white statIndex">
+    <div class="w-[full] h-[54px] bg-white tab-index">
         <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick" type="card">
             <el-tab-pane name="first">
                 <template #label>今日</template>
@@ -29,7 +29,7 @@
             </el-tab-pane>
         </el-tabs>
     </div>
-    <div class="min-w-[100px] min-h-[40px] px-[20px] bg-white statIndex mt-[20px]">
+    <div class="min-w-[100px] min-h-[40px] px-[20px] bg-white tab-index mt-[15px]">
         <div class="h-[81px] border-b border-solid border-[#eff0f4] flex items-center justify-between py-[15px]">
             <div class="text-[14px]">商品概况</div>
             <div class="flex flex-col">
@@ -121,27 +121,27 @@
             </div>
         </div>
     </div>
-    <div class="flex justify-between">
-        <div class="w-[803px] h-[101px] bg-[white] mt-[10px]">
+    <div class="flex justify-between mt-[15px] w-full">
+        <div class="w-[50%] h-[101px] bg-[white]">
            <div class="h-[45px] border-b border-solid border-[#eff0f4]">
                 <div class="pt-[15px] pl-[15px] text-[14px] font-bold">销售额（元）TOP5</div>
            </div>
            <div class="text-[#999] max-w-[400px] pl-[20px] pt-[15px] text-[14px]">暂无排名</div>
         </div>
-        <div class="w-[803px] h-[101px] bg-[white] mt-[10px]">
+        <div class="w-[49%] h-[101px] bg-[white]">
            <div class="h-[45px] border-b border-solid border-[#eff0f4]">
                 <div class="pt-[15px] pl-[15px] text-[14px] font-bold">销量（件）TOP5</div>
            </div>
            <div class="text-[#999] max-w-[400px] pl-[20px] pt-[15px] text-[14px]">暂无排名</div>
         </div>
     </div>
-    <div class="bg-[white] mt-[20px]">
-        <div ref="incomeChartRef" class="h-[400px] ml-[-90px]"></div>
+    <div class="bg-[white] mt-[10px]">
+        <div ref="incomeChartRef" class="h-[400px] w-full pt-[30px]"></div>
     </div>
     
 </template>
 <script lang="ts" setup>
-import { ref, onMounted, nextTick, } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import type { TabsPaneContext} from 'element-plus'
 import * as echarts from 'echarts'
 
@@ -159,9 +159,6 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
   
 }
 
-const currentIndex = ref(-1); 
-
-
 // 折线图
 const incomeChartRef = ref(null);
 
@@ -173,14 +170,10 @@ const initIncomeChart = () => {
     function generateRandomData(days) {
     return days.map(() => Math.round(Math.random() * 100));
     }
-    const days = ['1日', '2日', '3日', '4日', '5日', '6日', '7日', '8日', '9日', '10日', '11日', '12日', '13日', '14日'];
+    const days = ['0时','1时','2时','3时','4时','5时','6时','7时','8时','9时','10时','11时','12时','13时','14时','15时','16时','17时','18时','19时','20时','21时','22时','23时', ];
     // 生成8条折线图的随机数据
     const lineData = Array.from({ length: 8 }, () => generateRandomData(days));
 
-    // 准备数据
-    const xAxisData = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
-    const yAxisData1 = [0, -20, -50, 134, 90, 230, 210];
-    const yAxisData2 = [123, 145, 121, 174, 110, 300, 220]; // 第二条线的数据
 
     // 配置项
     const option = {
@@ -214,7 +207,6 @@ const initIncomeChart = () => {
   }
 };
 
-
 onMounted(() => {
   initIncomeChart();
 });
@@ -223,8 +215,26 @@ onMounted(() => {
 .wenHao{
     font-size: 14px;
 }
-.statIndex :deep(.el-tabs__item.is-active){
+.tab-index :deep(.el-tabs__item.is-active){
     background-color: #105CFB;
     color: white;
+}
+.tab-index :deep(.el-tabs__item):hover{
+    background-color: #105CFB;
+    color: white;
+}
+.tab-index :deep(.el-tabs__item){
+    line-height: 34px;
+    height: 34px !important;
+}
+.tab-index :deep(.el-tabs__nav){
+    border: 1px solid #D2D2D2;
+    margin-left: 10px;
+    height: 34px;
+    margin-top: 10px;
+    border-radius: 0;
+}
+.tab-index :deep(.el-tabs__header) {
+  border: none;
 }
 </style>

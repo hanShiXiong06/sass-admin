@@ -37,8 +37,7 @@ const content = computed({
         return prop.modelValue
     },
     set (value) {
-      const processedContent = value.replace(/src="[^"]*(https:\/\/[^"]+)"/g, 'src="$1"')
-      emit('update:modelValue', processedContent)
+        emit('update:modelValue', value)
     }
 })
 
@@ -52,6 +51,7 @@ const baseUrl = import.meta.env.VITE_APP_BASE_URL.substr(-1) == '/' ? import.met
 const editorConfig = ref({
     debug: false,
     UEDITOR_HOME_URL: import.meta.env.MODE == 'development' ? '/public/ueditor/' : '/admin/ueditor/',
+    UEDITOR_CORS_URL: import.meta.env.MODE == 'development' ? location.origin + '/ueditor/' : location.origin + '/admin/ueditor/',
     serverUrl: `${baseUrl}sys/ueditor`,
     serverHeaders,
     // 编辑器不自动被内容撑高
@@ -74,7 +74,6 @@ const editorConfig = ref({
 })
 
 const imageSelect = (data: Record<string, any>) => {
-  console.log(1112)
     data.forEach((item: any) => {
         editorEl?.execCommand('insertHtml', `<img src="${img(item.url)}">`)
     })

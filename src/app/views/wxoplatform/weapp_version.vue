@@ -90,10 +90,6 @@ const commit = () => {
     })
 }
 
-const showUpdateLog = () => {
-
-}
-
 /**
  * 获取角色列表
  */

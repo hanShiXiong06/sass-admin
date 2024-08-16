@@ -57,7 +57,7 @@
                         <template #default="{ row }">
                             <div class="flex items-center">
                                 <img class="w-[50px] h-[50px] mr-[10px]" v-if="row.headimg" :src="img(row.headimg)" alt="">
-                                <img class="w-[50px] h-[50px] mr-[10px]" v-else src="@/app/assets/images/default_headimg.png" alt="">
+                                <img class="w-[50px] h-[50px] mr-[10px] rounded-full" v-else src="@/app/assets/images/member_head.png" alt="">
                                 <div class="flex flex flex-col">
                                     <span>{{ row.nickname || '' }}</span>
                                 </div>
@@ -72,7 +72,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="balance" :label="t('balance')" min-width="130" align="right" />
-                    <el-table-column prop="member_label" :label="t('lable')" min-width="120" align="center">
+                    <el-table-column prop="member_label" :label="t('memberLabelTag')" min-width="120" align="center">
                         <template #default="{ row }">
                             <div class="flex flex-col items-center">
                                 <div v-for="(item, key) in row.member_label_array" class="my-[3px]" :key="key">
@@ -105,7 +105,7 @@
                         <template #default="{ row }">
                             <div class="flex items-center">
                                 <el-button type="primary" link @click="detailEvent(row)">{{ t('detail') }}</el-button>
-                                <el-button type="primary" link @click="setMemberLablel(row)">{{ t('setLable') }}</el-button>
+                                <el-button type="primary" link @click="setMemberLabel(row)">{{ t('setLabel') }}</el-button>
                                 <!-- <el-button type="primary" link @click="deleteEvent(row)">{{ t('memberDelete') }}</el-button> -->
                             </div>
                         </template>
@@ -130,7 +130,7 @@
 import { reactive, ref } from 'vue'
 import { t } from '@/lang'
 import { img } from '@/utils/common'
-import { addMember, getRegisterChannelType, getMemberList, getMemberLabelAll, editMemberStatus, deleteMember, getMemberLevelAll } from '@/app/api/member'
+import { getRegisterChannelType, getMemberList, getMemberLabelAll, editMemberStatus, deleteMember, getMemberLevelAll } from '@/app/api/member'
 import { ElMessageBox, FormInstance } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
 import AddMember from '@/app/views/member/components/add-member.vue'
@@ -206,26 +206,13 @@ const addMemberDialog: Record<string, any> | null = ref(null)
 const editMemberDialog: Record<string, any> | null = ref(null)
 
 /**
- * 获取标签
- */
-function memberLablel(res: any) {
-    let data
-    if (!res.member_label_array) return ''
-    data = res.member_label_array.map((item: any) => {
-        return item.label_name
-    })
-    data = data.toString()
-    return data
-}
-
-/**
  * 设置标签
  */
-function setMemberLablel(res: any) {
+function setMemberLabel(res: any) {
     const data = ref({
         type: 'member_label',
         id: res.member_id,
-        title: t('setLable'),
+        title: t('setLabel'),
         data: res
     })
     editMemberDialog.value.setDialogType(data.value)

@@ -19,7 +19,7 @@ export function getUserList(params: Record<string, any>) {
  * @returns
  */
 export function getUserInfo(uid: number) {
-    return request.get(`user/user/${uid}`);
+    return request.get(`user/user/${ uid }`);
 }
 
 /**
@@ -32,12 +32,29 @@ export function addUser(params: Record<string, any>) {
 }
 
 /**
+ * 删除用户
+ * @param uid
+ */
+export function deleteUser(uid: number) {
+    return request.delete(`user/user/${uid}`, { showSuccessMessage: true })
+}
+
+/**
  * 获取所有用户列表
  * @param params
  * @returns
  */
 export function getAllUserList(params: Record<string, any>) {
     return request.get(`user/user_all`, { params })
+}
+
+/**
+ * 获取添加站点可选用户列表
+ * @param params
+ * @returns
+ */
+export function getUserListSelect(params: Record<string, any>) {
+    return request.get(`user/user_select`, { params })
 }
 
 /**
@@ -51,10 +68,10 @@ export function checkUsernameIsExist(username: string) {
 
 /**
  * 获取用户站点创建限制
- * @param params
+ * @param uid
  */
 export function getUserCreateSiteLimit(uid: number) {
-    return request.get(`user/user/create_site_limit/${uid}`)
+    return request.get(`user/user/create_site_limit/${ uid }`)
 }
 
 /**
@@ -62,7 +79,7 @@ export function getUserCreateSiteLimit(uid: number) {
  * @param id
  */
 export function getUserCreateSiteLimitInfo(id: number) {
-    return request.get(`user/user/create_site_limit/info/${id}`)
+    return request.get(`user/user/create_site_limit/info/${ id }`)
 }
 
 /**
@@ -78,13 +95,13 @@ export function addUserCreateSiteLimit(params: Record<string, any>) {
  * @param params
  */
 export function editUserCreateSiteLimit(params: Record<string, any>) {
-    return request.put(`user/user/create_site_limit/${params.id}`, params, { showSuccessMessage: true })
+    return request.put(`user/user/create_site_limit/${ params.id }`, params, { showSuccessMessage: true })
 }
 
 /**
  * 编辑用户站点创建限制
- * @param params
+ * @param id
  */
 export function delUserCreateSiteLimit(id: number) {
-    return request.delete(`user/user/create_site_limit/${id}`, { showSuccessMessage: true })
+    return request.delete(`user/user/create_site_limit/${ id }`, { showSuccessMessage: true })
 }

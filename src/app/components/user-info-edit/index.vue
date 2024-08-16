@@ -2,7 +2,7 @@
     <el-dialog v-model="dialogVisible" :title="t('accountSettings')" width="500">
         <el-form :model="saveInfo" label-width="90px" ref="formRef" class="page-form">
             <el-form-item :label="t('headImg')">
-                <upload-image v-model="saveInfo.head_img" :limit="1" :type="'avatar'" />
+                <upload-image v-model="saveInfo.head_img" :limit="1" :type="'avatar'" imageFit="cover" />
             </el-form-item>
             <el-form-item :label="t('userName')">
                 <span>{{saveInfo.username}}</span>
@@ -31,8 +31,7 @@ import useUserStore from '@/stores/modules/user'
 const userStore = useUserStore()
 const router = useRouter()
 // 提交信息
-const saveInfo = reactive({})
-
+const saveInfo: any = reactive({})
 const formRef = ref<FormInstance>()
 const loading = ref(true)
 const dialogVisible = ref(false)
@@ -61,7 +60,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
             setUserInfo(saveInfo).then((res: any) => {
                 loading.value = false
                 dialogVisible.value = false
-                let data = deepClone(userStore.userInfo) 
+                let data: any = deepClone(userStore.userInfo)
                 data.head_img = saveInfo.head_img
                 userStore.setUserInfo(data)
             }).catch(() => {
@@ -77,5 +76,4 @@ defineExpose({
 })
 </script>
 <style lang="scss" scoped>
-
 </style>

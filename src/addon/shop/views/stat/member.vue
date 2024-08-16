@@ -1,29 +1,29 @@
 <template>
-    <div class="min-w-[100px] min-h-[650px] p-[15px] bg-white statIndex">
+    <div class="min-w-[100px] min-h-[650px] p-[15px] bg-white tab-index">
         <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick" type="card">
             <el-tab-pane name="first">
                 <template #label>今日</template>
                 <div class="flex w-full justify-between flex-wrap">
                     <div class="w-[19%] border-[#eee] border-solid border-[1px] h-[90px] p-[15px] cursor-pointer" v-for="(item, index) in boxes"  @click="selectBox(item)" :class="{ 'border-[#105CFB]': currentIndex == item.id,'text-[#105CFB]': currentIndex == item.id }">
                         <div class="flex items-center">
-                                <div class="text-[14px]">新增会员数</div>
-                                <el-tooltip class="box-item" effect="light" content="统计时间内，店铺收入金额减去支出的金额" placement="top-start">
-                                  <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
-                                </el-tooltip>
+                            <div class="text-[14px]">新增会员数</div>
+                            <el-tooltip class="box-item" effect="light" content="统计时间内，店铺收入金额减去支出的金额" placement="top-start">
+                              <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
+                            </el-tooltip>
                         </div>
                         <div class="text-[25px] font-bold">0</div>
                     </div>
                 </div>
-                
+
             </el-tab-pane>
             <el-tab-pane label="昨日" name="second">
                 <div class="flex w-full justify-between flex-wrap">
                     <div class="w-[19%] border-[#eee] border-solid border-[1px] h-[90px] p-[15px] cursor-pointer" v-for="(item, index) in boxes"  @click="selectBox(item)" :class="{ 'border-[#105CFB]': currentIndex == item.id,'text-[#105CFB]': currentIndex == item.id }">
                         <div class="flex items-center">
-                                <div class="text-[14px]">新增会员数</div>
-                                <el-tooltip class="box-item" effect="light" content="统计时间内，店铺收入金额减去支出的金额" placement="top-start">
-                                  <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
-                                </el-tooltip>
+                            <div class="text-[14px]">新增会员数</div>
+                            <el-tooltip class="box-item" effect="light" content="统计时间内，店铺收入金额减去支出的金额" placement="top-start">
+                              <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
+                            </el-tooltip>
                         </div>
                         <div class="text-[25px] font-bold">0</div>
                     </div>
@@ -34,10 +34,10 @@
                 <div class="flex w-full justify-between flex-wrap">
                     <div class="w-[19%] border-[#eee] border-solid border-[1px] h-[90px] p-[15px] cursor-pointer" v-for="(item, index) in boxes"  @click="selectBox(item)" :class="{ 'border-[#105CFB]': currentIndex == item.id,'text-[#105CFB]': currentIndex == item.id }">
                         <div class="flex items-center">
-                                <div class="text-[14px]">新增会员数</div>
-                                <el-tooltip class="box-item" effect="light" content="统计时间内，店铺收入金额减去支出的金额" placement="top-start">
-                                  <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
-                                </el-tooltip>
+                            <div class="text-[14px]">新增会员数</div>
+                            <el-tooltip class="box-item" effect="light" content="统计时间内，店铺收入金额减去支出的金额" placement="top-start">
+                              <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
+                            </el-tooltip>
                         </div>
                         <div class="text-[25px] font-bold">0</div>
                     </div>
@@ -47,10 +47,10 @@
                 <div class="flex w-full justify-between flex-wrap">
                     <div class="w-[19%] border-[#eee] border-solid border-[1px] h-[90px] p-[15px] cursor-pointer" v-for="(item, index) in boxes"  @click="selectBox(item)" :class="{ 'border-[#105CFB]': currentIndex == item.id,'text-[#105CFB]': currentIndex == item.id }">
                         <div class="flex items-center">
-                                <div class="text-[14px]">新增会员数</div>
-                                <el-tooltip class="box-item" effect="light" content="统计时间内，店铺收入金额减去支出的金额" placement="top-start">
-                                  <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
-                                </el-tooltip>
+                            <div class="text-[14px]">新增会员数</div>
+                            <el-tooltip class="box-item" effect="light" content="统计时间内，店铺收入金额减去支出的金额" placement="top-start">
+                              <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
+                            </el-tooltip>
                         </div>
                         <div class="text-[25px] font-bold">0</div>
                     </div>
@@ -75,22 +75,22 @@
                 <div class="flex w-full justify-between flex-wrap" >
                     <div class="w-[19%] border-[#eee] border-solid border-[1px] h-[90px] p-[15px] cursor-pointer" v-for="(item, index) in boxes"  @click="selectBox(item)" :class="{ 'border-[#105CFB]': currentIndex == item.id,'text-[#105CFB]': currentIndex == item.id }">
                         <div class="flex items-center">
-                                <div class="text-[14px]">新增会员数</div>
-                                <el-tooltip class="box-item" effect="light" content="统计时间内，店铺收入金额减去支出的金额" placement="top-start">
-                                  <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
-                                </el-tooltip>
+                            <div class="text-[14px]">新增会员数</div>
+                            <el-tooltip class="box-item" effect="light" content="统计时间内，店铺收入金额减去支出的金额" placement="top-start">
+                              <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
+                            </el-tooltip>
                         </div>
                         <div class="text-[25px] font-bold">0</div>
                     </div>
                 </div>
-                
+
             </el-tab-pane>
         </el-tabs>
         <div ref="incomeChartRef" class="h-[400px] mt-[60px] ml-[-90px]"></div>
     </div>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, onMounted, nextTick, watch } from 'vue'
+import { ref, reactive, onMounted, nextTick } from 'vue'
 import type { TabsPaneContext} from 'element-plus'
 import * as echarts from 'echarts'
 
@@ -105,7 +105,7 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
   nextTick(()=>{
     initIncomeChart()
   })
-  
+
 }
 
 const boxes = reactive([
@@ -115,7 +115,7 @@ const boxes = reactive([
   { content: '盒子 1', id : 4  },
   { content: '盒子 2', id : 5  },
 ]);
-const currentIndex = ref(-1); 
+const currentIndex = ref(-1);
 
 const selectBox = (item) => {
   currentIndex.value = item.id;
@@ -162,7 +162,6 @@ const initIncomeChart = () => {
   }
 };
 
-
 onMounted(() => {
   initIncomeChart();
 });
@@ -171,8 +170,24 @@ onMounted(() => {
 .wenHao{
     font-size: 14px;
 }
-.statIndex :deep(.el-tabs__item.is-active){
+.tab-index :deep(.el-tabs__item.is-active){
     background-color: #105CFB;
     color: white;
+}
+.tab-index :deep(.el-tabs__item):hover{
+    background-color: #105CFB;
+    color: white;
+}
+.tab-index :deep(.el-tabs__item){
+    line-height: 34px;
+    height: 34px !important;
+}
+.tab-index :deep(.el-tabs__nav){
+    border: 1px solid #D2D2D2;
+    height: 34px;
+    border-radius: 0;
+}
+.tab-index :deep(.el-tabs__header) {
+  border: none;
 }
 </style>

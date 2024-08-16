@@ -20,8 +20,8 @@
             <div class="flex justify-between items-center mt-[18px]">
                 <div class="w-[800px] text-[14px] whitespace-nowrap">
                     <el-scrollbar :always="true">
-                        <span :class="['mr-[12px] cursor-pointer', {'text-[var(--el-color-primary)]': params.app == ''}]" @click="cutAppFn('')">所有应用</span>
-                        <span :class="['mr-[12px] cursor-pointer', {'text-[var(--el-color-primary)]': params.app == item.key}]" @click="cutAppFn(item.key)" v-for="(item,index) in addonList" :key="index">{{item.title}}</span>
+                        <span :class="['px-[10px] cursor-pointer h-[35px] leading-[35px] inline-block', {'text-[var(--el-color-primary)]': params.app == ''}]" @click="cutAppFn('')">所有应用</span>
+                        <span :class="['px-[10px] cursor-pointer h-[35px] leading-[35px] inline-block', {'text-[var(--el-color-primary)]': params.app == item.key}]" @click="cutAppFn(item.key)" v-for="(item,index) in addonList" :key="index">{{item.title}}</span>
                     </el-scrollbar>
                 </div>
                 <el-input v-model="params.keywords" class="!w-[300px] !h-[34px]" placeholder="请输入要搜索的站点名称" @keyup.enter.native="getHomeSiteFn()">
@@ -35,8 +35,7 @@
 
             <div class="min-h-[580px]">
                 <div class="flex flex-wrap mt-[30px]" v-loading="loading">
-                    <div v-for="(item, index) in tableData" :key="index" @click="selectSite(item)"
-                        :class="['home-item w-[285px] box-border mb-[20px] cursor-pointer',{'mr-[20px]': index ==0 || (index+1)%4 != 0}]">
+                    <div v-for="(item, index) in tableData" :key="index" @click="selectSite(item)" :class="['home-item w-[285px] box-border mb-[20px] cursor-pointer',{'mr-[20px]': index ==0 || (index+1)%4 != 0}]">
                         <div class="flex items-center px-[24px] pt-[22px] pb-[16px] bg-[#F0F2F4] home-item-head relative">
                             <div class="absolute h-[5px] w-full z-1 left-0 top-0" :style="{'background-color': item.theme_color}" v-if="item.theme_color"></div>
                             <img v-if="item.icon" class="w-[48px] h-[48px] mr-[15px] rounded-[50%] overflow-hidden" :src="img(item.icon)" />
@@ -73,9 +72,9 @@
 
     <el-dialog v-model="createSiteDialog" width="54vw" :destroy-on-close="true" style="border-radius: 25px;">
         <template #title>
-            <div class="text-[#333333] text-[22px] ml-[10px] leading-[1]">创建站点</div>
+            <div class="text-[#333333] text-[22px] ml-[15px] leading-[1] mt-[10px]">创建站点</div>
         </template>
-        <div class="flex flex-col mx-[20px] h-[430px]">
+        <div class="flex flex-col mx-[25px] h-[430px] mt-[15px]">
             <div class="flex items-center">
                 <div class="text-[18px] text-[#333333]">站点名称</div>
                 <div class="w-[420px] h-[34px] ml-[10px]">
@@ -89,7 +88,7 @@
             
             <div class="flex-1 mt-[20px] h-[160px]" v-show="createSiteData.step == 1">
                 <div class="text-[18px] text-[#333333]">店铺套餐</div>
-                <el-scrollbar class="w-full mt-[10px] -ml-[10px]" height="350px">
+                <el-scrollbar class="w-full mt-[10px] meal-site -ml-[10px]" height="350px">
                     <div class="w-full whitespace-nowrap" v-show="createSiteData.step == 1">
                         <div v-for="(item, index) in siteGroup" :key="index"
                              class="inline-flex flex-col w-[300px] h-[330px] box-border rounded-[17px] border-transparent border-[2px] border-solid create-site-item my-[10px]"
@@ -116,7 +115,7 @@
         </div>
         <template #footer>
             <span class="dialog-footer">
-                <el-button type="primary" @click="createSiteFn" class="w-[118px] h-[44px] text-[16px]">创建站点</el-button>
+                <el-button type="primary" @click="createSiteFn" class="w-[118px] h-[44px] mt-[10px] text-[16px]">创建站点</el-button>
             </span>
         </template>
     </el-dialog>
@@ -326,5 +325,8 @@ watch(() => createSiteDialog.value, () => {
 <style lang="scss">
 .create-site-name .el-input__wrapper{
     border-radius: 6px !important;
+}
+.meal-site{
+    height: calc(100% - 30px) !important;
 }
 </style>

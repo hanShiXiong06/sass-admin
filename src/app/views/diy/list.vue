@@ -13,7 +13,7 @@
                         <el-input v-model="diyPageTableData.searchParam.title" :placeholder="t('titlePlaceholder')" />
                     </el-form-item>
                     <el-form-item :label="t('forAddon')" prop="addon_name">
-                        <el-select v-model="diyPageTableData.searchParam.addon_name" :placeholder="t('pageTypePlaceholder')" @change="handleSelectAddonChange">
+                        <el-select v-model="diyPageTableData.searchParam.addon_name" :placeholder="t('forAddonPlaceholder')" @change="handleSelectAddonChange">
                             <el-option :label="t('all')" value="" />
                             <el-option v-for="(item, key) in apps" :label="item.title" :value="key" :key="key"/>
                         </el-select>

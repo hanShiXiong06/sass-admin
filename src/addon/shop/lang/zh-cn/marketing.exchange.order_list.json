@@ -46,7 +46,7 @@
     "payType": "支付类型",
     "orderInfo": "订单信息",
     "refundStatusName": "退款状态",
-    "outTradeNo": "交易号",
+    "outTradeNo": "交易流水号",
 
     "exportOrderType": "导出订单类型",
     "shopOrder": "订单数据表",

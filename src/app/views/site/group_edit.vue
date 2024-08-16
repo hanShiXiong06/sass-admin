@@ -94,6 +94,7 @@ import { ref, computed } from 'vue'
 import { t } from '@/lang'
 import type { FormInstance } from 'element-plus'
 import { ArrowLeft } from '@element-plus/icons-vue'
+import { menuRefresh } from '@/app/api/sys'
 import { addSiteGroup, editSiteGroup, getSiteGroupInfo } from '@/app/api/site'
 import { getInstalledAddonList } from '@/app/api/addon'
 import { img, deepClone } from '@/utils/common'
@@ -175,8 +176,8 @@ const confirm = async (formEl: FormInstance | undefined) => {
     await formEl.validate(async (valid) => {
         if (valid) {
             saveLoading.value = true
-
             save(formData.value).then(res => {
+                menuRefreshFn()
                 setTimeout(() => {
                     back()
                 }, 1000)
@@ -185,6 +186,10 @@ const confirm = async (formEl: FormInstance | undefined) => {
             })
         }
     })
+}
+const menuRefreshFn = () => {
+    menuRefresh({}).then(res => {
+    }).catch(() => {})
 }
 </script>
 

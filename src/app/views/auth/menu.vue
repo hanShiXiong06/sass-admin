@@ -78,7 +78,6 @@ const getMenuList = () => {
         menusTableData.loading = false
         menusTableData.data = res.data
     }).catch(() => {
-
     })
 }
 getMenuList()

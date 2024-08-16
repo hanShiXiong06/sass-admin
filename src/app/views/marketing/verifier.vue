@@ -18,7 +18,7 @@
                         <template #default="{ row }">
                             <div class="flex items-center cursor-pointer " @click="toMember(row.member.member_id)" v-if="row.member">
                                 <img class="w-[50px] h-[50px] mr-[10px]" v-if="row.member.headimg" :src="img(row.member.headimg)" alt="">
-                                <img class="w-[50px] h-[50px] mr-[10px]" v-else src="@/app/assets/images/default_headimg.png" alt="">
+                                <img class="w-[50px] h-[50px] mr-[10px] rounded-full" v-else src="@/app/assets/images/member_head.png" alt="">
                                 <div class="flex flex flex-col">
                                     <span>{{ row.member.nickname || '' }}</span>
                                     <span>{{ row.member.mobile || '' }}</span>
@@ -57,11 +57,8 @@
         <el-dialog v-model="showDialog" :title="t('addVerifier')" width="500px" :destroy-on-close="true">
             <el-form :model="formData" label-width="90px" ref="formRef" :rules="formRules" class="page-form" v-loading="addLoading">
                 <el-form-item :label="t('member')" prop="member_id">
-                    <el-select v-model="formData.member_id" filterable remote reserve-keyword clearable
-                        :placeholder="t('searchPlaceholder')" :remote-method="searchMember" :loading="searchLoading"
-                        class="input-width">
-                        <el-option v-for="item in memberList" :key="item.member_id" :label="item.nickname"
-                            :value="item.member_id" />
+                    <el-select v-model="formData.member_id" filterable remote reserve-keyword clearable :placeholder="t('searchPlaceholder')" :remote-method="searchMember" :loading="searchLoading" class="input-width">
+                        <el-option v-for="item in memberList" :key="item.member_id" :label="item.nickname" :value="item.member_id" />
                     </el-select>
                 </el-form-item>
                 <el-form-item :label="t('verifyType')" prop="verify_type">
@@ -157,7 +154,6 @@ const deleteEvent = (id: number) => {
     ).then(() => {
         deleteVerifier(id).then(() => {
             loadVerifierList()
-        }).catch(() => {
         })
     })
 }

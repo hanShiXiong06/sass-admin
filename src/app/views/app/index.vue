@@ -8,22 +8,20 @@
             </div>
 
             <div class="flex flex-wrap plug-list pb-10 plug-large" v-if="appList.length">
-                <div v-for="(item, index) in appList" :key="index + 'b'">
-                    <div class="relative cursor-pointer mt-[20px] mr-4 px-4 border-br-light border-[1px] bg-[var(--el-color-info-light-9)] hover:border-primary">
-                        <div @click="toLink(item.key)" class="flex py-5 items-center">
-                            <div class="flex justify-center items-center">
-                                <el-image class="w-[40px] h-[40px]" :src="img(item.icon)" fit="contain">
-                                    <template #error>
-                                        <div class="image-slot">
-                                            <img class="w-[50px] h-[50px]" src="@/app/assets/images/index/app_default.png" />
-                                        </div>
-                                    </template>
-                                </el-image>
+                <div  v-for="(item, index) in appList" :key="index + 'b'" class="app-item relative cursor-pointer mt-[20px] mr-4 bg-[#f7f7f7] w-[264px] flex py-[20px] px-[17px]"  @click="toLink(item.key)">
+                    <el-image class="w-[40px] h-[40px] mr-[10px]" :src="img(item.icon)" fit="contain">
+                        <template #error>
+                            <div class="image-slot">
+                                <img class="w-[50px] h-[50px]" src="@/app/assets/images/index/app_default.png" />
                             </div>
-                            <div class="flex flex-col justify-between text-left w-[190px]">
-                                <p class="app-text w-[190px] text-[17px] pl-3">{{ item.title }}</p>
-                            </div>
+                        </template>
+                    </el-image>
+                    <div class="flex flex-col justify-between w-[180px]">
+                        <div class="text-[14px] flex items-center">
+                            <span class="app-text max-w-[170px]">{{ item.title }}</span>
+                            <span class="iconfont iconxiaochengxu2 text-[#00b240] ml-[4px] !text-[14px]"></span>
                         </div>
+                        <p class="app-text text-[12px] text-[#999]">{{item.desc}}</p>
                     </div>
                 </div>
             </div>
@@ -68,5 +66,9 @@ const toLink = (addon: string) => {
         /* 禁止文本换行 */
         text-overflow: ellipsis;
         /* 显示省略号 */
+    }
+    .app-item:hover{
+        transition: 0.5s;
+        box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.1);
     }
 </style>

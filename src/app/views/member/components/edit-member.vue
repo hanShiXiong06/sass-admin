@@ -73,7 +73,7 @@ const sexSelectData = ref([
         name: t('girlSex')
     }
 ])
-const labelSelectData = ref(null)
+const labelSelectData:any = ref(null)
 // 获取全部标签
 const getMemberLabelAllFn = async () => {
     labelSelectData.value = await (await getMemberLabelAll()).data
@@ -127,7 +127,11 @@ const confirm = async (formEl: FormInstance | undefined) => {
             if (repeat.value) return
             repeat.value = true
 
-            const val = saveData[type.value] ? deepClone(saveData[type.value]) : ''
+            let val = saveData[type.value];
+            if(type.value == 'member_label'){
+                // 将saveData[type.value]中的值，转换为字符串
+                val = saveData[type.value] && saveData[type.value].length  ? deepClone(saveData[type.value]).join(',').split(',') : '';
+            }
 
             const data = ref({
                 member_id: memberId.value,
@@ -155,8 +159,20 @@ const setDialogType = async (row: any = null) => {
     memberId.value = row.id
     saveData[type.value] = row.data[type.value]
     if (type.value == 'member_label' && saveData[type.value]) {
-        saveData[type.value].forEach((item:any, index:any) => {
-            saveData[type.value][index] = Number.parseFloat(item)
+        saveData[type.value].forEach((item: any, index: any) => {
+            let isExist = false;
+            for (let i = 0; i < labelSelectData.value.length; i++) {
+                if (labelSelectData.value[i].label_id == item) {
+                    isExist = true;
+                    break;
+                }
+            }
+            if (isExist) {
+                saveData[type.value][index] = Number.parseFloat(item)
+            } else {
+                saveData[type.value].splice(index, 1); // 删除不存在的id
+            }
+
         })
     }
     loading.value = false

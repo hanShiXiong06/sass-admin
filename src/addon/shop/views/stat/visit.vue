@@ -1,15 +1,15 @@
 <template>
-    <div class="min-w-[100px] min-h-[650px] p-[15px] bg-white statIndex mb-[150px]">
+    <div class="min-w-[100px] min-h-[650px] p-[15px] bg-white tab-index mb-[150px]">
         <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick" type="card">
             <el-tab-pane name="first">
                 <template #label>今日</template>
                 <div class="flex w-full justify-between flex-wrap">
                     <div class="w-[24.3%] border-[#eee] border-solid border-[1px] h-[85px] p-[15px] cursor-pointer" v-for="(item, index) in boxes"  @click="selectBox(item)" :class="{ 'border-[#105CFB]': currentIndex == item.id,'text-[#105CFB]': currentIndex == item.id }">
                         <div class="flex items-center">
-                                <div class="text-[14px]">全部</div>
-                                <el-tooltip class="box-item" effect="light" content="统计时间内，全部站点总的访客人数" placement="top-start">
-                                  <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
-                                </el-tooltip>
+                            <div class="text-[14px]">全部</div>
+                            <el-tooltip class="box-item" effect="light" content="统计时间内，全部站点总的访客人数" placement="top-start">
+                              <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
+                            </el-tooltip>
                         </div>
                         <div class="flex justify-between">
                             <div class="text-[14px] mt-[16px] text-[#999]">访客数</div>
@@ -22,10 +22,10 @@
                 <div class="flex w-full justify-between flex-wrap">
                     <div class="w-[24.3%] border-[#eee] border-solid border-[1px] h-[85px] p-[15px] cursor-pointer" v-for="(item, index) in boxes"  @click="selectBox(item)" :class="{ 'border-[#105CFB]': currentIndex == item.id,'text-[#105CFB]': currentIndex == item.id }">
                         <div class="flex items-center">
-                                <div class="text-[14px]">全部</div>
-                                <el-tooltip class="box-item" effect="light" content="统计时间内，全部站点总的访客人数" placement="top-start">
-                                  <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
-                                </el-tooltip>
+                            <div class="text-[14px]">全部</div>
+                            <el-tooltip class="box-item" effect="light" content="统计时间内，全部站点总的访客人数" placement="top-start">
+                              <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
+                            </el-tooltip>
                         </div>
                         <div class="flex justify-between">
                             <div class="text-[14px] mt-[16px] text-[#999]">访客数</div>
@@ -38,10 +38,10 @@
                 <div class="flex w-full justify-between flex-wrap">
                     <div class="w-[24.3%] border-[#eee] border-solid border-[1px] h-[85px] p-[15px] cursor-pointer" v-for="(item, index) in boxes"  @click="selectBox(item)" :class="{ 'border-[#105CFB]': currentIndex == item.id,'text-[#105CFB]': currentIndex == item.id }">
                         <div class="flex items-center">
-                                <div class="text-[14px]">全部</div>
-                                <el-tooltip class="box-item" effect="light" content="统计时间内，全部站点总的访客人数" placement="top-start">
-                                  <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
-                                </el-tooltip>
+                            <div class="text-[14px]">全部</div>
+                            <el-tooltip class="box-item" effect="light" content="统计时间内，全部站点总的访客人数" placement="top-start">
+                              <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
+                            </el-tooltip>
                         </div>
                         <div class="flex justify-between">
                             <div class="text-[14px] mt-[16px] text-[#999]">访客数</div>
@@ -54,10 +54,10 @@
                 <div class="flex w-full justify-between flex-wrap">
                     <div class="w-[24.3%] border-[#eee] border-solid border-[1px] h-[85px] p-[15px] cursor-pointer" v-for="(item, index) in boxes"  @click="selectBox(item)" :class="{ 'border-[#105CFB]': currentIndex == item.id,'text-[#105CFB]': currentIndex == item.id }">
                         <div class="flex items-center">
-                                <div class="text-[14px]">全部</div>
-                                <el-tooltip class="box-item" effect="light" content="统计时间内，全部站点总的访客人数" placement="top-start">
-                                  <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
-                                </el-tooltip>
+                            <div class="text-[14px]">全部</div>
+                            <el-tooltip class="box-item" effect="light" content="统计时间内，全部站点总的访客人数" placement="top-start">
+                              <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
+                            </el-tooltip>
                         </div>
                         <div class="flex justify-between">
                             <div class="text-[14px] mt-[16px] text-[#999]">访客数</div>
@@ -86,10 +86,10 @@
                     <div class="flex w-full justify-between flex-wrap">
                         <div class="w-[24.3%] border-[#eee] border-solid border-[1px] h-[85px] p-[15px] cursor-pointer" v-for="(item, index) in boxes"  @click="selectBox(item)" :class="{ 'border-[#105CFB]': currentIndex == item.id,'text-[#105CFB]': currentIndex == item.id }">
                             <div class="flex items-center">
-                                    <div class="text-[14px]">全部</div>
-                                    <el-tooltip class="box-item" effect="light" content="统计时间内，全部站点总的访客人数" placement="top-start">
-                                    <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
-                                    </el-tooltip>
+                                <div class="text-[14px]">全部</div>
+                                <el-tooltip class="box-item" effect="light" content="统计时间内，全部站点总的访客人数" placement="top-start">
+                                <div class="nc-iconfont nc-icon-bangzhuV6xx wenHao text-[#666] ml-[4px]"></div>
+                                </el-tooltip>
                             </div>
                             <div class="flex justify-between">
                                 <div class="text-[14px] mt-[16px] text-[#999]">访客数</div>
@@ -101,7 +101,7 @@
             </el-tab-pane>
         </el-tabs>
         <div ref="incomeChartRef" class="h-[400px] mt-[60px] ml-[-90px]"></div>
-        <div class="w-[1586px] h-[120px] bg-[#f3f8ff] mt-[15px] flex">
+        <div class="w-full h-[120px] bg-[#f3f8ff] mt-[15px] flex">
             <div class="flex items-center justify-center flex-col w-[100px] h-[120px] bg-[#105CFB] text-[#fff]">
                 <div class="nc-iconfont nc-icon-wodeV6xx-11 my_icon"></div>
                 <div class="text-[14px]">浏览访问</div>
@@ -125,7 +125,7 @@
                 </div>
             </div>
         </div>
-        <div class="w-[1586px] h-[120px] bg-[#fffaf3] mt-[15px] flex">
+        <div class="w-full h-[120px] bg-[#fffaf3] mt-[15px] flex">
             <div class="flex items-center justify-center flex-col w-[100px] h-[120px] bg-[#ff9f15] text-[#fff]">
                 <div class="nc-iconfont nc-icon-liebiaoV6xx my_icon"></div>
                 <div class="text-[14px]">成交转化</div>
@@ -152,7 +152,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, onMounted, nextTick, watch } from 'vue'
+import { ref, reactive, onMounted, nextTick } from 'vue'
 import type { TabsPaneContext} from 'element-plus'
 import * as echarts from 'echarts'
 
@@ -232,11 +232,24 @@ onMounted(() => {
 .wenHao{
     font-size: 14px;
 }
-.statIndex :deep(.el-tabs__item.is-active){
+.tab-index :deep(.el-tabs__item.is-active){
     background-color: #105CFB;
     color: white;
 }
-.my_icon{
-    font-size: 36px;
+.tab-index :deep(.el-tabs__item):hover{
+    background-color: #105CFB;
+    color: white;
+}
+.tab-index :deep(.el-tabs__item){
+    line-height: 34px;
+    height: 34px !important;
+}
+.tab-index :deep(.el-tabs__nav){
+    border: 1px solid #D2D2D2;
+    height: 34px;
+    border-radius: 0;
+}
+.tab-index :deep(.el-tabs__header) {
+  border: none;
 }
 </style>

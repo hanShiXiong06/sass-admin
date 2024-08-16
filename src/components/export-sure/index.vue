@@ -4,7 +4,7 @@
         <template #footer>
             <span class="dialog-footer">
                 <el-button @click="close">{{ t('cancel') }}</el-button>
-                <el-button type="primary" @click="detectionExportFn">{{ t('exportConfirm') }}</el-button>
+                <el-button type="primary" @click="detectionExportFn" :loading="loading">{{ t('exportConfirm') }}</el-button>
             </span>
         </template>
     </el-dialog>
@@ -34,6 +34,7 @@ const prop = defineProps({
     }
 })
 
+const loading = ref(false)
 
 const status = computed({
     get() {
@@ -51,22 +52,24 @@ const router = useRouter()
  * 导出报表并跳转到下载页
  */
 const detectionExportFn = () => {
+	loading.value = true
     const url = router.resolve({
         path: '/site/setting/export'
     })
     exportDataCheck(prop.type, { page: 1, limit: 1, ...prop.searchParam }).then((res: any) => {
         if (res.data) {
             exportData(prop.type, prop.searchParam).then(() => {
+				loading.value = false
                 emit('close', false)
                 setTimeout(() => {
                     window.open(url.href)
                 }, 100)
-            }).catch(() => { })
+            })
         } else {
             emit('close', false)
             ElMessage.error(res.msg)
         }
-    }).catch(() => { })
+    })
 }
 // 关闭弹框
 const close = () => {

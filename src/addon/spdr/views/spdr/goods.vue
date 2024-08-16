@@ -690,7 +690,7 @@ const previewEvent = (data: any) => {
   const url = router.resolve({
     path: "/preview/wap",
     query: {
-      page: `/addon/shop/pages/goods/detail?goods_id=${data.goods_id}`,
+      page: `/addon/phone_shop/pages/goods/detail?goods_id=${data.goods_id}`,
     },
   });
   window.open(url.href);
@@ -901,9 +901,9 @@ loadGoodsList();
  * 添加商品
  */
 const addEvent = () => {
-  router.push("/shop/goods/real_edit");
+  router.push("/phone_shop/goods/real_edit");
   // let url = router.resolve({
-  //     path: '/shop/goods/real_edit',
+  //     path: '/phone_shop/goods/real_edit',
   // });
   // window.open(url.href);
 };

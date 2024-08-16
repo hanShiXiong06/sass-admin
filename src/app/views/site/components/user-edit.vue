@@ -18,10 +18,7 @@
                     <el-form-item :label="t('userCreateSiteLimit')" v-if="Object.keys(siteGroup).length" prop="create_site_limit">
                         <div>
                             <div>{{ t('siteGroup') }}</div>
-                            <el-checkbox-group
-                                v-model="formData.group_ids"
-                                @change="groupSelect"
-                            >
+                            <el-checkbox-group v-model="formData.group_ids" @change="groupSelect">
                                 <el-checkbox v-for="item in siteGroup" :label="item.group_id">{{ item.group_name }}</el-checkbox>
                             </el-checkbox-group>
                         </div>
@@ -33,7 +30,7 @@
                                         {{ siteGroup[row.group_id] ? siteGroup[row.group_id].group_name : '' }}
                                     </template>
                                 </el-table-column>
-                                <el-table-column :label="t('siteNum')">
+                                <el-table-column :label="t('createSiteNum')">
                                     <template #default="{ $index }">
                                         <el-input v-model.number="formData.create_site_limit[$index].num">
                                         </el-input>
@@ -154,7 +151,7 @@ const setFormData = (uid: number = 0) => {
 const emits = defineEmits(['complete'])
 
 const groupSelect = (groupIds: number[]) => {
-    const list = []
+    let list:any = []
     groupIds.forEach(item => {
         list.push({
             group_id: item,

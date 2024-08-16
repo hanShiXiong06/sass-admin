@@ -59,7 +59,7 @@
                     <el-form-item :label="t('fromType')" prop="from_type">
                         <el-select v-model="memberAccountLogTableData.searchParam.from_type" clearable :placeholder="t('fromTypePlaceholder')" class="input-width">
                             <el-option :label="t('selectPlaceholder')" value="" />
-                            <el-option :label="item.name" :value="key" v-for="(item, key) in fromTypeList"  :key="key"/>
+                            <el-option :label="item.name" :value="key" v-for="(item, key) in fromTypeList" :key="key"/>
                         </el-select>
                     </el-form-item>
                     <el-form-item :label="t('createTime')" prop="create_time">
@@ -89,7 +89,7 @@
                         <template #default="{ row }">
                             <div class="flex items-center cursor-pointer" @click="toMember(row.member_id)">
                                 <img class="w-[50px] h-[50px] mr-[10px]" v-if="row.member.headimg" :src="img(row.member.headimg)" alt="">
-                                <img class="w-[50px] h-[50px] mr-[10px]" v-else src="@/app/assets/images/default_headimg.png" alt="">
+                                <img class="w-[50px] h-[50px] mr-[10px] rounded-full" v-else src="@/app/assets/images/member_head.png" alt="">
                                 <div class="flex flex flex-col">
                                     <span>{{ row.member.nickname || '' }}</span>
                                 </div>

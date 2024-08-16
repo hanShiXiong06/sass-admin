@@ -45,17 +45,14 @@
                         <el-button class="w-[154px] !h-[48px] mt-[8px]" type="primary" @click="authCodeApproveFn">授权码认证</el-button>
                         <el-popover ref="getAuthCodeDialog" placement="bottom-start" :width="478" trigger="click" class="mt-[8px]">
                             <div class="px-[18px] py-[8px]">
-                                <p class="leading-[32px] text-[14px]">您在官方应用市场购买任意一款应用，即可获得授权码。输入正确授权码认证通过后，即可支持在线升级和其它相关服务
-                                </p>
+                                <p class="leading-[32px] text-[14px]">您在官方应用市场购买任意一款应用，即可获得授权码。输入正确授权码认证通过后，即可支持在线升级和其它相关服务</p>
                                 <div class="flex justify-end mt-[36px]">
                                     <el-button class="w-[182px] !h-[48px]" plain @click="market">去应用市场逛逛</el-button>
                                     <el-button class="w-[100px] !h-[48px]" plain @click="getAuthCodeDialog.hide()">关闭</el-button>
                                 </div>
                             </div>
                             <template #reference>
-                                <el-button
-                                    class="w-[154px] !h-[48px] mt-[8px] !text-[var(--el-color-primary)] hover:!text-[var(--el-color-primary)] !bg-transparent"
-                                    plain type="primary">如何获取授权码?</el-button>
+                                <el-button class="w-[154px] !h-[48px] mt-[8px] !text-[var(--el-color-primary)] hover:!text-[var(--el-color-primary)] !bg-transparent" plain type="primary">如何获取授权码?</el-button>
                             </template>
                         </el-popover>
                     </div>
@@ -99,7 +96,7 @@
             </el-timeline>
         </el-card>
 
-        <upgrade ref="upgradeRef" />
+        <upgrade ref="upgradeRef" @cloudbuild="handleCloudBuild"/>
         <cloud-build ref="cloudBuildRef" />
     </div>
 </template>
@@ -108,10 +105,11 @@
 import { reactive, ref, computed } from 'vue'
 import { t } from '@/lang'
 import { getVersions } from '@/app/api/auth'
-import { getAuthinfo, setAuthinfo, getFrameworkVersionList } from '@/app/api/module'
-import { ElMessageBox, FormInstance, FormRules } from 'element-plus'
+import { getAuthInfo, setAuthInfo, getFrameworkVersionList } from '@/app/api/module'
+import { ElMessageBox, FormInstance, FormRules,ElMessage } from 'element-plus'
 import Upgrade from '@/app/components/upgrade/index.vue'
 import CloudBuild from '@/app/components/cloud-build/index.vue'
+import { cloneDeep } from 'lodash-es'
 
 const upgradeRef = ref<any>(null)
 const cloudBuildRef = ref<any>(null)
@@ -121,9 +119,20 @@ const authCodeApproveDialog = ref(false)
 const isCheck = ref(false)
 const frameworkVersionList = ref([])
 
+const checkVersion = ref(false)
 const getFrameworkVersionListFn = () => {
     getFrameworkVersionList().then(({ data }) => {
         frameworkVersionList.value = data
+        if (checkVersion.value) {
+            if (!newVersion.value || (newVersion.value && newVersion.value.version_no == versions.value)) {
+                ElMessage({
+                    message: t('versionTips'),
+                    type: 'success'
+                })
+            }
+        } else {
+            checkVersion.value = true
+        }
     })
 }
 getFrameworkVersionListFn()
@@ -133,7 +142,7 @@ const newVersion:any = computed(() => {
 })
 
 const hideAuthCode = (res:any) => {
-    const authCode = JSON.parse(JSON.stringify(res))
+    const authCode = cloneDeep(res)
     const data = authCode.slice(0, authCode.length / 2) + authCode.slice(authCode.length / 2, authCode.length - 1).replace(/./g, '*')
     return data
 }
@@ -156,7 +165,7 @@ const authinfo = ref<AuthInfo>({
 const loading = ref(true)
 const saveLoading = ref(false)
 const checkAppMange = () => {
-    getAuthinfo().then((res) => {
+    getAuthInfo().then((res) => {
         loading.value = false
         if (res.data.data && res.data.data.length != 0) {
             authinfo.value = res.data.data
@@ -193,7 +202,7 @@ const save = async (formEl: FormInstance | undefined) => {
         if (valid) {
             saveLoading.value = true
 
-            setAuthinfo(formData).then(() => {
+            setAuthInfo(formData).then(() => {
                 saveLoading.value = false
                 checkAppMange()
             }).catch(() => {
@@ -220,7 +229,7 @@ getVersionsInfo()
  * 升级
  */
 const handleUpgrade = () => {
-    if (!authinfo.value) {
+    if (!authinfo.value.auth_code) {
         authCodeApproveFn()
         return
     }
@@ -228,7 +237,7 @@ const handleUpgrade = () => {
 }
 
 const handleCloudBuild = () => {
-    if (!authinfo.value) {
+    if (!authinfo.value.auth_code) {
         authCodeApproveFn()
         return
     }

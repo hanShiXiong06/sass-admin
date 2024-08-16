@@ -7,19 +7,23 @@
             </el-form-item>
 
             <el-form-item :label="t('smsType')">
-                <div class="input-width"> {{ formData.sms_type_name }} </div>
+                <div class="input-width"> 
+                    <div v-if="formData.notice_type == 'sms'">{{ t('sms') }}</div>
+                    <div v-if="formData.notice_type == 'wechat'">{{ t('wechat') }}</div>
+                    <div v-if="formData.notice_type == 'weapp'">{{ t('weapp') }}</div>    
+                </div>
             </el-form-item>
 
             <!-- <el-form-item :label="t('messageData')">
                 <div class="input-width"> {{ formData.message_data }} </div>
             </el-form-item> -->
 
-            <!-- <el-form-item :label="t('nickname')">
+            <el-form-item :label="t('nickname')">
                 <div class="input-width"> {{ formData.nickname }} </div>
-            </el-form-item> -->
+            </el-form-item>
 
             <el-form-item :label="t('receiver')">
-                <div class="input-width"> {{ formData.mobile }} </div>
+                <div class="input-width"> {{ formData.receiver }} </div>
             </el-form-item>
 
             <el-form-item :label="t('createTime')">
@@ -40,7 +44,6 @@
 import { ref, reactive, computed } from 'vue'
 import { t } from '@/lang'
 import type { FormInstance } from 'element-plus'
-// import { editNoticeStatus } from '@/app/api/notice'
 
 const showDialog = ref(false)
 const loading = ref(true)
@@ -55,8 +58,8 @@ const initialFormData = {
     message_type: '',
     name: '',
     nickname: '',
-    mobile: '',
-    sms_type_name: ''
+    receiver: '',
+    notice_type: ''
 }
 const formData: Record<string, any> = reactive({ ...initialFormData })
 
