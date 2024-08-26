@@ -40,12 +40,12 @@
                             </div>
                         </el-form-item>
                         <el-form-item :label="t('goodsName')" prop="goods_name">
-                            <el-input v-model.trim="goodsEdit.formData.goods_name" clearable
+                            <el-input v-model="goodsEdit.formData.goods_name" clearable
                                 :placeholder="t('goodsNamePlaceholder')" class="input-width" maxlength="60"
                                 show-word-limit />
                         </el-form-item>
                         <el-form-item :label="t('subTitle')" prop="sub_title">
-                            <el-input v-model.trim="goodsEdit.formData.sub_title" clearable
+                            <el-input v-model="goodsEdit.formData.sub_title" clearable
                                 :placeholder="t('subTitlePlaceholder')" class="input-width" maxlength="80"
                                 show-word-limit />
                         </el-form-item>

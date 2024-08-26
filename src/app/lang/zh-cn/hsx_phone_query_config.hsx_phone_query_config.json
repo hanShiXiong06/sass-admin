@@ -1,0 +1,15 @@
+{
+      "id":"",
+      "idPlaceholder":"请输入",
+      "siteId":"站点id",
+      "siteIdPlaceholder":"请输入站点id",
+      "appid":"由系统分配的AppID，在个人中心中查看",
+      "appidPlaceholder":"请输入由系统分配的AppID，在个人中心中查看",
+      "secret":"由系统分配的密钥，在个人中心中查看",
+      "secretPlaceholder":"请输入由系统分配的密钥，在个人中心中查看",
+      "addHsxPhoneQueryConfig":"添加",
+      "updateHsxPhoneQueryConfig":"编辑",
+      "hsxPhoneQueryConfigDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}
