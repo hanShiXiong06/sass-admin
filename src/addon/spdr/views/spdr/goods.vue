@@ -1,139 +1,66 @@
 <template>
   <div class="main-container">
     <el-card class="box-card !border-none" shadow="never">
-      <el-alert
-        type="info"
-        title="说明:如有大量数据请分批导出或者联系管理员导出"
-        :closable="false"
-        show-icon
-      />
-      <el-card
-        class="box-card !border-none my-[10px] table-search-wrap"
-        shadow="never"
-      >
-        <el-form
-          :inline="true"
-          :model="goodsTable.searchParam"
-          ref="searchFormRef"
-        >
+      <el-alert type="info" title="说明:如有大量数据请分批导出或者联系管理员导出" :closable="false" show-icon />
+      <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+        <el-form :inline="true" :model="goodsTable.searchParam" ref="searchFormRef">
           <el-form-item :label="t('goodsName')" prop="goods_name">
-            <el-input
-              v-model.trim="goodsTable.searchParam.goods_name"
-              :placeholder="t('goodsNamePlaceholder')"
-              maxlength="60"
-            />
+            <el-input v-model.trim="goodsTable.searchParam.goods_name" :placeholder="t('goodsNamePlaceholder')"
+              maxlength="60" />
           </el-form-item>
           <el-form-item :label="t('goodsCategory')" prop="goods_category">
-            <el-cascader
-              v-model="goodsTable.searchParam.goods_category"
-              :options="goodsCategoryOptions"
-              :placeholder="t('goodsCategoryPlaceholder')"
-              clearable
-              :props="{ value: 'value', label: 'label', emitPath: false }"
-            />
+            <el-cascader v-model="goodsTable.searchParam.goods_category" :options="goodsCategoryOptions"
+              :placeholder="t('goodsCategoryPlaceholder')" clearable
+              :props="{ value: 'value', label: 'label', emitPath: false }" />
           </el-form-item>
           <el-form-item :label="t('goodsType')" prop="goods_type">
-            <el-select
-              v-model="goodsTable.searchParam.goods_type"
-              :placeholder="t('goodsTypePlaceholder')"
-              clearable
-            >
-              <el-option
-                v-for="item in goodsType"
-                :key="item.type"
-                :label="item.name"
-                :value="item.type"
-              />
+            <el-select v-model="goodsTable.searchParam.goods_type" :placeholder="t('goodsTypePlaceholder')" clearable>
+              <el-option v-for="item in goodsType" :key="item.type" :label="item.name" :value="item.type" />
             </el-select>
           </el-form-item>
 
           <el-form-item :label="t('brand')" prop="brand_id">
-            <el-select
-              v-model="goodsTable.searchParam.brand_id"
-              :placeholder="t('brandPlaceholder')"
-              clearable
-            >
-              <el-option
-                v-for="item in brandOptions"
-                :key="item.brand_id"
-                :label="item.brand_name"
-                :value="item.brand_id"
-              />
+            <el-select v-model="goodsTable.searchParam.brand_id" :placeholder="t('brandPlaceholder')" clearable>
+              <el-option v-for="item in brandOptions" :key="item.brand_id" :label="item.brand_name"
+                :value="item.brand_id" />
             </el-select>
           </el-form-item>
           <el-form-item :label="t('labelIds')" prop="label_ids">
-            <el-select
-              v-model="goodsTable.searchParam.label_ids"
-              :placeholder="t('labelIdsPlaceholder')"
-              clearable
-            >
-              <el-option
-                v-for="item in labelOptions"
-                :key="item.label_id"
-                :label="item.label_name"
-                :value="item.label_id"
-              />
+            <el-select v-model="goodsTable.searchParam.label_ids" :placeholder="t('labelIdsPlaceholder')" clearable>
+              <el-option v-for="item in labelOptions" :key="item.label_id" :label="item.label_name"
+                :value="item.label_id" />
             </el-select>
           </el-form-item>
           <el-form-item :label="t('saleNum')" prop="sale_num">
             <div class="region-input">
-              <input
-                type="text"
-                :placeholder="t('startSaleNumPlaceholder')"
-                maxlength="10"
-                v-model.trim="goodsTable.searchParam.start_sale_num"
-                @keyup="filterDigit($event)"
-              />
+              <input type="text" :placeholder="t('startSaleNumPlaceholder')" maxlength="10"
+                v-model.trim="goodsTable.searchParam.start_sale_num" @keyup="filterDigit($event)" />
               <span class="separator">-</span>
-              <input
-                type="text"
-                :placeholder="t('endSaleNumPlaceholder')"
-                maxlength="10"
-                v-model.trim="goodsTable.searchParam.end_sale_num"
-                @keyup="filterDigit($event)"
-              />
+              <input type="text" :placeholder="t('endSaleNumPlaceholder')" maxlength="10"
+                v-model.trim="goodsTable.searchParam.end_sale_num" @keyup="filterDigit($event)" />
             </div>
           </el-form-item>
           <el-form-item :label="t('skuPrice')" prop="sku_price">
             <div class="region-input">
-              <input
-                type="text"
-                :placeholder="t('startPricePlaceholder')"
-                maxlength="10"
-                v-model.trim="goodsTable.searchParam.start_price"
-                @keyup="filterDigit($event)"
-              />
+              <input type="text" :placeholder="t('startPricePlaceholder')" maxlength="10"
+                v-model.trim="goodsTable.searchParam.start_price" @keyup="filterDigit($event)" />
               <span class="separator">-</span>
-              <input
-                type="text"
-                :placeholder="t('endPricePlaceholder')"
-                maxlength="10"
-                v-model.trim="goodsTable.searchParam.end_price"
-                @keyup="filterDigit($event)"
-              />
+              <input type="text" :placeholder="t('endPricePlaceholder')" maxlength="10"
+                v-model.trim="goodsTable.searchParam.end_price" @keyup="filterDigit($event)" />
             </div>
           </el-form-item>
 
           <el-form-item>
             <el-button @click="resetForm(searchFormRef)">{{
               t("reset")
-            }}</el-button>
+              }}</el-button>
             <el-button type="primary" @click="loadGoodsList()">{{
               t("search")
-            }}</el-button>
+              }}</el-button>
 
-            <el-button
-              v-if="isAdmin == true"
-              plain
-              type="primary"
-              @click="exportAllEvent(searchFormRef)"
-              >全部导出</el-button
-            >
-            <el-button type="primary" @click="exportEvent(searchFormRef)"
-              >列表导出</el-button
-            >
-            <el-button type="primary" @click="exportEvents(searchFormRef)"
-            >商品报价列表导出</el-button>
+            <el-button v-if="isAdmin == true" plain type="primary"
+              @click="exportAllEvent(searchFormRef)">全部导出</el-button>
+            <el-button type="primary" @click="exportEvent(searchFormRef)">列表导出</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -164,76 +91,41 @@
           }}</el-button>
         </div> -->
 
-        <el-table
-          :data="goodsTable.data"
-          size="large"
-          v-loading="goodsTable.loading"
-          ref="goodsListTableRef"
-          @sort-change="sortChange"
-        >
+        <el-table :data="goodsTable.data" size="large" v-loading="goodsTable.loading" ref="goodsListTableRef"
+          @sort-change="sortChange">
           <template #empty>
             <span>{{ !goodsTable.loading ? t("emptyData") : "" }}</span>
           </template>
 
-          <el-table-column
-            prop="goods_id"
-            :label="t('goodsInfo')"
-            min-width="300"
-          >
+          <el-table-column prop="goods_id" :label="t('goodsInfo')" min-width="300">
             <template #default="{ row }">
-              <div
-                class="flex items-center cursor-pointer"
-                @click="previewEvent(row)"
-              >
-                <div
-                  class="min-w-[70px] h-[70px] flex items-center justify-center"
-                >
-<!--                  <el-image-->
-<!--                    v-if="row.goods_cover_thumb_small"-->
-<!--                    class="w-[70px] h-[70px]"-->
-<!--                    :src="img(row.goods_cover_thumb_small)"-->
-<!--                    fit="contain"-->
-<!--                  >-->
-<!--                    <template #error>-->
-<!--                      <div class="image-slot">-->
-<!--                        <img-->
-<!--                          class="w-[70px] h-[70px]"-->
-<!--                          src="@/addon/spdr/assets/goods_default.png"-->
-<!--                        />-->
-<!--                      </div>-->
-<!--                    </template>-->
-<!--                  </el-image>-->
-<!--                  <img-->
-<!--                    v-else-->
-<!--                    class="w-[70px] h-[70px]"-->
-<!--                    src="@/addon/spdr/assets/goods_default.png"-->
-<!--                    fit="contain"-->
-<!--                  />-->
+              <div class="flex items-center cursor-pointer" @click="previewEvent(row)">
+                <div class="min-w-[70px] h-[70px] flex items-center justify-center">
+                  <el-image v-if="row.goods_cover_thumb_small" class="w-[70px] h-[70px]"
+                    :src="img(row.goods_cover_thumb_small)" fit="contain">
+                    <template #error>
+                      <div class="image-slot">
+                        <img class="w-[70px] h-[70px]" src="@/addon/spdr/assets/goods_default.png" />
+                      </div>
+                    </template>
+                  </el-image>
+                  <img v-else class="w-[70px] h-[70px]" src="@/addon/spdr/assets/goods_default.png" fit="contain" />
                 </div>
                 <div class="ml-2">
                   <span :title="row.goods_name" class="multi-hidden">{{
                     row.goods_name
-                  }}</span>
+                    }}</span>
                   <span class="text-primary text-[12px]">{{
                     row.goods_type_name
-                  }}</span>
+                    }}</span>
                 </div>
               </div>
             </template>
           </el-table-column>
 
-          <el-table-column
-            prop="price"
-            :label="t('skuPrice')"
-            min-width="120"
-            align="right"
-            sortable="custom"
-          >
+          <el-table-column prop="price" :label="t('skuPrice')" min-width="120" align="right" sortable="custom">
             <template #default="{ row }">
-              <div
-                class="cursor-pointer price-wrap"
-                @click="editPriceEvent(row)"
-              >
+              <div class="cursor-pointer price-wrap" @click="editPriceEvent(row)">
                 <span>￥{{ row.goodsSku.price }}</span>
                 <el-icon class="icon-wrap ml-[5px] invisible">
                   <EditPen />
@@ -242,17 +134,9 @@
             </template>
           </el-table-column>
 
-          <el-table-column
-            prop="stock"
-            :label="t('stock')"
-            min-width="120"
-            sortable="custom"
-          >
+          <el-table-column prop="stock" :label="t('stock')" min-width="120" sortable="custom">
             <template #default="{ row }">
-              <div
-                class="cursor-pointer stock-wrap"
-                @click="editStockEvent(row)"
-              >
+              <div class="cursor-pointer stock-wrap" @click="editStockEvent(row)">
                 <span>{{ row.stock }}</span>
                 <el-icon class="icon-wrap ml-[5px] invisible">
                   <EditPen />
@@ -260,12 +144,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="sale_num"
-            :label="t('saleNum')"
-            min-width="100"
-            sortable="custom"
-          />
+          <el-table-column prop="sale_num" :label="t('saleNum')" min-width="100" sortable="custom" />
           <el-table-column prop="status" :label="t('status')" min-width="100">
             <template #default="{ row }">
               <div v-if="row.status == 1">{{ t("statusOn") }}</div>
@@ -288,12 +167,7 @@
             </template>
           </el-table-column> -->
 
-          <el-table-column
-            prop="create_time"
-            :label="t('createTime')"
-            min-width="150"
-            sortable="custom"
-          >
+          <el-table-column prop="create_time" :label="t('createTime')" min-width="150" sortable="custom">
             <template #default="{ row }">
               <div>{{ row.create_time }}</div>
             </template>
@@ -350,37 +224,19 @@
                       <el-button @click="batchDeleteGoods" size="small">{{ t('batchDeleteGoods') }}</el-button>
                   </div> -->
 
-          <el-pagination
-            v-model:current-page="goodsTable.page"
-            v-model:page-size="goodsTable.limit"
-            layout="total, sizes, prev, pager, next, jumper"
-            :page-sizes="[100, 200, 300, 400, 1000]"
-            :total="goodsTable.total"
-            @size-change="loadGoodsList()"
-            @current-change="loadGoodsList"
-          />
+          <el-pagination v-model:current-page="goodsTable.page" v-model:page-size="goodsTable.limit"
+            layout="total, sizes, prev, pager, next, jumper" :total="goodsTable.total" @size-change="loadGoodsList()"
+            @current-change="loadGoodsList" />
         </div>
       </div>
     </el-card>
-    <export-sure
-      ref="exportSureDialog"
-      :show="flag"
-      type="spdr_export_goods"
-
-      :searchParam="goodsTable.searchParam"
-      @close="handleClose"
-    />
+    <export-sure ref="exportSureDialog" :show="flag" type="spdr_export_goods" :searchParam="goodsTable.searchParam"
+      @close="handleClose" />
     <!-- 商品库存编辑弹出框 -->
-    <goods-stock-edit-popup
-      ref="goodsStockEditPopupRef"
-      @load="loadGoodsList"
-    />
+    <goods-stock-edit-popup ref="goodsStockEditPopupRef" @load="loadGoodsList" />
 
     <!-- 商品价格编辑弹出框 -->
-    <goods-price-edit-popup
-      ref="goodsPriceEditPopupRef"
-      @load="loadGoodsList"
-    />
+    <goods-price-edit-popup ref="goodsPriceEditPopupRef" @load="loadGoodsList" />
 
     <!-- 商品推广弹出框 -->
     <goods-spread-popup ref="goodsSpreadPopupRef" />
@@ -408,7 +264,7 @@ import {
   copyGoods,
   deleteGoods,
 } from "@/addon/spdr/api/shop";
-import { exportGoods , exportGoods_hsx } from "@/addon/spdr/api/goods";
+import { exportGoods } from "@/addon/spdr/api/goods";
 
 import { getMemberLevelAll } from "@/app/api/member";
 const isAdmin = ref(false);
@@ -441,11 +297,6 @@ const exportEvent = async () => {
   exportGoodsList();
   router.push("/setting/export");
 };
-const exportEvents = async () => {
-  exportGoods_hsx(goodsTable);
-  // router.push("/setting/export");
-};
-
 /**
  * 获取商品列表
  */
@@ -538,7 +389,7 @@ const repeat = ref(false);
 
 const goodsTable = reactive({
   page: 1,
-  limit: 100,
+  limit: 10,
   total: 0,
   loading: true,
   data: [],
@@ -552,7 +403,7 @@ const goodsTable = reactive({
     end_sale_num: "",
     start_price: "",
     end_price: "",
-    status: "1",
+    status: "",
     order: "",
     sort: "",
   },
@@ -585,13 +436,8 @@ const initData = () => {
     const data = res.data;
     if (data) {
       const goodsCategoryTree: any = [];
-
       data.forEach((item: any) => {
         const children: any = [];
-        children.push({
-          value: item.category_id,
-          label: "全部"
-        })
         if (item.child_list) {
           item.child_list.forEach((childItem: any) => {
             children.push({

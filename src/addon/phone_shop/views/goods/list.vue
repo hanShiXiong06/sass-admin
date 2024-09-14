@@ -197,7 +197,7 @@
                             <div>{{ row.create_time }}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="create_time" :label="t('updateTime')" min-width="150" sortable="custom">
+                    <el-table-column prop="update_time" :label="t('updateTime')" min-width="150" sortable="custom">
                         <template #default="{ row }">
                             <div>{{ row.update_time }}</div>
                         </template>
