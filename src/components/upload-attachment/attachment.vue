@@ -1,19 +1,23 @@
 <template>
-    <div class="flex border-t border-b main-wrap border-color w-full" :class="scene == 'select' ? 'h-[40vh]' : 'h-full'">
+    <div class="flex border-t border-b main-wrap border-color w-full"
+        :class="scene == 'select' ? 'h-[40vh]' : 'h-full'">
 
         <!-- 分组 -->
         <div class="group-wrap w-[180px] p-[15px] h-full border-r border-color flex flex-col">
 
-            <el-input v-model="categoryParam.name" class="m-0" :placeholder="t('upload.attachmentCategoryPlaceholder')" clearable prefix-icon="Search" @input="getAttachmentCategoryList()" />
+            <el-input v-model="categoryParam.name" class="m-0" :placeholder="t('upload.attachmentCategoryPlaceholder')"
+                clearable prefix-icon="Search" @input="getAttachmentCategoryList()" />
             <div class="group-list flex-1 my-[10px] h-0">
                 <el-scrollbar>
-                    <div class="group-item p-[10px] leading-none text-xs rounded cursor-pointer" :class="{ active: attachmentParam.cate_id == 0 }" @click="attachmentParam.cate_id = 0">
+                    <div class="group-item p-[10px] leading-none text-xs rounded cursor-pointer"
+                        :class="{ active: attachmentParam.cate_id == 0 }" @click="attachmentParam.cate_id = 0">
                         {{ t('selectPlaceholder') }}
                     </div>
                     <div class="group-item px-[10px] text-xs rounded cursor-pointer flex"
                         v-for="(item, index) in attachmentCategory.data" :key="index"
                         :class="{ active: attachmentParam.cate_id == item.id }">
-                        <div class="flex-1 leading-none truncate py-[10px]" @click="attachmentParam.cate_id = item.id">{{ item.name }}</div>
+                        <div class="flex-1 leading-none truncate py-[10px]" @click="attachmentParam.cate_id = item.id">
+                            {{ item.name }}</div>
                         <div class="leading-none operate py-[10px]" v-if="scene == 'attachment' && prop.type != 'icon'">
                             <!-- 图片操作 -->
                             <el-dropdown :hide-on-click="false" v-if="scene == 'attachment'">
@@ -22,7 +26,8 @@
                                 <template #dropdown>
                                     <el-dropdown-menu>
                                         <el-dropdown-item class="text-center">
-                                            <popover-input :placeholder="t('upload.attachmentCategoryPlaceholder')" @confirm="updateAttachmentCategory($event, index)" v-model="item.name">
+                                            <popover-input :placeholder="t('upload.attachmentCategoryPlaceholder')"
+                                                @confirm="updateAttachmentCategory($event, index)" v-model="item.name">
                                                 <span>{{ t('edit') }}</span>
                                             </popover-input>
                                         </el-dropdown-item>
@@ -37,7 +42,8 @@
                 </el-scrollbar>
             </div>
             <!-- 添加分组 -->
-            <popover-input :placeholder="t('upload.attachmentCategoryPlaceholder')" @confirm="addAttachmentCategory" v-model="attachmentCategoryName" v-if="prop.type != 'icon'">
+            <popover-input :placeholder="t('upload.attachmentCategoryPlaceholder')" @confirm="addAttachmentCategory"
+                v-model="attachmentCategoryName" v-if="prop.type != 'icon'">
                 <el-button>{{ t('upload.addAttachmentCategory') }}</el-button>
             </popover-input>
         </div>
@@ -51,29 +57,39 @@
                             <el-button type="primary">{{ t('upload.upload' + type) }} {{ isOpen }}</el-button>
                         </el-upload>
                         <div v-if="scene == 'attachment' && prop.type != 'icon'">
-                            <el-button v-if="operate === false" class="ml-[10px]" type="primary" @click="operate = true">{{ t('edit') }}</el-button>
-                            <el-button v-else class="ml-[10px]" type="primary" @click="operate = false">{{ t('complete') }}</el-button>
+                            <el-button v-if="operate === false" class="ml-[10px]" type="primary"
+                                @click="operate = true">{{
+                                    t('edit') }}</el-button>
+                            <el-button v-else class="ml-[10px]" type="primary" @click="operate = false">{{ t('complete')
+                                }}</el-button>
                         </div>
                     </div>
                 </el-col>
                 <el-col :span="14" class="text-right">
-                    <el-input v-model="attachmentParam.real_name" class="m-0 !w-[200px]" clearable :placeholder="t('upload.placeholder' + type + 'Name')" prefix-icon="Search" @input="getAttachmentList()" />
+                    <el-input v-model="attachmentParam.real_name" class="m-0 !w-[200px]" clearable
+                        :placeholder="t('upload.placeholder' + type + 'Name')" prefix-icon="Search"
+                        @input="getAttachmentList()" />
                 </el-col>
             </el-row>
             <div class="flex-1 my-[15px] h-0" v-loading="attachment.loading">
                 <el-scrollbar>
                     <!-- 选择弹出框 -->
-                    <div class="flex flex-wrap" v-if="attachment.data.length && (operate === true || scene != 'attachment')">
-                        <div class="attachment-item mr-[10px]" :class="scene == 'select' ? 'w-[100px]' : 'w-[120px]'" v-for="(item, index) in attachment.data" :key="index">
-                            <div class="attachment-wrap w-full rounded cursor-pointer overflow-hidden relative flex items-center justify-center" :class="scene == 'select' ? 'h-[100px]' : 'h-[120px]'" @click="selectFile(item)">
+                    <div class="flex flex-wrap"
+                        v-if="attachment.data.length && (operate === true || scene != 'attachment')">
+                        <div class="attachment-item mr-[10px]" :class="scene == 'select' ? 'w-[100px]' : 'w-[120px]'"
+                            v-for="(item, index) in attachment.data" :key="index">
+                            <div class="attachment-wrap w-full rounded cursor-pointer overflow-hidden relative flex items-center justify-center"
+                                :class="scene == 'select' ? 'h-[100px]' : 'h-[120px]'" @click="selectFile(item)">
 
-                                <el-image :src="img(item.url)" fit="contain" v-if="type == 'image'"/>
-                                <video :src="img(item.url)" v-else-if="type == 'video'"/>
-                                <icon :name="item.url" size="24px" v-else-if="type == 'icon'"/>
-                                <div class="absolute z-[1] flex items-center justify-center w-full h-full inset-0 bg-black bg-opacity-60" v-show="selectedFile[item.att_id]">
+                                <el-image :src="img(item.url)" fit="contain" v-if="type == 'image'" />
+                                <video :src="img(item.url)" v-else-if="type == 'video'" />
+                                <icon :name="item.url" size="24px" v-else-if="type == 'icon'" />
+                                <div class="absolute z-[1] flex items-center justify-center w-full h-full inset-0 bg-black bg-opacity-60"
+                                    v-show="selectedFile[item.att_id]">
                                     <icon name="element Select" color="#fff" size="40px" />
                                     <div class="file-box-active absolute z-[1] bottom-0 right-0 w-full h-full">
-                                        <span class="absolute bottom-[2px] right-[2px] text-white z-[2] leading-none">{{ getFileIndex(item.att_id) }}</span>
+                                        <span class="absolute bottom-[2px] right-[2px] text-white z-[2] leading-none">{{
+                                            getFileIndex(item.att_id) }}</span>
                                     </div>
                                 </div>
 
@@ -82,17 +98,21 @@
                             <div class="flex items-center">
                                 <el-tooltip placement="top">
                                     <template #content>{{ item.real_name }}</template>
-                                    <div class="truncate my-[10px] cursor-pointer text-base flex-1 text-center">{{ item.real_name }}</div>
+                                    <div class="truncate my-[10px] cursor-pointer text-base flex-1 text-center">{{
+                                        item.real_name }}</div>
                                 </el-tooltip>
                                 <!-- 图片操作 -->
-                                <el-dropdown :hide-on-click="false" v-if="scene == 'attachment'" class="attachment-action hidden ">
+                                <el-dropdown :hide-on-click="false" v-if="scene == 'attachment'"
+                                    class="attachment-action hidden ">
                                     <icon name="element MoreFilled" class="cursor-pointer ml-[8px]" size="14px" />
                                     <template #dropdown>
                                         <el-dropdown-menu>
-                                            <el-dropdown-item class="text-center" @click="previewImage(index)" v-if="item.att_type == 'image'">
+                                            <el-dropdown-item class="text-center" @click="previewImage(index)"
+                                                v-if="item.att_type == 'image'">
                                                 <div class="text-center w-full">{{ t('lookOver') }}</div>
                                             </el-dropdown-item>
-                                            <el-dropdown-item class="text-center" @click="previewVideo(index)" v-if="item.att_type == 'video'">
+                                            <el-dropdown-item class="text-center" @click="previewVideo(index)"
+                                                v-if="item.att_type == 'video'">
                                                 <div class="text-center w-full">{{ t('lookOver') }}</div>
                                             </el-dropdown-item>
                                             <el-dropdown-item class="text-center" @click="moveAttachmentEvent(index)">
@@ -110,24 +130,31 @@
 
                     <!-- 素材管理 -->
                     <div class="flex flex-wrap" v-else-if="attachment.data.length && operate === false">
-                        <div class="attachment-item mr-[10px] w-[120px]" v-for="(item, index) in attachment.data" :key="index">
-                            <div class="attachment-wrap w-full rounded cursor-pointer overflow-hidden relative flex items-center justify-center h-[120px]">
-                                <el-image :src="img(item.url)" fit="contain" v-if="type == 'image'" :preview-src-list="item.image_list"/>
-                                <video :src="img(item.url)" v-else-if="type == 'video'" @click="previewVideo(index)"></video>
+                        <div class="attachment-item mr-[10px] w-[120px]" v-for="(item, index) in attachment.data"
+                            :key="index">
+                            <div
+                                class="attachment-wrap w-full rounded cursor-pointer overflow-hidden relative flex items-center justify-center h-[120px]">
+                                <el-image :src="img(item.url)" fit="contain" v-if="type == 'image'"
+                                    :preview-src-list="item.image_list" />
+                                <video :src="img(item.url)" v-else-if="type == 'video'"
+                                    @click="previewVideo(index)"></video>
                                 <icon :name="item.url" size="24px" v-else-if="type == 'icon'"></icon>
                             </div>
                             <div class="flex items-center">
                                 <el-tooltip placement="top">
                                     <template #content>{{ item.real_name }}</template>
-                                    <div class="truncate my-[10px] cursor-pointer text-base flex-1 text-center">{{ item.real_name }}</div>
+                                    <div class="truncate my-[10px] cursor-pointer text-base flex-1 text-center">{{
+                                        item.real_name }}</div>
                                 </el-tooltip>
                             </div>
                         </div>
                     </div>
                     <div class="flex absolute top-0 left-0 right-0 bottom-0 items-center justify-center" v-else>
                         <div class="flex flex-col items-center" v-if="!attachment.loading">
-                            <img src="@/app/assets/images/no_attachment.png" class="max-w-[130px] max-h-[130px] mb-[15px]">
-                            <span class="text-[var(--el-text-color-secondary)] text-[14px]">{{type == 'icon' ? t('upload.iconEmpty') : t('upload.attachmentEmpty')}}</span>
+                            <img src="@/app/assets/images/no_attachment.png"
+                                class="max-w-[130px] max-h-[130px] mb-[15px]">
+                            <span class="text-[var(--el-text-color-secondary)] text-[14px]">{{ type == 'icon' ?
+                                t('upload.iconEmpty') : t('upload.attachmentEmpty') }}</span>
                         </div>
                     </div>
                 </el-scrollbar>
@@ -136,8 +163,11 @@
                 <el-col :span="8" v-if="scene == 'attachment' && operate === true">
                     <div class="flex items-center">
                         <el-checkbox v-model="selectAll" :label="t('selectAll')" size="large" />
-                        <el-button class="ml-[15px]" :disabled="batchOperateDisabled" @click="deleteAttachmentEvent()">{{ t('delete') }}</el-button>
-                        <el-button :disabled="batchOperateDisabled" @click="moveAttachmentEvent()">{{ t('upload.move') }}</el-button>
+                        <el-button class="ml-[15px]" :disabled="batchOperateDisabled"
+                            @click="deleteAttachmentEvent()">{{
+                                t('delete') }}</el-button>
+                        <el-button :disabled="batchOperateDisabled" @click="moveAttachmentEvent()">{{ t('upload.move')
+                            }}</el-button>
                     </div>
                 </el-col>
                 <el-col :span="24">
@@ -157,7 +187,8 @@
                 <el-form label-width="60px">
                     <el-form-item :label="t('upload.moveTo')" style="margin-bottom: 0;">
                         <el-select v-model="moveAttachmentData.cateId" class="input-width">
-                            <el-option :label="item.name" :value="item.id" v-for="(item, index) in attachmentCategory.data" :key="index" />
+                            <el-option :label="item.name" :value="item.id"
+                                v-for="(item, index) in attachmentCategory.data" :key="index" />
                         </el-select>
                     </el-form-item>
                 </el-form>
@@ -165,16 +196,19 @@
                 <template #footer>
                     <span class="dialog-footer">
                         <el-button @click="moveAttachmentData.visible = false">{{ t('cancel') }}</el-button>
-                        <el-button type="primary" :loading="moveAttachmentData.loading" @click="moveAttachmentData.confirm()">{{ t('confirm') }}</el-button>
+                        <el-button type="primary" :loading="moveAttachmentData.loading"
+                            @click="moveAttachmentData.confirm()">{{ t('confirm') }}</el-button>
                     </span>
                 </template>
             </el-dialog>
 
             <!-- 图片预览 -->
-            <el-image-viewer :url-list="previewImageList" v-if="imageViewer.show" @close="imageViewer.show = false" :initial-index="imageViewer.index" :zoom-rate="1" />
+            <el-image-viewer :url-list="previewImageList" v-if="imageViewer.show" @close="imageViewer.show = false"
+                :initial-index="imageViewer.index" :zoom-rate="1" />
 
             <!-- 视频预览 -->
-            <el-dialog v-model="videoViewer.visible" width="50%" align-center :destroy-on-close="true" custom-class="video-preview">
+            <el-dialog v-model="videoViewer.visible" width="50%" align-center :destroy-on-close="true"
+                custom-class="video-preview">
                 <video-player :src="videoViewer.src" width="100%" />
             </el-dialog>
 
@@ -222,7 +256,7 @@ const prop = defineProps({
 // 选中的文件
 const selectedFile: Record<string, any> = reactive({})
 
-const selectedFileIndex:any = reactive([])
+const selectedFileIndex: any = reactive([])
 
 const attachmentCategory: Record<string, any> = reactive({
     data: []
@@ -232,12 +266,12 @@ const attachment: Record<string, any> = reactive({
     loading: true,
     page: 1,
     total: 0,
-    limit: prop.scene == 'select' ? 10 : 20,
+    limit: prop.scene == 'select' ? 15 : 20,
     data: []
 })
 
 if (prop.scene == 'select') {
-    attachment.limit = 10
+    attachment.limit = 15
     if (prop.type == 'icon') {
         attachment.limit = 20
     }
@@ -436,13 +470,13 @@ const clearSelected = () => {
 const selectFile = (data: any) => {
     if (selectedFile[data.att_id]) {
         delete selectedFile[data.att_id]
-        selectedFileIndex.splice(selectedFileIndex.indexOf(data.att_id),1);
+        selectedFileIndex.splice(selectedFileIndex.indexOf(data.att_id), 1);
     } else if (prop.scene == 'select') {
         const keys = Object.keys(toRaw(selectedFile))
         const length = keys.length
         if (prop.limit == 1 && length == prop.limit) {
             delete selectedFile[keys[0]]
-            selectedFileIndex.splice(selectedFileIndex.indexOf(keys[0]),1);
+            selectedFileIndex.splice(selectedFileIndex.indexOf(keys[0]), 1);
         } else if (prop.limit && length >= prop.limit) {
             ElMessage.info(t('upload.triggerUpperLimit'))
             return
@@ -456,9 +490,9 @@ const selectFile = (data: any) => {
 }
 
 // 获取当前选中文件的下标
-const getFileIndex = (att_id:any)=>{
+const getFileIndex = (att_id: any) => {
     let index = selectedFileIndex.indexOf(att_id);
-    if(index == -1) return 0;
+    if (index == -1) return 0;
     return index + 1;
 }
 
@@ -588,6 +622,7 @@ defineExpose({
         background: var(--el-border-color-extra-light);
     }
 }
+
 .file-box-active {
     &:after {
         content: '';
@@ -601,13 +636,14 @@ defineExpose({
         bottom: 0;
         right: 0;
     }
-    span{
+
+    span {
         font-style: normal;
     }
 }
 </style>
 <style lang="scss">
-    .video-preview {
+.video-preview {
     background: none !important;
     box-shadow: none !important;
 
@@ -630,4 +666,5 @@ defineExpose({
         background: #fff !important;
         box-shadow: var(--el-box-shadow-light);
     }
-}</style>
+}
+</style>
