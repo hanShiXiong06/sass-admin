@@ -204,6 +204,7 @@
                         <el-radio label="APPLET" size="large">小程序</el-radio>
                         <el-radio label="SWIPE" size="large">被扫产品</el-radio>
                         <el-radio label="ACCOUNT_PAY" size="large">虚拟支付</el-radio>
+                        <el-radio label="PUBLIC" size="large">公众号</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="客户类型" prop="appPayType">

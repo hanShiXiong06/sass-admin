@@ -6,7 +6,7 @@
                 <span class="text-page-title">{{ pageName }}</span>
                 <span>
                     <el-button type="primary" @click="addEvent">{{ t('addGoods') }}</el-button>
-                    <el-button v-if="userStore().siteInfo.site_id !== 100005" @click="syncGoods()"> {{ t('一键同步') }}
+                    <el-button v-if="userStore().siteInfo?.site_id !== 100005" @click="syncGoods()"> {{ t('一键同步') }}
                     </el-button>
                 </span>
             </div>
@@ -137,7 +137,7 @@
                     <el-table-column prop="price" :label="t('skuPrice')" min-width="120" align="right"
                         sortable="custom">
                         <template #default="{ row }">
-                            <div v-if="userStore().siteInfo.site_id == 100005">
+                            <div v-if="userStore().siteInfo?.site_id == 100005">
                                 <span>￥{{ row.goodsSku.price }}</span>
                                 <el-icon class="icon-wrap ml-[5px] invisible">
                                     <EditPen />
@@ -151,7 +151,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="price" v-if="userStore().siteInfo.site_id == 100005" :label="t('批发价格')"
+                    <el-table-column prop="price" v-if="userStore().siteInfo?.site_id == 100005" :label="t('批发价格')"
                         min-width="120" align="right" sortable="custom">
                         <template #default="{ row }">
                             <div class="cursor-pointer price-wrap" @click="memberPriceEvent(row)">
@@ -187,7 +187,7 @@
                                 @blur="sortInputListener(row.sort, row)" />
                         </template>
                     </el-table-column>
-                    <el-table-column v-if="userStore().siteInfo.site_id !== 100005" prop="source" :label="t('来源')"
+                    <el-table-column v-if="userStore().siteInfo?.site_id !== 100005" prop="source" :label="t('来源')"
                         min-width="120">
 
                     </el-table-column>
@@ -538,15 +538,15 @@ const batchDeleteGoods = () => {
 }
 
 // 修改排序号
-const sortInputListener = debounce((sort, row) => {
-    if (isNaN(sort) || !regExp.number.test(sort)) {
+const sortInputListener = debounce((sort: string | number, row: any) => {
+    if (isNaN(Number(sort)) || !regExp.number.test(String(sort))) {
         ElMessage({
             type: 'warning',
             message: `${t('sortTips')}`
         })
         return
     }
-    if (sort > 99999999) {
+    if (Number(sort) > 99999999) {
         row.sort = 99999999
     }
     editGoodsSort({
@@ -555,7 +555,7 @@ const sortInputListener = debounce((sort, row) => {
     }).then((res) => {
         // loadGoodsList();
     })
-})
+}, 300)
 
 /**
  * 获取商品列表
@@ -768,7 +768,7 @@ const syncGoods = () => {
         duration: 0 // 提示框不自动消失
     })
 
-    syncGoodsList().then(res => {
+    syncGoodsList().then((res: any) => {
         if (res.code == 1) {
             loadGoodsList()
         }

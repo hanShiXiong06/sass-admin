@@ -49,6 +49,24 @@ export function deleteHsxPhoneQueryCategory(site_id: number) {
     return request.delete(`hsx_phone_query/hsx_phone_query_category/${site_id}`, { showErrorMessage: true, showSuccessMessage: true })
 }
 
+/**
+ * 修改排序
+ * @param id
+ * @param sort
+ */
+export function modifySort(id: number, sort: number) {
+    return request.post(`hsx_phone_query/hsx_phone_query_category/modify_sort/${id}`, { sort });
+}
+
+/**
+ * 修改显示状态
+ * @param id
+ * @param is_show
+ */
+export function modifyShow(id: number, is_show: number) {
+    return request.post(`hsx_phone_query/hsx_phone_query_category/modify_show/${id}`, { is_show });
+}
+
 
 
 // USER_CODE_END -- hsx_phone_query_category
