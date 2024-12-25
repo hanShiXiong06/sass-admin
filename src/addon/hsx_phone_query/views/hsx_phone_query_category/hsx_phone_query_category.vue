@@ -80,7 +80,7 @@
                     <el-table-column :label="t('operation')" fixed="right" min-width="120">
                         <template #default="{ row }">
                             <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
-                            <el-button type="primary" link @click="deleteEvent(row.site_id)">{{ t('delete')
+                            <el-button type="primary" link @click="deleteEvent(row)">{{ t('delete')
                                 }}</el-button>
                         </template>
                     </el-table-column>
@@ -105,7 +105,7 @@ import { reactive, ref, watch } from 'vue'
 import { t } from '@/lang'
 import { useDictionary } from '@/app/api/dict'
 import { getHsxPhoneQueryCategoryList, deleteHsxPhoneQueryCategory, modifySort, modifyShow } from '@/addon/hsx_phone_query/api/hsx_phone_query_category'
-import { img } from '@/utils/common'
+
 import { ElMessageBox, FormInstance } from 'element-plus'
 import Edit from '@/addon/hsx_phone_query/views/hsx_phone_query_category/components/hsx-phone-query-category-edit.vue'
 import { useRoute } from 'vue-router'
@@ -145,6 +145,7 @@ const loadHsxPhoneQueryCategoryList = (page: number = 1) => {
     hsxPhoneQueryCategoryTable.loading = true
     hsxPhoneQueryCategoryTable.page = page
 
+
     getHsxPhoneQueryCategoryList({
         page: hsxPhoneQueryCategoryTable.page,
         limit: hsxPhoneQueryCategoryTable.limit,
@@ -174,6 +175,8 @@ const addEvent = () => {
  * @param data
  */
 const editEvent = (data: any) => {
+
+
     editHsxPhoneQueryCategoryDialog.value.setFormData(data)
     editHsxPhoneQueryCategoryDialog.value.showDialog = true
 }

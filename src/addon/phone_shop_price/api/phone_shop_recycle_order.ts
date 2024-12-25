@@ -86,3 +86,10 @@ export function updateDeviceFinalPrice(id: string, data: any) {
 export function updateDeviceStatus(id: string, data: any) {
   return request.put(`/phone_shop_price/recycle_device/${id}/status`, data);
 }
+
+/**
+ * 更新设备价格
+ */
+export function updateDevicePrice(id: string, data: any) {
+  return request.put(`/phone_shop_price/recycle_device/${id}/price`, data);
+}
