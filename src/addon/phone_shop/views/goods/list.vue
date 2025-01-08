@@ -6,7 +6,7 @@
                 <span class="text-page-title">{{ pageName }}</span>
                 <span>
                     <el-button type="primary" @click="addEvent">{{ t('addGoods') }}</el-button>
-                    <el-button v-if="userStore().siteInfo?.site_id !== 100005" @click="syncGoods()"> {{ t('一键同步') }}
+                    <el-button v-if="userStore().siteInfo.site_id !== 100005" @click="syncGoods()"> {{ t('一键同步') }}
                     </el-button>
                 </span>
             </div>
@@ -134,16 +134,23 @@
                             <span :title="row.sku_no">{{ row.goodsSku.sku_no }}</span>
                         </template>
                     </el-table-column>
+                    <el-table-column prop="price"  :label="t('同行价')"
+                    min-width="120" align="right" sortable="custom">
+                    <template #default="{ row }">
+                        <div class="cursor-pointer price-wrap" @click="editPriceEvent(row)">
+                            <span v-if="row.goodsSku.market_price">￥{{ row.goodsSku.market_price
+                                }}</span>
+                            <el-icon class="icon-wrap ml-[5px] invisible">
+                                <EditPen />
+                            </el-icon>
+                        </div>
+                    </template>
+                </el-table-column>
                     <el-table-column prop="price" :label="t('skuPrice')" min-width="120" align="right"
                         sortable="custom">
                         <template #default="{ row }">
-                            <div v-if="userStore().siteInfo?.site_id == 100005">
-                                <span>￥{{ row.goodsSku.price }}</span>
-                                <el-icon class="icon-wrap ml-[5px] invisible">
-                                    <EditPen />
-                                </el-icon>
-                            </div>
-                            <div v-else class="cursor-pointer price-wrap" @click="editPriceEvent(row)">
+                          
+                            <div class="cursor-pointer price-wrap" @click="editPriceEvent(row)">
                                 <span>￥{{ row.goodsSku.price }}</span>
                                 <el-icon class="icon-wrap ml-[5px] invisible">
                                     <EditPen />
@@ -151,18 +158,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="price" v-if="userStore().siteInfo?.site_id == 100005" :label="t('批发价格')"
-                        min-width="120" align="right" sortable="custom">
-                        <template #default="{ row }">
-                            <div class="cursor-pointer price-wrap" @click="memberPriceEvent(row)">
-                                <span v-if="row.goodsSku.member_price">￥{{ JSON.parse(row.goodsSku.member_price).level_1
-                                    }}</span>
-                                <el-icon class="icon-wrap ml-[5px] invisible">
-                                    <EditPen />
-                                </el-icon>
-                            </div>
-                        </template>
-                    </el-table-column>
+                 
 
                     <el-table-column prop="stock" :label="t('stock')" min-width="120" sortable="custom">
                         <template #default="{ row }">
@@ -174,7 +170,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="sale_num" :label="t('saleNum')" min-width="100" sortable="custom" />
+                    <!-- <el-table-column prop="sale_num" :label="t('saleNum')" min-width="100" sortable="custom" /> -->
                     <el-table-column prop="status" :label="t('status')" min-width="100">
                         <template #default="{ row }">
                             <div v-if="row.status == 1">{{ t('statusOn') }}</div>
@@ -187,7 +183,7 @@
                                 @blur="sortInputListener(row.sort, row)" />
                         </template>
                     </el-table-column>
-                    <el-table-column v-if="userStore().siteInfo?.site_id !== 100005" prop="source" :label="t('来源')"
+                    <el-table-column v-if="userStore().siteInfo.site_id !== 100005" prop="source" :label="t('来源')"
                         min-width="120">
 
                     </el-table-column>
@@ -208,8 +204,8 @@
                         <template #default="{ row }">
                             <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
                             <el-button type="primary" link @click="spreadEvent(row)">{{ t('spreadGoods') }}</el-button>
-                            <el-button type="primary" link @click="memberPriceEvent(row)">{{ t('memberPrice')
-                                }}</el-button>
+                            <!-- <el-button type="primary" link @click="memberPriceEvent(row)">{{ t('memberPrice')
+                                }}</el-button> -->
                             <el-button type="primary" v-if="row.status == 1" link @click="statusChange(row, 0)">{{
                                 t('statusActionOff') }}</el-button>
                             <el-button type="primary" v-else link @click="statusChange(row, 1)">{{ t('statusActionOn')
@@ -538,15 +534,15 @@ const batchDeleteGoods = () => {
 }
 
 // 修改排序号
-const sortInputListener = debounce((sort: string | number, row: any) => {
-    if (isNaN(Number(sort)) || !regExp.number.test(String(sort))) {
+const sortInputListener = debounce((sort, row) => {
+    if (isNaN(sort) || !regExp.number.test(sort)) {
         ElMessage({
             type: 'warning',
             message: `${t('sortTips')}`
         })
         return
     }
-    if (Number(sort) > 99999999) {
+    if (sort > 99999999) {
         row.sort = 99999999
     }
     editGoodsSort({
@@ -555,7 +551,7 @@ const sortInputListener = debounce((sort: string | number, row: any) => {
     }).then((res) => {
         // loadGoodsList();
     })
-}, 300)
+})
 
 /**
  * 获取商品列表
@@ -768,7 +764,7 @@ const syncGoods = () => {
         duration: 0 // 提示框不自动消失
     })
 
-    syncGoodsList().then((res: any) => {
+    syncGoodsList().then(res => {
         if (res.code == 1) {
             loadGoodsList()
         }
