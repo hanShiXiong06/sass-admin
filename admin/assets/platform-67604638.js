@@ -1,0 +1,1 @@
+import{O as e}from"./index-0e396751.js";function r(){return e.get("tk_cps/platform/list")}function s(t){return e.get(`tk_cps/platform/config/${t}`)}function f(t){return e.put(`tk_cps/platform/config/${t.type}`,t,{showSuccessMessage:!0})}export{r as a,f as e,s as g};

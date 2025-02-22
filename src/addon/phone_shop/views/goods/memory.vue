@@ -35,12 +35,13 @@
             </el-card>
 
             <div class="mt-[10px]">
-                <el-table :data="memoryTable.data" size="large" v-loading="memoryTable.loading" @sort-change="sortChange">
+                <el-table :data="memoryTable.data" size="large" v-loading="memoryTable.loading"
+                    @sort-change="sortChange">
                     <template #empty>
                         <span>{{ !memoryTable.loading ? t('emptyData') : '' }}</span>
                     </template>
                     <el-table-column prop="spec_name" :label="t('specName')" min-width="120" />
-                  
+
                     <el-table-column prop="sort" :label="t('sort')" min-width="120" sortable="custom">
                         <template #default="{ row }">
                             <el-input v-model.trim="row.sort" :disabled="userStore().siteInfo.site_id !== row.site_id"

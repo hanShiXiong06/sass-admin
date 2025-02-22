@@ -63,6 +63,7 @@ export function useGoodsEdit(params: any = {}) {
     brand_id: "",
     poster_id: "",
     label_ids: [],
+    only_self: 0,
     // memory
     memory_ids: [],
     service_ids: [],
@@ -472,7 +473,7 @@ export function useGoodsEdit(params: any = {}) {
       formData.brand_id = data.goods_info.brand_id;
       formData.poster_id = data.goods_info.poster_id;
       formData.label_ids = data.goods_info.label_ids;
-      formData.memory_ids = data.goods_info.memory_ids;
+      formData.only_self = data.goods_info.only_self;
       formData.service_ids = data.goods_info.service_ids;
       formData.supplier_id = data.goods_info.supplier_id;
       formData.status = data.goods_info.status;

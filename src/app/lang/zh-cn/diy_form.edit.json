@@ -118,6 +118,7 @@
   "textAlign": "对齐方式",
   "textAlignLeft": "居左",
   "textAlignCenter": "居中",
+  "textAlignRight": "居右",
   "textSet": "文字设置",
   "textFontSize": "文字大小",
   "textFontWeight": "文字粗细",
@@ -283,9 +284,12 @@
   "pictureShowBtnBgColor": "背景颜色",
   "pictureShowBlockStyle": "模块样式",
 
+  "fieldNamePlaceholder": "请输入字段名称",
+  "fieldRemarkPlaceholder": "请输入字段说明",
   "defaultValue": "默认值",
   "defaultValuePlaceholder": "请输入默认值",
   "formPlaceholder": "提示语",
   "formPlaceholderTips": "请输入提示语",
-  "isRequired": "是否必填"
+  "isRequired": "是否必填",
+  "optionPlaceholder": "请输入选项内容"
 }

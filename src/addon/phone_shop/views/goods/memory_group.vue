@@ -28,7 +28,8 @@
             </el-card>
 
             <div class="mt-[10px]">
-                <el-table :data="memoryTable.data" size="large" v-loading="memoryTable.loading" @sort-change="sortChange">
+                <el-table :data="memoryTable.data" size="large" v-loading="memoryTable.loading"
+                    @sort-change="sortChange">
                     <template #empty>
                         <span>{{ !memoryTable.loading ? t('emptyData') : '' }}</span>
                     </template>

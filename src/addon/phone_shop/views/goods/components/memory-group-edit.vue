@@ -1,6 +1,6 @@
 <template>
-    <el-dialog v-model="showDialog" :title="formData.group_id ? t('editMemoryGroup') : t('addMemoryGroup')" width="600px"
-        :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-dialog v-model="showDialog" :title="formData.group_id ? t('editMemoryGroup') : t('addMemoryGroup')"
+        width="600px" :close-on-click-modal="false" :close-on-press-escape="false">
         <el-form ref="formRef" :model="formData" :rules="rules" label-width="120px">
             <el-form-item :label="t('groupName')" prop="group_name">
                 <el-input v-model.trim="formData.group_name" :placeholder="t('groupNamePlaceholder')" />
@@ -10,12 +10,7 @@
             </el-form-item>
             <el-form-item :label="t('memorySpecs')" prop="memory_ids">
                 <el-checkbox-group v-model="formData.memory_ids" class="memory-checkbox-group">
-                    <el-checkbox 
-                        v-for="item in memoryList" 
-                        :key="item.spec_id" 
-                        :label="item.spec_id"
-                        border
-                    >
+                    <el-checkbox v-for="item in memoryList" :key="item.spec_id" :label="item.spec_id" border>
                         {{ item.spec_name }}
                     </el-checkbox>
                 </el-checkbox-group>
@@ -59,7 +54,7 @@ const formData = reactive({
     group_id: '',
     group_name: '',
     sort: 0,
-    memory_ids: [] as number[], // 选中的内存规格ID数组
+    memory_ids: [] as number[],
     site_id: userStore()?.siteInfo?.site_id || 0
 })
 
@@ -75,10 +70,9 @@ const rules = reactive<FormRules>({
     ]
 })
 
-// 获取内存规格列表
 const getMemoryListData = async () => {
     try {
-        const res: any = await getMemoryList()
+        const res: any = await getMemoryList({ limit: 100 })
         if (res.code === 1 && res.data.data) {
             memoryList.value = res.data.data
         }
@@ -91,13 +85,12 @@ const setFormData = (data?: any) => {
     formData.group_id = data?.group_id ?? ''
     formData.group_name = data?.group_name ?? ''
     formData.sort = data?.sort ?? 0
-    // 如果有memory_ids，将字符串转换为数组
     formData.memory_ids = data?.memory_ids ? data.memory_ids.split(',').map(Number) : []
 }
 
 const closeDialog = () => {
     showDialog.value = false
-    formData.memory_ids = [] // 清空选择
+    formData.memory_ids = []
 }
 
 const confirm = () => {
@@ -105,14 +98,13 @@ const confirm = () => {
     formRef.value.validate((valid) => {
         if (valid) {
             loading.value = true
-            // 将memory_ids数组转换为逗号分隔的字符串
             const submitData = {
                 ...formData,
                 memory_ids: formData.memory_ids.join(',')
             }
-            const request = formData.group_id ? 
-                editMemoryGroup(Number(formData.group_id), submitData) : 
-                addMemoryGroup(submitData)
+            const request = formData.group_id
+                ? editMemoryGroup(Number(formData.group_id), submitData)
+                : addMemoryGroup(submitData)
             request.then(() => {
                 closeDialog()
                 emit('complete')
@@ -123,7 +115,6 @@ const confirm = () => {
     })
 }
 
-// 组件挂载时获取内存规格列表
 onMounted(() => {
     getMemoryListData()
 })
@@ -139,9 +130,9 @@ defineExpose({
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    
+
     .el-checkbox {
         margin-right: 0;
     }
 }
-</style> 
+</style>

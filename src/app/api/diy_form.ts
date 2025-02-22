@@ -1,28 +1,28 @@
 import request from '@/utils/request'
 
-/***************************************************** 系统表单 ****************************************************/
+/***************************************************** 万能表单 ****************************************************/
 
 /**
- * 获取系统表单分页列表
+ * 获取万能表单分页列表
  * @param params
  * @returns
  */
-export function getDiyFormList(params: Record<string, any>) {
+export function getDiyFormPageList(params: Record<string, any>) {
     return request.get(`diy/form`, { params })
 }
 
 /**
- * 获取系统表单列表
+ * 获取万能表单列表
  * @param params
  * @returns
  */
-export function getDiyList(params: Record<string, any>) {
+export function getDiyFormList(params: Record<string, any>) {
     return request.get(`diy/form/list`, { params })
 }
 
 /**
- * 获取系统表单详情
- * @param form_id 系统表单id
+ * 获取万能表单详情
+ * @param form_id 万能表单id
  * @returns
  */
 export function getDiyFormInfo(form_id: number) {
@@ -30,7 +30,7 @@ export function getDiyFormInfo(form_id: number) {
 }
 
 /**
- * 添加系统表单
+ * 添加万能表单
  * @param params
  * @returns
  */
@@ -39,7 +39,7 @@ export function addDiyForm(params: Record<string, any>) {
 }
 
 /**
- * 编辑系统表单
+ * 编辑万能表单
  * @param params
  */
 export function editDiyForm(params: Record<string, any>) {
@@ -47,7 +47,7 @@ export function editDiyForm(params: Record<string, any>) {
 }
 
 /**
- * 修改系统表单分享内容
+ * 修改万能表单分享内容
  * @param params
  */
 export function editDiyFormShare(params: Record<string, any>) {
@@ -55,19 +55,46 @@ export function editDiyFormShare(params: Record<string, any>) {
 }
 
 /**
- * 删除系统表单
- * @param form_id
+ * 删除万能表单
+ * @param params
  * @returns
  */
-export function deleteDiyForm(form_id: number) {
-    return request.delete(`diy/form/${ form_id }`, { showSuccessMessage: true })
+export function deleteDiyForm(params: Record<string, any>) {
+    return request.put(`diy/form/delete`, params, { showSuccessMessage: true })
 }
 
 /**
- * 获取系统表单初始化数据
+ * 获取万能表单初始化数据
  */
 export function initPage(params: Record<string, any>) {
     return request.get(`diy/form/init`, { params })
+}
+
+/**
+ * 获取万能表单微信小程序二维码
+ * @param params
+ * @returns
+ */
+export function getDiyFormQrcode(params: Record<string, any>) {
+    return request.get(`diy/form/qrcode`, { params })
+}
+
+/**
+ * 获取万能表单字段列表
+ * @param params
+ * @returns
+ */
+export function getDiyFormFieldsList(params: Record<string, any>) {
+    return request.get(`diy/form/fields/list`, { params })
+}
+
+/**
+ * 获取字段统计列表
+ * @param params
+ * @returns
+ */
+export function getDiyFormFieldStat(params: Record<string, any>) {
+    return request.get(`diy/form/records/field/stat`, { params })
 }
 
 /**
@@ -81,20 +108,11 @@ export function getDiyTemplate(params: Record<string, any>) {
  * 获取模板页面列表
  */
 export function getDiyTemplatePages(params: Record<string, any>) {
-    return request.get(`diy/template/pages`, { params })
+    return request.get(`diy/form/template`, { params })
 }
 
 /**
- * 切换模板
- * @param params
- * @returns
- */
-export function changeTemplate(params: Record<string, any>) {
-    return request.put(`diy/change`, params, { showSuccessMessage: true })
-}
-
-/**
- * 系统表单状态状态
+ * 万能表单状态状态
  * @param params
  * @returns
  */
@@ -123,7 +141,7 @@ export function copyDiy(params: Record<string, any>) {
 }
 
 /**
- * 获取系统表单类型
+ * 获取万能表单类型
  * @param params
  * @returns
  */
@@ -132,7 +150,41 @@ export function getFormType(params: Record<string, any>) {
 }
 
 /**
- * 获取系统表单数据列表
+ * 获取万能表单填写配置
+ * @param form_id
+ * @returns
+ */
+export function getFormWriteConfig(form_id: any) {
+    return request.get(`diy/form/write/${ form_id }`)
+}
+
+/**
+ * 编辑万能表单填写配置
+ * @param params
+ */
+export function editDiyFormWriteConfig(params: Record<string, any>) {
+    return request.put(`diy/form/write`, params, { showSuccessMessage: true })
+}
+
+/**
+ * 获取万能表单提交成功页配置
+ * @param form_id
+ * @returns
+ */
+export function getFormSubmitConfig(form_id: any) {
+    return request.get(`diy/form/submit/${ form_id }`)
+}
+
+/**
+ * 编辑万能表单提交成功页配置
+ * @param params
+ */
+export function editDiyFormSubmitConfig(params: Record<string, any>) {
+    return request.put(`diy/form/submit`, params, { showSuccessMessage: true })
+}
+
+/**
+ * 获取万能表单数据列表
  * @param params
  * @returns
  */
@@ -141,8 +193,8 @@ export function getFormRecords(params: Record<string, any>) {
 }
 
 /**
- * 获取系统表单数据详情
- * @param params
+ * 获取万能表单数据详情
+ * @param id
  * @returns
  */
 export function getFormRecordsInfo(id: number) {
@@ -150,10 +202,27 @@ export function getFormRecordsInfo(id: number) {
 }
 
 /**
- * 删除系统表单数据
+ * 删除万能表单数据
  * @param params
  * @returns
  */
-export function deleteFormRecords(id: number) {
-    return request.delete(`diy/form/records/${ id }`, { showSuccessMessage: true })
+export function deleteFormRecords(params: Record<string, any>) {
+    return request.put(`diy/form/records/delete`, params, { showSuccessMessage: true })
+}
+
+/**
+ * 获取万能表单填表人列表
+ * @param params
+ * @returns
+ */
+export function getFormRecordsMember(params: Record<string, any>) {
+    return request.get(`diy/form/records/member/stat`, { params })
+}
+
+/**
+ * 复制模版页面
+ * @param params
+ */
+export function copyForm(params: Record<string, any>) {
+    return request.post(`diy/form/copy`, params, { showSuccessMessage: true })
 }
